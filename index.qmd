@@ -1,0 +1,57 @@
+---
+title: "Populationsgenetik interaktiv"
+subtitle: "Begleitmaterial zur Vorlesung Bio 113 · Evolution & Biodiversität"
+toc: false
+---
+
+Evolution ist, aus Sicht der Populationsgenetik, **die Veränderung von Allelfrequenzen in einer Population über die Zeit**.
+Auf diesen Seiten können Sie selbst ausprobieren, *wie* und *wie schnell* sich Allelfrequenzen verändern,
+und welche Prozesse dafür verantwortlich sind.
+
+Alle Simulationen laufen direkt in Ihrem Browser. Sie müssen nichts installieren und es werden keine Daten gesendet.
+
+## Konzepte
+
+::: {.concept-grid}
+[**Hardy-Weinberg** Das Nullmodell: Was passiert, wenn nichts passiert?](konzepte/hardy-weinberg.qmd){.concept-card}
+
+[**Genetische Drift** Zufall in endlichen Populationen.](konzepte/drift.qmd){.concept-card}
+
+[**Selektion** Unterschiedliche Fitness der Genotypen.](konzepte/selektion.qmd){.concept-card}
+
+[**Mutation** Neue Allele, aber langsam.](konzepte/mutation.qmd){.concept-card}
+
+[**Migration** Genfluss macht Populationen ähnlicher.](konzepte/migration.qmd){.concept-card}
+
+[**Inzucht** Mehr Homozygote, gleiche Allelfrequenzen.](konzepte/inzucht.qmd){.concept-card}
+
+[**Flaschenhals** Kurz klein sein hat lange Folgen.](konzepte/flaschenhals.qmd){.concept-card}
+
+[**Explorer** Alle Kräfte kombinieren, eigene Experimente.](explorer.qmd){.concept-card}
+:::
+
+## So arbeiten Sie mit den Seiten
+
+1. **Vorhersagen.** Überlegen Sie *vor* jeder Simulation, was passieren sollte.
+2. **Ausprobieren.** Verändern Sie jeweils *einen* Regler und beobachten Sie die Wirkung.
+3. **Wiederholen.** Wo der Zufall mitspielt (Drift), sieht jeder Lauf anders aus. Drücken Sie *Neu simulieren* und vergleichen Sie viele Replikate.
+4. **Erklären.** Jede Seite endet mit Fragen. Versuchen Sie, sie mit den Begriffen aus der Vorlesung zu beantworten.
+
+## Abweichungen vom Nullmodell
+
+Das Hardy-Weinberg-Gleichgewicht gilt, wenn **keine** der folgenden Kräfte wirkt. Jede Seite schaltet eine davon ein:
+
+| Prozess | verändert … | Richtung | Seite |
+|---|---|---|---|
+| Genetische Drift | Allelfrequenzen | zufällig | [Drift](konzepte/drift.qmd) |
+| Selektion | Allelfrequenzen | gerichtet (nach Fitness) | [Selektion](konzepte/selektion.qmd) |
+| Mutation | Allelfrequenzen | gerichtet, sehr langsam | [Mutation](konzepte/mutation.qmd) |
+| Migration | Allelfrequenzen | Richtung Quellpopulation | [Migration](konzepte/migration.qmd) |
+| Nicht-zufällige Paarung (Inzucht) | nur Genotypfrequenzen | mehr Homozygote | [Inzucht](konzepte/inzucht.qmd) |
+
+::: {.callout-tip}
+## Für Dozierende
+Der [Explorer](explorer.qmd) kann über einen Link mit fertigen Einstellungen geöffnet werden,
+z. B. [`explorer.html?preset=drift-10`](explorer.html?preset=drift-10).
+Die verfügbaren Voreinstellungen stehen in `config/scenarios.json`.
+:::

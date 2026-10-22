@@ -1,0 +1,148 @@
+---
+title: "Explorer"
+subtitle: "Alle evolutionären Kräfte kombinieren"
+description: "Eigene Experimente mit Drift, Selektion, Mutation, Migration, Inzucht und Flaschenhals."
+toc: false
+---
+
+{{< include /_partials/_setup.qmd >}}
+
+Hier können Sie alle Prozesse gleichzeitig einschalten und eigene Experimente planen.
+Wählen Sie eine **Voreinstellung** oder beginnen Sie mit dem Hardy-Weinberg-Fall und verändern Sie einen Parameter nach dem anderen.
+
+```{ojs}
+//| include: false
+// Presets come from config/scenarios.json. A link like explorer.html?preset=drift-10 selects one.
+scenarioFile = FileAttachment("/config/scenarios.json").json()
+scenarios = scenarioFile.scenarios
+urlPreset = new URLSearchParams(window.location.search).get("preset")
+initialScenario = scenarios.find(s => s.id === urlPreset) ?? scenarios[0]
+```
+
+```{ojs}
+//| panel: input
+viewof scenario = Inputs.select(scenarios, {label: "Voreinstellung", format: s => s.label, value: initialScenario})
+```
+
+```{ojs}
+//| include: false
+S = ({...DEFAULT_PARAMS, replicates: 1, ...scenario.params})
+```
+
+```{ojs}
+md`*${scenario.description ?? ""}*`
+```
+
+::: {.panel-tabset}
+
+## Population
+
+```{ojs}
+//| panel: input
+viewof infinite = Inputs.toggle({label: "Unendlich grosse Population (keine Drift)", value: S.N === null || S.N === Infinity})
+viewof N = Inputs.range([2, 100000], {value: Number.isFinite(S.N) ? S.N : 1000, step: 1, transform: Math.log, label: "Populationsgrösse N", disabled: infinite})
+viewof p0 = Inputs.range([0, 1], {value: S.p0, step: 0.01, label: "Start-Allelfrequenz p₀"})
+viewof generations = Inputs.range([1, 1000], {value: S.generations, step: 1, label: "Generationen"})
+viewof replicates = Inputs.range([1, 100], {value: S.replicates, step: 1, label: "Anzahl Populationen", disabled: infinite})
+```
+
+## Selektion
+
+```{ojs}
+//| panel: input
+viewof w11 = Inputs.range([0, 1], {value: S.w11, step: 0.01, label: "Fitness w₁₁ (A1A1)"})
+viewof w12 = Inputs.range([0, 1], {value: S.w12, step: 0.01, label: "Fitness w₁₂ (A1A2)"})
+viewof w22 = Inputs.range([0, 1], {value: S.w22, step: 0.01, label: "Fitness w₂₂ (A2A2)"})
+```
+
+## Mutation
+
+```{ojs}
+//| panel: input
+viewof u = Inputs.number([0, 0.1], {value: S.u, step: 0.00001, label: "u (A1 → A2)"})
+viewof v = Inputs.number([0, 0.1], {value: S.v, step: 0.00001, label: "v (A2 → A1)"})
+```
+
+## Migration
+
+```{ojs}
+//| panel: input
+viewof m = Inputs.range([0, 0.5], {value: S.m, step: 0.005, label: "Migrationsrate m"})
+viewof pC = Inputs.range([0, 1], {value: S.pC, step: 0.01, label: "Allelfrequenz der Quelle p_C"})
+```
+
+## Inzucht
+
+```{ojs}
+//| panel: input
+viewof F = Inputs.range([0, 1], {value: S.F, step: 0.01, label: "Inzuchtkoeffizient F"})
+```
+
+## Flaschenhals
+
+```{ojs}
+//| panel: input
+viewof useBottleneck = Inputs.toggle({label: "Flaschenhals einschalten", value: S.bottleneck !== null})
+viewof bStart = Inputs.range([1, 500], {value: S.bottleneck?.start ?? 20, step: 1, label: "Beginn (Generation)", disabled: !useBottleneck})
+viewof bDuration = Inputs.range([1, 100], {value: S.bottleneck?.duration ?? 5, step: 1, label: "Dauer (Generationen)", disabled: !useBottleneck})
+viewof bSize = Inputs.range([2, 1000], {value: S.bottleneck?.size ?? 25, step: 1, transform: Math.log, label: "Grösse im Flaschenhals", disabled: !useBottleneck})
+```
+
+:::
+
+```{ojs}
+//| panel: input
+viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (x) => x + 1})
+```
+
+```{ojs}
+//| include: false
+params = ({
+  p0, generations, w11, w12, w22, u, v, m, pC, F, seed,
+  N: infinite ? Infinity : N,
+  bottleneck: useBottleneck && !infinite ? {start: bStart, duration: bDuration, size: bSize} : null
+})
+nRep = infinite ? 1 : replicates
+rows = simulateReplicates(params, nRep)
+summary = summarizeFinal(rows)
+```
+
+### Allelfrequenz
+
+```{ojs}
+alleleTrajectoryPlot(Plot, rows, {width})
+```
+
+```{ojs}
+html`<div class="stat-row">
+  <div class="stat-tile"><div class="stat-label">Mittelwert p (letzte Gen.)</div><div class="stat-value">${summary.mean.toFixed(3)}</div></div>
+  <div class="stat-tile"><div class="stat-label">Standardabweichung</div><div class="stat-value">${nRep > 1 ? summary.sd.toFixed(3) : "–"}</div></div>
+  <div class="stat-tile"><div class="stat-label">A1 fixiert</div><div class="stat-value">${summary.fixed} / ${summary.n}</div></div>
+  <div class="stat-tile"><div class="stat-label">A1 verloren</div><div class="stat-value">${summary.lost} / ${summary.n}</div></div>
+</div>`
+```
+
+### Genotypfrequenzen (Population 1)
+
+```{ojs}
+genotypePlot(Plot, rows.filter(d => d.rep === 1), {width})
+```
+
+```{ojs}
+nRep > 1 ? html`<h3>Verteilung der Endfrequenzen</h3>${finalFrequencyHistogram(Plot, rows, {width})}` : html``
+```
+
+### Daten
+
+```{ojs}
+csv = d3.csvFormat(rows.map(({rep, gen, N, p, q, f11, f12, f22}) => ({population: rep, generation: gen, N, p, q, A1A1: f11, A1A2: f12, A2A2: f22})))
+html`<p>${DOM.download(new Blob([csv], {type: "text/csv"}), "popgen-simulation.csv", "Daten als CSV herunterladen")}
+<span style="opacity:.7"> · ${rows.length.toLocaleString("de-CH")} Zeilen, z. B. für die Auswertung in R</span></p>`
+```
+
+```{ojs}
+shareUrl = `${window.location.origin}${window.location.pathname}?preset=${scenario.id}`
+md`Link zu dieser Voreinstellung: [${shareUrl}](${shareUrl})`
+```
+
+{{< include /_partials/_model-note.qmd >}}

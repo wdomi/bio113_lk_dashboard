@@ -1,0 +1,105 @@
+---
+title: "Genetische Drift"
+subtitle: "Zufällige Schwankungen der Allelfrequenzen"
+description: "Wie die Populationsgrösse bestimmt, wie stark der Zufall Allelfrequenzen verändert."
+---
+
+{{< include /_partials/_setup.qmd >}}
+
+In jeder realen Population ist die Zahl der Individuen **endlich**. Welche Allele in die nächste Generation gelangen,
+ist darum auch eine Frage des Zufalls: Manche Individuen haben zufällig mehr Nachkommen als andere,
+und nicht jedes Allel wird weitergegeben. Diese zufälligen Schwankungen heissen **genetische Drift**.
+
+- Drift ist **ungerichtet**: Die Allelfrequenz kann steigen oder sinken.
+- Drift ist **stärker in kleinen Populationen**.
+- Ohne Selektion, Mutation oder Migration wird jedes Allel irgendwann **fixiert** ($p = 1$) oder geht **verloren** ($p = 0$).
+- Drift führt dazu, dass ursprünglich identische Populationen sich **auseinanderentwickeln**, und dass **genetische Variation** (Heterozygotie) innerhalb von Populationen **verloren geht**:
+
+$$
+H_t = H_0 \left(1 - \frac{1}{2N}\right)^t
+$$
+
+## 1 · Viele Populationen, gleiche Startbedingungen
+
+Jede Linie ist eine unabhängige Population (ein *Replikat*). Alle starten mit derselben Allelfrequenz.
+
+```{ojs}
+//| panel: input
+viewof N = Inputs.range([2, 10000], {value: 50, step: 1, transform: Math.log, label: "Populationsgrösse N"})
+viewof p0 = Inputs.range([0.01, 0.99], {value: 0.5, step: 0.01, label: "Start-Allelfrequenz p₀"})
+viewof generations = Inputs.range([1, 500], {value: 100, step: 1, label: "Generationen"})
+viewof replicates = Inputs.range([1, 100], {value: 20, step: 1, label: "Anzahl Populationen"})
+viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
+```
+
+```{ojs}
+rows = simulateReplicates({N, p0, generations, seed}, replicates)
+alleleTrajectoryPlot(Plot, rows, {width, highlight: p0})
+```
+
+```{ojs}
+summary = summarizeFinal(rows)
+html`<div class="stat-row">
+  <div class="stat-tile"><div class="stat-label">Mittelwert p (letzte Gen.)</div><div class="stat-value">${summary.mean.toFixed(2)}</div></div>
+  <div class="stat-tile"><div class="stat-label">Standardabweichung</div><div class="stat-value">${replicates > 1 ? summary.sd.toFixed(2) : "–"}</div></div>
+  <div class="stat-tile"><div class="stat-label">A1 fixiert</div><div class="stat-value">${summary.fixed} / ${summary.n}</div></div>
+  <div class="stat-tile"><div class="stat-label">A1 verloren</div><div class="stat-value">${summary.lost} / ${summary.n}</div></div>
+</div>`
+```
+
+**Verteilung der Allelfrequenz in der letzten Generation:**
+
+```{ojs}
+finalFrequencyHistogram(Plot, rows, {width})
+```
+
+## 2 · Drift zerstört genetische Variation
+
+Die mittlere Heterozygotie $H = 2pq$ aller Populationen (blau) im Vergleich zur theoretischen Erwartung $H_0(1 - 1/2N)^t$ (grau).
+Verwenden Sie viele Populationen, damit der Mittelwert stabil wird.
+
+```{ojs}
+het_obs = meanByGeneration(rows.map(d => ({...d, H: 2 * d.p * (1 - d.p)})), "H")
+het_exp = het_obs.map(d => ({gen: d.gen, value: expectedHeterozygosity(2 * p0 * (1 - p0), N, d.gen)}))
+heterozygosityPlot(Plot, het_obs, het_exp, {width})
+```
+
+## 3 · Experiment: Wie stark hängt Drift von N ab?
+
+50 Populationen pro Grösse, 50 Generationen, $p_0 = 0.5$ (wie im HHMI-Arbeitsblatt).
+Notieren Sie zuerst Ihre **Vorhersage** für Mittelwert und Standardabweichung.
+
+```{ojs}
+//| panel: input
+viewof seed_cmp = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
+```
+
+```{ojs}
+sizes = [10, 100, 1000, 10000]
+cmp = simulateScenarios(sizes.map(n => ({label: `N = ${n}`, params: {N: n, p0: 0.5, generations: 50, seed: seed_cmp}})), 50)
+Inputs.table(sizes.map(n => {
+  const s = summarizeFinal(cmp.filter(d => d.scenario === `N = ${n}`));
+  return {"Populationsgrösse N": n, "Mittelwert p": s.mean, "Standardabweichung": s.sd, "fixiert": s.fixed, "verloren": s.lost};
+}), {format: {"Mittelwert p": d => d.toFixed(2), "Standardabweichung": d => d.toFixed(2)}, layout: "auto"})
+```
+
+```{ojs}
+finalFrequencyHistogram(Plot, cmp, {width})
+```
+
+{{< include /_partials/_model-note.qmd >}}
+
+## Fragen zum Nachdenken
+
+1. Wie verändert sich die Streuung der Endfrequenzen, wenn Sie $N$ verzehnfachen?
+2. Starten Sie mit $p_0 = 0.2$ und $N = 20$. In welchem Anteil der Populationen wird A1 fixiert? Vergleichen Sie mit $p_0$.
+3. Warum braucht man viele Replikate, um eine Aussage über Drift zu machen?
+4. Die Heterozygotie sinkt im Mittel, obwohl in einzelnen Populationen $p$ zur Mitte hin schwankt. Wie passt das zusammen?
+
+::: {.callout-tip collapse="true"}
+## Lösungshinweise
+1. Sie wird kleiner (die Varianz der Änderung pro Generation ist $pq/2N$).
+2. Ungefähr 20 %: Die Fixierungswahrscheinlichkeit eines neutralen Allels entspricht seiner Startfrequenz.
+3. Weil jeder einzelne Lauf zufällig ist; erst die Verteilung vieler Läufe zeigt das Muster (Stichprobenfehler).
+4. Populationen, die fixieren, haben für immer $H = 0$; Verlust ist irreversibel, Gewinn nicht.
+:::

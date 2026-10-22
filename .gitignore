@@ -1,0 +1,18 @@
+# Quarto build output (built by GitHub Actions, never commit)
+/_site/
+/.quarto/
+/_freeze/
+*_files/
+
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Node (only used for tests)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
