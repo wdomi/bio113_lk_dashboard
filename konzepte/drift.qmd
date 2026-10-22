@@ -33,12 +33,13 @@ viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 ```
 
 ```{ojs}
-rows = simulateReplicates({N, p0, generations, seed}, replicates)
+res = R.call("drift_experiment", {N, p0, generations, replicates, seed}, {key: "drift-main"})
+rows = res.rows
 alleleTrajectoryPlot(Plot, rows, {width, highlight: p0})
 ```
 
 ```{ojs}
-summary = summarizeFinal(rows)
+summary = res.summary[0]
 html`<div class="stat-row">
   <div class="stat-tile"><div class="stat-label">Mittelwert p (letzte Gen.)</div><div class="stat-value">${summary.mean.toFixed(2)}</div></div>
   <div class="stat-tile"><div class="stat-label">Standardabweichung</div><div class="stat-value">${replicates > 1 ? summary.sd.toFixed(2) : "–"}</div></div>
@@ -59,9 +60,7 @@ Die mittlere Heterozygotie $H = 2pq$ aller Populationen (blau) im Vergleich zur 
 Verwenden Sie viele Populationen, damit der Mittelwert stabil wird.
 
 ```{ojs}
-het_obs = meanByGeneration(rows.map(d => ({...d, H: 2 * d.p * (1 - d.p)})), "H")
-het_exp = het_obs.map(d => ({gen: d.gen, value: expectedHeterozygosity(2 * p0 * (1 - p0), N, d.gen)}))
-heterozygosityPlot(Plot, het_obs, het_exp, {width})
+heterozygosityPlot(Plot, res.heterozygosity, {width})
 ```
 
 ## 3 · Experiment: Wie stark hängt Drift von N ab?
@@ -75,16 +74,13 @@ viewof seed_cmp = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 
 ```
 
 ```{ojs}
-sizes = [10, 100, 1000, 10000]
-cmp = simulateScenarios(sizes.map(n => ({label: `N = ${n}`, params: {N: n, p0: 0.5, generations: 50, seed: seed_cmp}})), 50)
-Inputs.table(sizes.map(n => {
-  const s = summarizeFinal(cmp.filter(d => d.scenario === `N = ${n}`));
-  return {"Populationsgrösse N": n, "Mittelwert p": s.mean, "Standardabweichung": s.sd, "fixiert": s.fixed, "verloren": s.lost};
-}), {format: {"Mittelwert p": d => d.toFixed(2), "Standardabweichung": d => d.toFixed(2)}, layout: "auto"})
+cmp = R.call("drift_by_size", {sizes: [10, 100, 1000, 10000], p0: 0.5, generations: 50, replicates: 50, seed: seed_cmp})
+Inputs.table(cmp.summary.map(s => ({"Populationsgrösse": s.scenario, "Mittelwert p": s.mean, "Standardabweichung": s.sd, "fixiert": s.fixed, "verloren": s.lost})),
+  {format: {"Mittelwert p": d => d.toFixed(2), "Standardabweichung": d => d.toFixed(2)}, layout: "auto"})
 ```
 
 ```{ojs}
-finalFrequencyHistogram(Plot, cmp, {width})
+finalFrequencyHistogram(Plot, cmp.rows, {width})
 ```
 
 {{< include /_partials/_model-note.qmd >}}

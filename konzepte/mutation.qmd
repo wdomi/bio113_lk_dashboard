@@ -30,9 +30,10 @@ viewof generations = Inputs.select([1000, 10000, 50000, 100000], {value: 50000, 
 ```{ojs}
 u = 10 ** logu
 v = 10 ** logv
-p_hat = mutationEquilibrium(u, v)
-rows = simulate({p0, u, v, generations})
-alleleTrajectoryPlot(Plot, rows.filter((d, i) => i % Math.max(1, Math.floor(generations / 1000)) === 0), {width, highlight: p_hat})
+p_hat = R.call("mutation_equilibrium", {u, v})
+// closed-form solution in R: fast even for 100 000 generations
+rows = R.call("mutation_trajectory", {p0, u, v, generations}, {key: "mut-main"})
+alleleTrajectoryPlot(Plot, rows.map(d => ({...d, rep: 1})), {width, highlight: p_hat})
 ```
 
 ```{ojs}
@@ -55,13 +56,13 @@ viewof logu2 = Inputs.range([-6, -2], {value: -3, step: 0.1, label: "log₁₀ u
 
 ```{ojs}
 u2 = 10 ** logu2
-q_hat = mutationSelectionBalance(u2, s, h)
-rows_ms = simulate({p0: 1, u: u2, useSH: true, s, h, generations: 2000})
+q_hat = R.call("mutation_selection_balance", {u: u2, s, h})
+rows_ms = R.call("simulate", {p0: 1, u: u2, s, h, generations: 1000}, {key: "mut-sel"})
 alleleTrajectoryPlot(Plot, rows_ms, {width, y: "q", yLabel: "↑ Allelfrequenz q (A2)", highlight: q_hat})
 ```
 
 ```{ojs}
-md`Näherung (gestrichelt): **q̂ ≈ ${q_hat.toFixed(4)}** · Simulation nach 2000 Generationen: **q = ${rows_ms.at(-1).q.toFixed(4)}**`
+md`Näherung (gestrichelt): **q̂ ≈ ${q_hat.toFixed(4)}** · Simulation nach 1000 Generationen: **q = ${rows_ms.at(-1).q.toFixed(4)}**`
 ```
 
 {{< include /_partials/_model-note.qmd >}}

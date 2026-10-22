@@ -62,3 +62,12 @@ form[class*="oi-"] {
 
 // Charts scale with the page
 figure svg, .cell-output-display svg { max-width: 100%; height: auto; }
+
+// Status line "R wird gestartet / R läuft" (from _partials/_setup.qmd)
+.r-status {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin: 0 0 1rem;
+  &.r-ready { opacity: 0.55; }
+  &.r-error { color: #c0392b; opacity: 1; }
+}

@@ -26,34 +26,14 @@ viewof p = Inputs.range([0, 1], {value: 0.5, step: 0.01, label: "Allelfrequenz p
 ```
 
 ```{ojs}
-gF = genotypeFreqs(p, F)
-g0 = genotypeFreqs(p, 0)
-Plot.plot({
-  width,
-  height: 260,
-  marginLeft: 60,
-  style: {fontSize: "13px", background: "transparent"},
-  x: {label: null, domain: ["A1A1", "A1A2", "A2A2"]},
-  y: {domain: [0, 1], label: "↑ Genotypfrequenz", grid: true},
-  fx: {label: null},
-  color: {domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS},
-  marks: [
-    Plot.barY([
-      {genotype: "A1A1", freq: g0.f11, mating: "Zufallspaarung (F = 0)"},
-      {genotype: "A1A2", freq: g0.f12, mating: "Zufallspaarung (F = 0)"},
-      {genotype: "A2A2", freq: g0.f22, mating: "Zufallspaarung (F = 0)"},
-      {genotype: "A1A1", freq: gF.f11, mating: `Inzucht (F = ${F})`},
-      {genotype: "A1A2", freq: gF.f12, mating: `Inzucht (F = ${F})`},
-      {genotype: "A2A2", freq: gF.f22, mating: `Inzucht (F = ${F})`}
-    ], {x: "genotype", y: "freq", fx: "mating", fill: "genotype", inset: 4, tip: true}),
-    Plot.ruleY([0])
-  ]
-})
+bars = R.call("inbreeding_genotypes", {p, F}, {key: "inz-bars"})
+genotypeBars(Plot, bars, {width})
 ```
 
 ```{ojs}
-md`Allelfrequenz mit Inzucht: **p = ${alleleFreqFromGenotypes(gF).toFixed(3)}** (unverändert) ·
-Heterozygote: ${g0.f12.toFixed(3)} → **${gF.f12.toFixed(3)}**`
+het = bars.filter(d => d.genotype === "A1A2")
+md`Allelfrequenz mit Inzucht: **p = ${bars[3].p.toFixed(3)}** (unverändert) ·
+Heterozygote: ${het[0].freq.toFixed(3)} → **${het[1].freq.toFixed(3)}**`
 ```
 
 ## 2 · Inzucht und Inzuchtdepression
@@ -67,22 +47,8 @@ viewof s_del = Inputs.range([0, 1], {value: 0.5, step: 0.01, label: "Fitnessverl
 ```
 
 ```{ojs}
-fit = Array.from({length: 101}, (_, i) => {
-  const F = i / 100;
-  const g = genotypeFreqs(1 - q_del, F);
-  return {F, wbar: meanFitness(g, {w11: 1, w12: 1, w22: 1 - s_del})};
-})
-Plot.plot({
-  width, height: 260, marginLeft: 60,
-  style: {fontSize: "13px", background: "transparent"},
-  x: {label: "Inzuchtkoeffizient F →"},
-  y: {label: "↑ mittlere Fitness w̄", grid: true},
-  marks: [
-    Plot.line(fit, {x: "F", y: "wbar", stroke: COLORS.series, strokeWidth: 2}),
-    Plot.dot(fit.filter(d => Math.abs(d.F - F) < 0.005), {x: "F", y: "wbar", fill: COLORS.series, r: 6, stroke: "white"}),
-    Plot.tip(fit, Plot.pointer({x: "F", y: "wbar", title: d => `F = ${d.F.toFixed(2)}\nw̄ = ${d.wbar.toFixed(3)}`}))
-  ]
-})
+fit = R.call("inbreeding_depression", {q: q_del, s: s_del}, {key: "inz-fit"})
+curvePlot(Plot, fit, {x: "F", y: "wbar", xLabel: "Inzuchtkoeffizient F →", yLabel: "↑ mittlere Fitness w̄", highlightX: F, width})
 ```
 
 {{< include /_partials/_model-note.qmd >}}

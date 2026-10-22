@@ -1,0 +1,15 @@
+Package: popgen
+Type: Package
+Title: Population Genetics Simulations for the Bio 113 Website
+Version: 0.2.0
+Authors@R: person("Bio 113 team", role = c("aut", "cre"))
+Description: One-locus, two-allele population genetics: Hardy-Weinberg,
+    genetic drift (Wright-Fisher), selection, mutation, migration, inbreeding
+    and bottlenecks. The same R code runs in RStudio and, via webR, in the
+    browser on the course website.
+License: GPL-3
+Encoding: UTF-8
+Depends: R (>= 4.1)
+Imports: stats, utils
+Suggests: testthat (>= 3.0.0), jsonlite
+Config/testthat/edition: 3

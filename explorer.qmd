@@ -26,7 +26,9 @@ viewof scenario = Inputs.select(scenarios, {label: "Voreinstellung", format: s =
 
 ```{ojs}
 //| include: false
-S = ({...DEFAULT_PARAMS, replicates: 1, ...scenario.params})
+// Defaults come straight from the R function simulate() (its formal arguments).
+defaults = R.eval("lapply(formals(simulate), eval)")
+S = ({...defaults, ...scenario.params})
 ```
 
 ```{ojs}
@@ -103,8 +105,9 @@ params = ({
   bottleneck: useBottleneck && !infinite ? {start: bStart, duration: bDuration, size: bSize} : null
 })
 nRep = infinite ? 1 : replicates
-rows = simulateReplicates(params, nRep)
-summary = summarizeFinal(rows)
+res = R.call("experiment", {...params, replicates: nRep}, {key: "explorer"})
+rows = res.rows
+summary = res.summary[0]
 ```
 
 ### Allelfrequenz
@@ -125,7 +128,7 @@ html`<div class="stat-row">
 ### Genotypfrequenzen (Population 1)
 
 ```{ojs}
-genotypePlot(Plot, rows.filter(d => d.rep === 1), {width})
+genotypePlot(Plot, res.genotypes, {width})
 ```
 
 ```{ojs}

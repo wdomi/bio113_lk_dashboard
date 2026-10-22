@@ -53,8 +53,8 @@ viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 ```
 
 ```{ojs}
-params = ({p0, generations, w11, w12, w22, N: finite ? N : Infinity, seed})
-rows = finite ? simulateReplicates(params, 10) : simulate(params)
+res = R.call("experiment", {p0, generations, w11, w12, w22, N: finite ? N : Infinity, replicates: 10, seed}, {key: "sel-main"})
+rows = res.rows
 alleleTrajectoryPlot(Plot, rows, {width})
 ```
 
@@ -66,7 +66,7 @@ ${preset && p0 === 0.05 && w22 === 0.9 ? " Bei einer Generationszeit von 25 Jahr
 **Genotypfrequenzen** (durchgezogen: simuliert; gestrichelt: HWG-Erwartung bei gleichem $p$):
 
 ```{ojs}
-genotypePlot(Plot, rows.filter(d => d.rep === 1), {width})
+genotypePlot(Plot, res.genotypes, {width})
 ```
 
 ## 2 · Wie schnell wirkt Selektion?
@@ -81,11 +81,14 @@ viewof p0_cmp = Inputs.range([0.01, 0.99], {value: 0.05, step: 0.01, label: "Sta
 ```
 
 ```{ojs}
-cmp = simulateScenarios([
-  {label: "A1 dominant (h = 0)", params: {useSH: true, s: s_cmp, h: 0, p0: p0_cmp, generations: 300}},
-  {label: "additiv (h = 0.5)", params: {useSH: true, s: s_cmp, h: 0.5, p0: p0_cmp, generations: 300}},
-  {label: "A1 rezessiv (h = 1)", params: {useSH: true, s: s_cmp, h: 1, p0: p0_cmp, generations: 300}}
-])
+cmp = R.call("simulate_scenarios", {
+  scenarios: {
+    "A1 dominant (h = 0)": {h: 0},
+    "additiv (h = 0.5)": {h: 0.5},
+    "A1 rezessiv (h = 1)": {h: 1}
+  },
+  s: s_cmp, p0: p0_cmp, generations: 300
+}, {key: "sel-cmp"})
 alleleTrajectoryPlot(Plot, cmp, {width})
 ```
 

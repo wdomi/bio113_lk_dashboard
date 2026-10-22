@@ -11,13 +11,14 @@ Fragen und Rückmeldungen an das Bio-113-Team, oder als [Issue auf GitHub](https
 
 ## Wie funktioniert die Seite?
 
-Die Seite wird mit [Quarto](https://quarto.org) erstellt. Die Simulationen sind in JavaScript geschrieben
-([`js/popgen/`](https://github.com/wdomi/bio113_lk_dashboard/tree/main/js/popgen)) und laufen über
-[Observable JS](https://quarto.org/docs/interactive/ojs/) direkt im Browser. Es braucht darum keinen Server,
+Die Seite wird mit [Quarto](https://quarto.org) erstellt. Alle Modelle und Simulationen sind in **R** geschrieben
+([`popgen/R/`](https://github.com/wdomi/bio113_lk_dashboard/tree/main/popgen/R)). Sie laufen dank
+[webR](https://docs.r-wasm.org/webr/latest/) direkt in Ihrem Browser; Regler und Grafiken stammen von
+[Observable JS](https://quarto.org/docs/interactive/ojs/). Es braucht darum keinen Server,
 und die Seite kann kostenlos über GitHub Pages veröffentlicht werden.
+Beim ersten Besuch wird R einmalig heruntergeladen (einige Sekunden), danach kommt es aus dem Browser-Cache.
 
 Das Modell: ein Genort, zwei Allele, diskrete Generationen, Wright-Fisher-Drift (zufälliges Ziehen von $N$ Individuen).
-Für grosse Populationen wird die Binomialverteilung durch eine Normalverteilung angenähert.
 Details stehen im [Entwickler-Handbuch](https://github.com/wdomi/bio113_lk_dashboard/blob/main/docs/DEVELOPER_GUIDE.md).
 
 ## Inspiration und weitere Simulatoren

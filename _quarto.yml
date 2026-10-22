@@ -3,7 +3,8 @@
 # -----------------------------------------------------------------------------
 # To add a page: create the .qmd file and add it to `navbar` and/or `sidebar`
 # below. Everything else (simulation code, colours, presets) lives elsewhere:
-#   js/popgen/      simulation engine + charts (JavaScript modules)
+#   popgen/         R package: ALL population genetics (runs in the browser via webR)
+#   js/             webR bridge + charts (JavaScript, drawing only)
 #   config/         presets / scenarios (JSON)
 #   _partials/      text snippets reused on several pages
 #   styles/         site look (SCSS)
@@ -21,6 +22,7 @@ project:
   resources:
     - js/
     - config/
+    - popgen/R/
 
 lang: de
 

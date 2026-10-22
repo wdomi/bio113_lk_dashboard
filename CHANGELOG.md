@@ -5,6 +5,27 @@ versions: [SemVer](https://semver.org).
 
 ## [Unreleased]
 
+## [0.2.0] – 2026-10-22
+
+All population genetics is now written in R.
+
+### Changed
+- Equations and simulations moved from JavaScript (`js/popgen/`) to the R package **`popgen/`**
+  (`R/models.R`, `R/simulate.R`, `R/stats.R`). The same R files run in the browser via **webR**;
+  OJS is used only for sliders and Observable Plot charts.
+- Drift now uses exact binomial draws (`rbinom`) for all population sizes.
+- Mutation page uses the closed-form solution for long time spans; mutation–selection runs 1000 generations.
+- Explorer defaults are read from the arguments of `simulate()` in R.
+- CI (`check.yml`, `publish.yml`) runs the R tests (testthat) and a Node test that runs the R package through webR.
+
+### Added
+- `popgen/README.md`, `popgen/popgen.Rproj` for working on the model in RStudio (Build → Test Package).
+- `js/r-bridge.js`: starts webR, loads the R files, converts data frames; newest-slider-value-wins queue.
+- Status line "R wird im Browser gestartet …" on every interactive page.
+
+### Removed
+- JavaScript simulation engine (`js/popgen/random.js`, `models.js`, `simulate.js`, `stats.js`) and its tests.
+
 ## [0.1.0] – 2026-10-22
 
 First draft.

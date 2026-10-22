@@ -31,11 +31,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Test the simulation engine
-        uses: actions/setup-node@v4
+      # Same tests as check.yml: never publish a broken model.
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - name: Install R test packages
+        run: Rscript -e 'install.packages(c("testthat", "pkgload", "jsonlite"))'
+      - name: R tests (popgen package)
+        run: Rscript -e 'testthat::test_local("popgen", stop_on_failure = TRUE)'
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm test
+      - run: npm ci
+      - name: Node tests (webR bridge)
+        run: npm test
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2

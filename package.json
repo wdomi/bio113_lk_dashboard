@@ -1,11 +1,14 @@
 {
   "name": "bio113-popgen",
   "private": true,
-  "version": "0.1.0",
-  "description": "Simulation engine tests for the Bio 113 population genetics website",
+  "version": "0.2.0",
+  "description": "Checks for the JavaScript side (webR bridge) of the Bio 113 population genetics website. The science is tested in R: popgen/tests.",
   "type": "module",
   "scripts": {
     "test": "node --test \"tests/**/*.test.js\""
+  },
+  "devDependencies": {
+    "webr": "0.6.0"
   },
   "engines": {
     "node": ">=22"

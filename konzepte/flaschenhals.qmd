@@ -27,47 +27,18 @@ viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 
 ```{ojs}
 //| include: false
-generations = Math.max(80, start + duration + 40)
-params = ({N, p0: 0.5, generations, seed, bottleneck: {start, duration, size: Nb}})
-rows = simulateReplicates(params, replicates)
-rows_ref = simulateReplicates({...params, bottleneck: null}, replicates)
+res = R.call("bottleneck_experiment", {N, size: Nb, start, duration, replicates, seed}, {key: "bn-main"})
+band = ({x1: start, x2: start + duration})
 ```
 
 ```{ojs}
-//| include: false
-bottleneckBand = Plot.rectX([{x1: start, x2: start + duration}], {x1: "x1", x2: "x2", y1: 0, y2: 1, fill: COLORS.reference, fillOpacity: 0.12})
-```
-
-```{ojs}
-Plot.plot({
-  width, height: 320, marginLeft: 50,
-  style: {fontSize: "13px", background: "transparent"},
-  x: {label: "Generation →"},
-  y: {domain: [0, 1], label: "↑ Allelfrequenz p (A1)", grid: true},
-  marks: [
-    bottleneckBand,
-    Plot.line(rows, {x: "gen", y: "p", z: "rep", stroke: COLORS.series, strokeOpacity: 0.6, strokeWidth: 2}),
-    Plot.tip(rows, Plot.pointer({x: "gen", y: "p", title: d => `Replikat ${d.rep}\nGeneration ${d.gen}\np = ${d.p.toFixed(3)}\nN = ${d.N}`}))
-  ]
-})
+trajectoryWithBand(Plot, res.rows, band, {width})
 ```
 
 **Heterozygotie** (Mittel über alle Populationen): mit Flaschenhals (blau) und ohne (grau).
 
 ```{ojs}
-H = (rs) => meanByGeneration(rs.map(d => ({...d, H: 2 * d.p * (1 - d.p)})), "H")
-Plot.plot({
-  width, height: 280, marginLeft: 50,
-  style: {fontSize: "13px", background: "transparent"},
-  x: {label: "Generation →"},
-  y: {domain: [0, 0.55], label: "↑ Heterozygotie H", grid: true},
-  color: {domain: ["mit Flaschenhals", "ohne Flaschenhals"], range: [COLORS.series, COLORS.reference], legend: true},
-  marks: [
-    bottleneckBand,
-    Plot.line([...H(rows).map(d => ({...d, k: "mit Flaschenhals"})), ...H(rows_ref).map(d => ({...d, k: "ohne Flaschenhals"}))],
-      {x: "gen", y: "value", stroke: "k", strokeWidth: 2, tip: true})
-  ]
-})
+heterozygosityPlot(Plot, res.heterozygosity, {width, band})
 ```
 
 {{< include /_partials/_model-note.qmd >}}
