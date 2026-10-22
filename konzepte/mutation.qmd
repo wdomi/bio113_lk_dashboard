@@ -1,0 +1,80 @@
+---
+title: "Mutation"
+subtitle: "Die Quelle neuer Allele – ein langsamer evolutionärer Prozess"
+description: "Mutationsraten u und v, Mutationsgleichgewicht, Mutation-Selektion-Gleichgewicht."
+---
+
+{{< include /_partials/_setup.qmd >}}
+
+Mutation ist die ultimative Quelle **neuer Allele**. Als Kraft, die Allelfrequenzen verändert, ist sie aber **sehr langsam**,
+weil Mutationsraten klein sind (typisch $10^{-4}$ bis $10^{-9}$ pro Genort und Generation).
+
+Mit der Mutationsrate $u$ (A1 → A2) und der Rückmutationsrate $v$ (A2 → A1) gilt:
+
+$$
+\Delta p = v - p\,(u + v) \qquad\text{Gleichgewicht:}\qquad \hat{p} = \frac{v}{u + v}
+$$
+
+## 1 · Mutation allein
+
+Die Vorlesung verwendet $u = 0.0001$ und $v = 0.00001$. Achten Sie auf die Zahl der Generationen!
+
+```{ojs}
+//| panel: input
+viewof logu = Inputs.range([-6, -1], {value: -4, step: 0.1, label: "log₁₀ u (A1 → A2)"})
+viewof logv = Inputs.range([-6, -1], {value: -5, step: 0.1, label: "log₁₀ v (A2 → A1)"})
+viewof p0 = Inputs.range([0, 1], {value: 1, step: 0.01, label: "Start-Allelfrequenz p₀"})
+viewof generations = Inputs.select([1000, 10000, 50000, 100000], {value: 50000, label: "Generationen"})
+```
+
+```{ojs}
+u = 10 ** logu
+v = 10 ** logv
+p_hat = mutationEquilibrium(u, v)
+rows = simulate({p0, u, v, generations})
+alleleTrajectoryPlot(Plot, rows.filter((d, i) => i % Math.max(1, Math.floor(generations / 1000)) === 0), {width, highlight: p_hat})
+```
+
+```{ojs}
+md`u = ${u.toExponential(1)}, v = ${v.toExponential(1)} · Gleichgewicht (gestrichelt): **p̂ = ${p_hat.toFixed(3)}** ·
+nach ${generations.toLocaleString("de-CH")} Generationen: **p = ${rows.at(-1).p.toFixed(3)}**`
+```
+
+## 2 · Mutation und Selektion
+
+Ein schädliches Allel A2 entsteht immer wieder neu durch Mutation und wird durch Selektion entfernt.
+Es stellt sich ein **Mutation-Selektion-Gleichgewicht** ein. Für ein rezessives Allel gilt näherungsweise
+$\hat{q} \approx \sqrt{u/s}$, für ein (teilweise) dominantes $\hat{q} \approx u / (hs)$.
+
+```{ojs}
+//| panel: input
+viewof s = Inputs.range([0.01, 1], {value: 0.1, step: 0.01, label: "Selektion gegen A2A2: s"})
+viewof h = Inputs.range([0, 1], {value: 0, step: 0.05, label: "Dominanz von A2: h"})
+viewof logu2 = Inputs.range([-6, -2], {value: -3, step: 0.1, label: "log₁₀ u (A1 → A2)"})
+```
+
+```{ojs}
+u2 = 10 ** logu2
+q_hat = mutationSelectionBalance(u2, s, h)
+rows_ms = simulate({p0: 1, u: u2, useSH: true, s, h, generations: 2000})
+alleleTrajectoryPlot(Plot, rows_ms, {width, y: "q", yLabel: "↑ Allelfrequenz q (A2)", highlight: q_hat})
+```
+
+```{ojs}
+md`Näherung (gestrichelt): **q̂ ≈ ${q_hat.toFixed(4)}** · Simulation nach 2000 Generationen: **q = ${rows_ms.at(-1).q.toFixed(4)}**`
+```
+
+{{< include /_partials/_model-note.qmd >}}
+
+## Fragen zum Nachdenken
+
+1. Wie viele Generationen braucht es mit $u = 10^{-4}$, bis $p$ von 1 auf etwa 0.9 gesunken ist? Was heisst das für die Bedeutung von Mutation über kurze Zeiträume?
+2. Warum ist Mutation trotzdem wichtig für Evolution (z. B. Antibiotikaresistenz)?
+3. Vergleichen Sie $\hat{q}$ für $h = 0$ und $h = 0.5$. Warum bleiben rezessive schädliche Allele häufiger?
+
+::: {.callout-tip collapse="true"}
+## Lösungshinweise
+1. Rund 1000 Generationen ($p_t \approx e^{-ut}$). Über kurze Zeiträume verändert Mutation Allelfrequenzen kaum.
+2. Sie liefert die Variation, auf die Selektion wirkt; in sehr grossen Populationen (Bakterien, Viren) entstehen pro Generation viele Mutanten.
+3. Rezessive Allele sind in Heterozygoten vor Selektion geschützt.
+:::

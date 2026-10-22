@@ -1,0 +1,33 @@
+---
+title: "Über diese Seite"
+---
+
+Diese Seite ist Begleitmaterial zur Vorlesung **Bio 113 · Evolution & Biodiversität** (Universität Zürich).
+Sie soll ein Gefühl dafür vermitteln, wie die in der Vorlesung besprochenen Prozesse Allel- und Genotypfrequenzen verändern.
+
+## Kontakt
+
+Fragen und Rückmeldungen an das Bio-113-Team, oder als [Issue auf GitHub](https://github.com/wdomi/bio113_lk_dashboard/issues).
+
+## Wie funktioniert die Seite?
+
+Die Seite wird mit [Quarto](https://quarto.org) erstellt. Die Simulationen sind in JavaScript geschrieben
+([`js/popgen/`](https://github.com/wdomi/bio113_lk_dashboard/tree/main/js/popgen)) und laufen über
+[Observable JS](https://quarto.org/docs/interactive/ojs/) direkt im Browser. Es braucht darum keinen Server,
+und die Seite kann kostenlos über GitHub Pages veröffentlicht werden.
+
+Das Modell: ein Genort, zwei Allele, diskrete Generationen, Wright-Fisher-Drift (zufälliges Ziehen von $N$ Individuen).
+Für grosse Populationen wird die Binomialverteilung durch eine Normalverteilung angenähert.
+Details stehen im [Entwickler-Handbuch](https://github.com/wdomi/bio113_lk_dashboard/blob/main/docs/DEVELOPER_GUIDE.md).
+
+## Inspiration und weitere Simulatoren
+
+- HHMI BioInteractive: [Population Genetics Explorer](https://media.hhmi.org/biointeractive/click/population-genetics-explorer/individual)
+  (die Fallbeispiele Laktase, Schäferhund und Migration stammen aus dem zugehörigen Arbeitsblatt)
+- [Virtual Biology Lab: Population Genetics](https://virtualbiologylab.org/population-genetics/)
+- [PopG (Felsenstein), Online-Version](https://ug.sebc.me/labs/popg)
+- [Biology Simulations: Population Genetics](https://www.biologysimulations.com/population-genetics)
+
+## Lizenz
+
+Code: [GNU GPL v3](https://github.com/wdomi/bio113_lk_dashboard/blob/main/LICENSE).

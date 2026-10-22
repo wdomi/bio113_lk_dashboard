@@ -1,0 +1,109 @@
+---
+title: "Natürliche Selektion"
+subtitle: "Unterschiedliche Fitness verändert Allelfrequenzen gerichtet"
+description: "Genotypenfitness w11, w12, w22, Selektionskoeffizient s und Dominanz h."
+---
+
+{{< include /_partials/_setup.qmd >}}
+
+Selektion verändert Allelfrequenzen, wenn eine **beständige Beziehung zwischen Genotyp und Fitness** besteht:
+Individuen mit bestimmten Genotypen überleben und pflanzen sich im Mittel besser fort.
+Jedem Genotyp wird dafür eine **relative Fitness** zugeordnet:
+
+| Genotyp | A1A1 | A1A2 | A2A2 |
+|---|---|---|---|
+| Fitness | $w_{11}$ | $w_{12}$ | $w_{22}$ |
+| alternative Parametrisierung | $1$ | $1 - hs$ | $1 - s$ |
+
+mit dem **Selektionskoeffizienten** $s$ und dem **Dominanzkoeffizienten** $h$
+($h = 0$: A1 dominant, $h = 0.5$: additiv, $h = 1$: A1 rezessiv).
+Nach der Selektion ist die Häufigkeit jedes Genotyps proportional zu „Häufigkeit × Fitness“, geteilt durch die mittlere Fitness
+$\bar{w} = p^2 w_{11} + 2pq\, w_{12} + q^2 w_{22}$.
+
+## 1 · Selektion ausprobieren
+
+```{ojs}
+//| panel: input
+viewof preset = Inputs.select(
+  new Map([
+    ["Eigene Werte", null],
+    ["Laktase-Persistenz (A1 dominant, w22 = 0.9)", {p0: 0.05, generations: 200, w11: 1, w12: 1, w22: 0.9}],
+    ["Fellfarbe Schäferhund (A1A1 letal)", {p0: 0.5, generations: 50, w11: 0, w12: 1, w22: 1}],
+    ["Heterozygotenvorteil (Sichelzellen-Typ)", {p0: 0.05, generations: 100, w11: 0.85, w12: 1, w22: 0.2}]
+  ]),
+  {label: "Fallbeispiel"}
+)
+```
+
+```{ojs}
+//| include: false
+start = preset ?? {p0: 0.1, generations: 100, w11: 1, w12: 0.95, w22: 0.9}
+```
+
+```{ojs}
+//| panel: input
+viewof p0 = Inputs.range([0, 1], {value: start.p0, step: 0.01, label: "Start-Allelfrequenz p₀"})
+viewof generations = Inputs.range([1, 1000], {value: start.generations, step: 1, label: "Generationen"})
+viewof w11 = Inputs.range([0, 1], {value: start.w11, step: 0.01, label: "Fitness w₁₁ (A1A1)"})
+viewof w12 = Inputs.range([0, 1], {value: start.w12, step: 0.01, label: "Fitness w₁₂ (A1A2)"})
+viewof w22 = Inputs.range([0, 1], {value: start.w22, step: 0.01, label: "Fitness w₂₂ (A2A2)"})
+viewof finite = Inputs.toggle({label: "Endliche Population (mit Drift)", value: false})
+viewof N = Inputs.range([10, 10000], {value: 500, step: 1, transform: Math.log, label: "Populationsgrösse N", disabled: !finite})
+viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
+```
+
+```{ojs}
+params = ({p0, generations, w11, w12, w22, N: finite ? N : Infinity, seed})
+rows = finite ? simulateReplicates(params, 10) : simulate(params)
+alleleTrajectoryPlot(Plot, rows, {width})
+```
+
+```{ojs}
+md`${finite ? "10 Populationen mit Drift. " : ""}Nach ${generations} Generationen: **p = ${rows.at(-1).p.toFixed(3)}**.
+${preset && p0 === 0.05 && w22 === 0.9 ? " Bei einer Generationszeit von 25 Jahren entsprechen 200 Generationen etwa 5000 Jahren." : ""}`
+```
+
+**Genotypfrequenzen** (durchgezogen: simuliert; gestrichelt: HWG-Erwartung bei gleichem $p$):
+
+```{ojs}
+genotypePlot(Plot, rows.filter(d => d.rep === 1), {width})
+```
+
+## 2 · Wie schnell wirkt Selektion?
+
+Die Änderung der Allelfrequenz pro Generation, $\Delta p$, hängt nicht nur von den Fitnessunterschieden ab,
+sondern auch von $p$ selbst und von der Dominanz. Gleiches $s$, drei verschiedene $h$:
+
+```{ojs}
+//| panel: input
+viewof s_cmp = Inputs.range([0.01, 1], {value: 0.1, step: 0.01, label: "Selektionskoeffizient s"})
+viewof p0_cmp = Inputs.range([0.01, 0.99], {value: 0.05, step: 0.01, label: "Start-Allelfrequenz p₀"})
+```
+
+```{ojs}
+cmp = simulateScenarios([
+  {label: "A1 dominant (h = 0)", params: {useSH: true, s: s_cmp, h: 0, p0: p0_cmp, generations: 300}},
+  {label: "additiv (h = 0.5)", params: {useSH: true, s: s_cmp, h: 0.5, p0: p0_cmp, generations: 300}},
+  {label: "A1 rezessiv (h = 1)", params: {useSH: true, s: s_cmp, h: 1, p0: p0_cmp, generations: 300}}
+])
+alleleTrajectoryPlot(Plot, cmp, {width})
+```
+
+{{< include /_partials/_model-note.qmd >}}
+
+## Fragen zum Nachdenken
+
+1. **Laktase**: Wie verändert sich die Frequenz von A1 über 200 Generationen? Warum wird der Anstieg gegen Ende immer langsamer?
+2. **Schäferhund**: Warum verschwindet A1 nicht ganz, obwohl A1A1 letal ist?
+3. Ein schädliches Allel ist rezessiv. Warum wird es nur langsam eliminiert, selbst wenn $s$ gross ist?
+4. Was passiert bei Heterozygotenvorteil ($w_{12} > w_{11}, w_{22}$)? Hängt das Ergebnis vom Startwert ab?
+5. Schalten Sie Drift ein und setzen Sie $N = 20$. Kann ein vorteilhaftes Allel verloren gehen?
+
+::: {.callout-tip collapse="true"}
+## Lösungshinweise
+1. A1 steigt auf ≈ 0.95. Selektion wirkt nur gegen A2A2. Wird A2 selten, steckt es fast nur noch in Heterozygoten (die volle Fitness haben), und es gibt kaum noch A2A2, gegen die selektiert werden kann.
+2. Ist A1 selten, steckt es fast nur in (gesunden) Heterozygoten und ist vor Selektion „versteckt“.
+3. Gleiches Argument: seltene rezessive Allele sind fast nur in Heterozygoten.
+4. Es stellt sich ein stabiles Gleichgewicht ein (balancierende Selektion), unabhängig vom Startwert (solange $0 < p_0 < 1$).
+5. Ja. In kleinen Populationen kann Drift die Selektion übertönen, besonders solange das Allel selten ist.
+:::

@@ -1,0 +1,59 @@
+{
+  "_comment": "Presets for the Explorer page (explorer.qmd). Each entry needs an id (used in links: explorer.html?preset=<id>), a label (shown in the menu) and params. Any parameter left out uses the default from js/popgen/simulate.js (DEFAULT_PARAMS). Use null for N to mean 'infinite population'.",
+  "scenarios": [
+    {
+      "id": "hwg",
+      "label": "Hardy-Weinberg: keine Evolution",
+      "description": "Unendlich grosse Population, keine Selektion, Mutation oder Migration. Die Allelfrequenz bleibt konstant.",
+      "params": { "N": null, "generations": 50, "p0": 0.27, "replicates": 1 }
+    },
+    {
+      "id": "drift-10",
+      "label": "Drift: N = 10, 50 Replikate",
+      "description": "Sehr kleine Population. Allele gehen schnell verloren oder werden fixiert.",
+      "params": { "N": 10, "generations": 50, "p0": 0.5, "replicates": 50 }
+    },
+    {
+      "id": "drift-1000",
+      "label": "Drift: N = 1000, 50 Replikate",
+      "description": "Grössere Population: Drift ist schwächer.",
+      "params": { "N": 1000, "generations": 50, "p0": 0.5, "replicates": 50 }
+    },
+    {
+      "id": "laktase",
+      "label": "Selektion: Laktase-Persistenz",
+      "description": "A1 (Laktase-Persistenz) ist dominant und vorteilhaft; A2A2 hat eine um 10 % reduzierte Fitness. Generationszeit Mensch ≈ 25 Jahre.",
+      "params": { "N": null, "generations": 200, "p0": 0.05, "w11": 1, "w12": 1, "w22": 0.9, "replicates": 1 }
+    },
+    {
+      "id": "hund",
+      "label": "Selektion: Fellfarbe Schäferhund (letal)",
+      "description": "A1A1 ist embryonal letal (w11 = 0), Heterozygote haben eine weisse Scheckung. A1 wird selten, verschwindet aber nicht ganz.",
+      "params": { "N": null, "generations": 50, "p0": 0.5, "w11": 0, "w12": 1, "w22": 1, "replicates": 1 }
+    },
+    {
+      "id": "migration",
+      "label": "Migration: Insel–Festland (m = 0.05)",
+      "description": "Die Insel (p = 0.4) erhält jede Generation 5 % ihres Genpools vom Festland (p_C = 0.8).",
+      "params": { "N": null, "generations": 50, "p0": 0.4, "m": 0.05, "pC": 0.8, "replicates": 1 }
+    },
+    {
+      "id": "inzucht",
+      "label": "Inzucht: F = 0.2",
+      "description": "Inzucht verändert die Genotyp-, aber nicht die Allelfrequenzen.",
+      "params": { "N": null, "generations": 20, "p0": 0.5, "F": 0.2, "replicates": 1 }
+    },
+    {
+      "id": "flaschenhals",
+      "label": "Flaschenhals: N = 1000 → 25",
+      "description": "Die Population schrumpft in Generation 20 für 5 Generationen auf 25 Individuen.",
+      "params": { "N": 1000, "generations": 60, "p0": 0.5, "bottleneck": { "start": 20, "duration": 5, "size": 25 }, "replicates": 20 }
+    },
+    {
+      "id": "mut-sel",
+      "label": "Mutation–Selektion-Gleichgewicht",
+      "description": "Schädliches rezessives Allel A2 (s = 0.1) entsteht durch Mutation (u = 0.001) neu. Gleichgewicht q̂ ≈ √(u/s) ≈ 0.1.",
+      "params": { "N": null, "generations": 500, "p0": 1, "w11": 1, "w12": 1, "w22": 0.9, "u": 0.001, "replicates": 1 }
+    }
+  ]
+}

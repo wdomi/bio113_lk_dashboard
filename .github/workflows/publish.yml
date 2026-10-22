@@ -1,0 +1,58 @@
+# =============================================================================
+# publish.yml — build the Quarto site and publish it on GitHub Pages
+# -----------------------------------------------------------------------------
+# Runs on every push to `main` (and can be started by hand under
+# Actions → "Publish site" → Run workflow).
+#
+# One-time setup in the repository on GitHub:
+#   Settings → Pages → Build and deployment → Source: "GitHub Actions"
+# The site then appears at https://wdomi.github.io/bio113_lk_dashboard/
+# =============================================================================
+name: Publish site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deployments at the same time.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test the simulation engine
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render site
+        run: quarto render
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,21 @@
+<!--
+  _partials/_setup.qmd — loaded at the top of every interactive page.
+  It imports the simulation engine (js/popgen/) once, so every page uses the
+  same code. If you add a new exported function to js/popgen/ and want to use
+  it on a page, add its name to the list below.
+  Files starting with "_" are not rendered as pages by Quarto.
+-->
+
+```{ojs}
+//| include: false
+import {
+  simulate, simulateReplicates, simulateScenarios, DEFAULT_PARAMS,
+  genotypeFreqs, alleleFreqFromGenotypes, fitnessFromSH, meanFitness,
+  mutationEquilibrium, mutationSelectionBalance, expectedHeterozygosity,
+  heterozygosity, hweChiSquare,
+  mean, sd, finalRows, summarizeFinal, meanByGeneration, genotypesLong,
+  alleleTrajectoryPlot, genotypePlot, hardyWeinbergCurves,
+  finalFrequencyHistogram, heterozygosityPlot,
+  GENOTYPE_COLORS, SCENARIO_COLORS, COLORS
+} from "/js/popgen/index.js"
+```
