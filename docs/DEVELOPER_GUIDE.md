@@ -81,7 +81,7 @@ Create `popgen/R/myfile.R` and add a line to the list in `_partials/_setup.qmd`:
 ### Add a new concept page
 1. Copy an existing page, e.g. `konzepte/migration.qmd` → `konzepte/meine-seite.qmd`.
 2. Keep the line `{{< include /_partials/_setup.qmd >}}` near the top. It starts R.
-3. Add the page to `_quarto.yml` under `navbar → Konzepte → menu` **and** `sidebar → contents`.
+3. Add the page to `_quarto.yml` under `navbar → Konzepte → menu`. The site has no sidebar.
 4. Optionally add a card to `index.qmd` (inside `::: {.concept-grid}`).
 
 ### Add a slider
@@ -184,7 +184,7 @@ quarto preview     # look at it
 ```
 
 Before merging, also check by hand that every page loads ("✓ R läuft im Browser"), the sliders move the plots,
-"Neu simulieren" changes the drift plots, and dark mode (toggle in the navbar) is readable.
+"Neu simulieren" changes the drift plots, and the text stays readable on a phone-width screen (resize the browser).
 
 ## 6. Deployment
 

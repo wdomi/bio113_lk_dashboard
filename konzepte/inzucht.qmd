@@ -1,23 +1,25 @@
 ---
 title: "Inzucht"
-subtitle: "Nicht-zufällige Paarung verändert Genotyp-, nicht Allelfrequenzen"
+subtitle: "Weniger Heterozygote, gleiche Allelfrequenzen"
 description: "Inzuchtkoeffizient F und der Verlust von Heterozygoten."
 ---
 
 {{< include /_partials/_setup.qmd >}}
 
-Bei **Inzucht** paaren sich verwandte Individuen. Dadurch steigt die Wahrscheinlichkeit, dass ein Individuum zwei Kopien
-desselben Allels eines gemeinsamen Vorfahren trägt (*identisch durch Abstammung*). Diese Wahrscheinlichkeit ist der
-**Inzuchtkoeffizient** $F$ ($F = 0$: Zufallspaarung; $F = 1$: alle Individuen homozygot, z. B. nach vielen Generationen Selbstbefruchtung).
+Bei **Inzucht** paaren sich verwandte Individuen. Der **Inzuchtkoeffizient** $F$ gibt an, wie wahrscheinlich es ist,
+dass die beiden Allele eines Individuums von einem gemeinsamen Vorfahren stammen. $F = 0$ bedeutet Zufallspaarung,
+$F = 1$ bedeutet, dass alle Individuen homozygot sind.
 
 $$
 f_{11} = p^2 + Fpq \qquad f_{12} = 2pq\,(1 - F) \qquad f_{22} = q^2 + Fpq
 $$
 
-Inzucht allein ist **kein** Mechanismus, der Allelfrequenzen verändert. Sie *verteilt* die Allele nur anders auf die Genotypen:
-weniger Heterozygote, mehr Homozygote. Dadurch werden aber schädliche rezessive Allele sichtbar (**Inzuchtdepression**).
+Inzucht verändert die Allelfrequenzen **nicht**. Sie verteilt die Allele nur anders: weniger Heterozygote, mehr Homozygote.
+Dadurch werden schädliche rezessive Allele häufiger sichtbar. Das nennt man **Inzuchtdepression**.
 
-## 1 · Genotypfrequenzen bei Inzucht
+## Genotypen bei Inzucht
+
+Stellen Sie $F$ und $p$ ein und beobachten Sie die Balken.
 
 ```{ojs}
 //| panel: input
@@ -32,13 +34,13 @@ genotypeBars(Plot, bars, {width})
 
 ```{ojs}
 het = bars.filter(d => d.genotype === "A1A2")
-md`Allelfrequenz mit Inzucht: **p = ${bars[3].p.toFixed(3)}** (unverändert) ·
-Heterozygote: ${het[0].freq.toFixed(3)} → **${het[1].freq.toFixed(3)}**`
+html`<p class="result">Heterozygote: <b>${het[0].freq.toFixed(3)} → ${het[1].freq.toFixed(3)}</b> ·
+Allelfrequenz p = <b>${bars[3].p.toFixed(3)}</b> (unverändert)</p>`
 ```
 
-## 2 · Inzucht und Inzuchtdepression
+## Inzuchtdepression
 
-Ein rezessives Allel A2 senkt die Fitness von A2A2 um $s$. Wie verändert Inzucht die mittlere Fitness der Population?
+Ein schädliches rezessives Allel A2 macht A2A2 weniger fit ($s$). Wie verändert Inzucht die mittlere Fitness?
 
 ```{ojs}
 //| panel: input
@@ -48,20 +50,18 @@ viewof s_del = Inputs.range([0, 1], {value: 0.5, step: 0.01, label: "Fitnessverl
 
 ```{ojs}
 fit = R.call("inbreeding_depression", {q: q_del, s: s_del}, {key: "inz-fit"})
-curvePlot(Plot, fit, {x: "F", y: "wbar", xLabel: "Inzuchtkoeffizient F →", yLabel: "↑ mittlere Fitness w̄", highlightX: F, width})
+curvePlot(Plot, fit, {x: "F", y: "wbar", xLabel: "Inzuchtkoeffizient F →", yLabel: "mittlere Fitness w̄", highlightX: F, width})
 ```
 
-{{< include /_partials/_model-note.qmd >}}
+## Fragen
 
-## Fragen zum Nachdenken
-
-1. Wie verändern sich Allel- und Genotypfrequenzen, wenn $F$ von 0 auf 1 steigt?
-2. Bei welchem $p$ ist der Effekt von Inzucht auf die Heterozygotie absolut am grössten?
-3. Warum ist Inzucht für kleine, isolierte Populationen (z. B. im Naturschutz) ein Problem, obwohl sie Allelfrequenzen nicht verändert?
+1. Wie ändern sich Allel- und Genotypfrequenzen, wenn $F$ von 0 auf 1 steigt?
+2. Bei welchem $p$ ist der Verlust an Heterozygoten durch Inzucht am grössten?
+3. Warum ist Inzucht in kleinen, isolierten Populationen ein Problem, obwohl sie Allelfrequenzen nicht verändert?
 
 ::: {.callout-tip collapse="true"}
 ## Lösungshinweise
-1. Allelfrequenzen bleiben gleich; Heterozygote nehmen um den Faktor $(1 - F)$ ab, Homozygote je um $Fpq$ zu.
-2. Bei $p = 0.5$, wo $2pq$ maximal ist.
-3. Schädliche rezessive Allele treten häufiger homozygot auf → Inzuchtdepression. In kleinen Populationen ist Inzucht zudem unvermeidlich.
+1. Allelfrequenzen bleiben gleich. Heterozygote nehmen um den Faktor $(1 - F)$ ab, Homozygote nehmen um $Fpq$ zu.
+2. Bei $p = 0.5$, wo $2pq$ am grössten ist.
+3. Schädliche rezessive Allele treten häufiger homozygot auf. In kleinen Populationen ist Inzucht zudem kaum zu vermeiden.
 :::

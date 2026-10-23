@@ -1,57 +1,71 @@
 ---
-title: "Populationsgenetik interaktiv"
-subtitle: "Begleitmaterial zur Vorlesung Bio 113 · Evolution & Biodiversität"
+title: "Populationsgenetik"
+subtitle: "Wie sich Allelfrequenzen verändern: ausprobieren statt nur lesen"
 toc: false
 ---
 
-Evolution ist, aus Sicht der Populationsgenetik, **die Veränderung von Allelfrequenzen in einer Population über die Zeit**.
-Auf diesen Seiten können Sie selbst ausprobieren, *wie* und *wie schnell* sich Allelfrequenzen verändern,
-und welche Prozesse dafür verantwortlich sind.
+Evolution heisst aus populationsgenetischer Sicht: **Allelfrequenzen ändern sich über die Zeit.**
+Auf diesen Seiten verändern Sie die Bedingungen selbst und sehen sofort, was passiert.
+Alle Berechnungen laufen in Ihrem Browser, mit R.
 
-Alle Simulationen laufen direkt in Ihrem Browser. Sie müssen nichts installieren und es werden keine Daten gesendet.
-
-## Konzepte
-
-::: {.concept-grid}
-[**Hardy-Weinberg** Das Nullmodell: Was passiert, wenn nichts passiert?](konzepte/hardy-weinberg.qmd){.concept-card}
-
-[**Genetische Drift** Zufall in endlichen Populationen.](konzepte/drift.qmd){.concept-card}
-
-[**Selektion** Unterschiedliche Fitness der Genotypen.](konzepte/selektion.qmd){.concept-card}
-
-[**Mutation** Neue Allele, aber langsam.](konzepte/mutation.qmd){.concept-card}
-
-[**Migration** Genfluss macht Populationen ähnlicher.](konzepte/migration.qmd){.concept-card}
-
-[**Inzucht** Mehr Homozygote, gleiche Allelfrequenzen.](konzepte/inzucht.qmd){.concept-card}
-
-[**Flaschenhals** Kurz klein sein hat lange Folgen.](konzepte/flaschenhals.qmd){.concept-card}
-
-[**Explorer** Alle Kräfte kombinieren, eigene Experimente.](explorer.qmd){.concept-card}
-:::
+```{=html}
+<div class="concept-grid">
+  <a class="concept-card" href="konzepte/hardy-weinberg.html">
+    <strong>Hardy-Weinberg</strong>
+    <span>Das Nullmodell: Was passiert, wenn nichts passiert?</span>
+  </a>
+  <a class="concept-card" href="konzepte/drift.html">
+    <strong>Genetische Drift</strong>
+    <span>Zufall in endlichen Populationen.</span>
+  </a>
+  <a class="concept-card" href="konzepte/selektion.html">
+    <strong>Selektion</strong>
+    <span>Unterschiedliche Fitness verschiebt Allelfrequenzen gerichtet.</span>
+  </a>
+  <a class="concept-card" href="konzepte/mutation.html">
+    <strong>Mutation</strong>
+    <span>Die Quelle neuer Allele, aber langsam.</span>
+  </a>
+  <a class="concept-card" href="konzepte/migration.html">
+    <strong>Migration</strong>
+    <span>Genfluss macht Populationen einander ähnlicher.</span>
+  </a>
+  <a class="concept-card" href="konzepte/inzucht.html">
+    <strong>Inzucht</strong>
+    <span>Weniger Heterozygote, gleiche Allelfrequenzen.</span>
+  </a>
+  <a class="concept-card" href="konzepte/flaschenhals.html">
+    <strong>Flaschenhals</strong>
+    <span>Kurz klein sein hat lange Folgen.</span>
+  </a>
+  <a class="concept-card" href="explorer.html">
+    <strong>Explorer</strong>
+    <span>Alle Kräfte kombinieren und eigene Experimente planen.</span>
+  </a>
+</div>
+```
 
 ## So arbeiten Sie mit den Seiten
 
-1. **Vorhersagen.** Überlegen Sie *vor* jeder Simulation, was passieren sollte.
-2. **Ausprobieren.** Verändern Sie jeweils *einen* Regler und beobachten Sie die Wirkung.
-3. **Wiederholen.** Wo der Zufall mitspielt (Drift), sieht jeder Lauf anders aus. Drücken Sie *Neu simulieren* und vergleichen Sie viele Replikate.
-4. **Erklären.** Jede Seite endet mit Fragen. Versuchen Sie, sie mit den Begriffen aus der Vorlesung zu beantworten.
+1. **Vorhersagen.** Überlegen Sie zuerst, was passieren sollte.
+2. **Verändern.** Ändern Sie jeweils einen Regler und beobachten Sie die Kurve.
+3. **Wiederholen.** Bei Drift sieht jeder Lauf anders aus. Drücken Sie *Neu simulieren*.
+4. **Erklären.** Beantworten Sie die Fragen am Ende jeder Seite mit Begriffen aus der Vorlesung.
 
-## Abweichungen vom Nullmodell
+## Das Nullmodell und seine Abweichungen
 
-Das Hardy-Weinberg-Gleichgewicht gilt, wenn **keine** der folgenden Kräfte wirkt. Jede Seite schaltet eine davon ein:
+Das Hardy-Weinberg-Gleichgewicht gilt nur, wenn **keine** der folgenden Kräfte wirkt.
 
-| Prozess | verändert … | Richtung | Seite |
-|---|---|---|---|
-| Genetische Drift | Allelfrequenzen | zufällig | [Drift](konzepte/drift.qmd) |
-| Selektion | Allelfrequenzen | gerichtet (nach Fitness) | [Selektion](konzepte/selektion.qmd) |
-| Mutation | Allelfrequenzen | gerichtet, sehr langsam | [Mutation](konzepte/mutation.qmd) |
-| Migration | Allelfrequenzen | Richtung Quellpopulation | [Migration](konzepte/migration.qmd) |
-| Nicht-zufällige Paarung (Inzucht) | nur Genotypfrequenzen | mehr Homozygote | [Inzucht](konzepte/inzucht.qmd) |
+| Prozess | verändert | Richtung |
+|---|---|---|
+| Genetische Drift | Allelfrequenzen | zufällig |
+| Selektion | Allelfrequenzen | gerichtet, nach Fitness |
+| Mutation | Allelfrequenzen | gerichtet, sehr langsam |
+| Migration | Allelfrequenzen | Richtung Quellpopulation |
+| Inzucht | nur Genotypfrequenzen | mehr Homozygote |
 
 ::: {.callout-tip}
 ## Für Dozierende
-Der [Explorer](explorer.qmd) kann über einen Link mit fertigen Einstellungen geöffnet werden,
-z. B. [`explorer.html?preset=drift-10`](explorer.html?preset=drift-10).
-Die verfügbaren Voreinstellungen stehen in `config/scenarios.json`.
+Der [Explorer](explorer.qmd) öffnet sich mit fertigen Einstellungen, z. B. [`explorer.html?preset=drift-10`](explorer.html?preset=drift-10).
+Die Voreinstellungen stehen in `config/scenarios.json`.
 :::

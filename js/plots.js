@@ -1,15 +1,9 @@
 // =============================================================================
-// plots.js — reusable charts (Observable Plot)
+// plots.js: charts (Observable Plot). Drawing only: the numbers come from R.
 // -----------------------------------------------------------------------------
-// Every function receives `Plot` as its first argument. Quarto's OJS runtime
-// already ships Observable Plot, so we pass it in instead of importing a second
-// copy.
-//
-// The data come from the R package (popgen/R/), e.g. the rows returned by
-// simulate(): {rep, gen, p, q, f11, f12, f22, N}. These functions only draw;
-// they never compute population genetics.
-//
-// Colours live in theme.js. Change them there, not here.
+// Every function takes `Plot` as its first argument (Quarto's OJS runtime
+// provides it). Data are the data frames returned by the R package popgen/.
+// Colours live in theme.js. Change the look here, not on the pages.
 // =============================================================================
 
 import { COLORS, GENOTYPE_COLORS, SCENARIO_COLORS } from "./theme.js";
@@ -27,39 +21,38 @@ const finalRows = (rows) => {
   return [...last.values()];
 };
 
-const baseOptions = (width) => ({
+/** Shared, quiet look: no frame, light grid, labels on the axes. */
+const base = (width, height = 300) => ({
   width,
-  height: 320,
-  marginLeft: 50,
+  height,
+  marginLeft: 48,
   marginBottom: 40,
-  style: { fontSize: "13px", background: "transparent" },
-  x: { label: "Generation →", grid: false },
+  marginTop: 12,
+  style: { fontSize: "13px", background: "transparent", overflow: "visible" },
+  x: { label: "Generation", labelAnchor: "right", grid: false, tickSize: 0 },
+  y: { grid: true, tickSize: 0, labelAnchor: "top" },
 });
 
-/**
- * Allele frequency of A1 over time.
- * One line per replicate; if rows contain a `scenario` column, colour by scenario.
- */
-export function alleleTrajectoryPlot(Plot, rows, { width = 700, y = "p", yLabel = "↑ Allelfrequenz p (A1)", highlight = null } = {}) {
-  const hasScenario = rows.length && rows[0].scenario !== undefined;
+/** Allele frequency over time: one line per replicate (or per scenario). */
+export function alleleTrajectoryPlot(Plot, rows, { width = 700, y = "p", yLabel = "Allelfrequenz", highlight = null } = {}) {
+  const hasScenario = rows.length > 0 && rows[0].scenario !== undefined;
   const nReps = new Set(rows.map((r) => r.rep)).size;
-  const opacity = nReps > 20 ? 0.35 : nReps > 5 ? 0.6 : 1;
+  const opacity = nReps > 20 ? 0.3 : nReps > 5 ? 0.5 : 1;
   const z = hasScenario ? (d) => `${d.scenario} #${d.rep}` : "rep";
   return Plot.plot({
-    ...baseOptions(width),
-    y: { domain: [0, 1], label: yLabel, grid: true },
+    ...base(width),
+    y: { domain: [0, 1], label: yLabel, grid: true, tickSize: 0, labelAnchor: "top" },
     color: hasScenario
-      ? { domain: [...new Set(rows.map((r) => r.scenario))], range: SCENARIO_COLORS, legend: true }
+      ? { domain: [...new Set(rows.map((r) => r.scenario))], range: SCENARIO_COLORS, legend: true, position: "top" }
       : undefined,
     marks: [
-      Plot.ruleY([0, 1], { stroke: COLORS.axis }),
       highlight !== null ? Plot.ruleY([highlight], { stroke: COLORS.reference, strokeDasharray: "4,4" }) : null,
       Plot.line(rows, {
         x: "gen",
         y,
         z,
         stroke: hasScenario ? "scenario" : COLORS.series,
-        strokeWidth: 2,
+        strokeWidth: 2.25,
         strokeOpacity: opacity,
       }),
       Plot.tip(
@@ -68,7 +61,7 @@ export function alleleTrajectoryPlot(Plot, rows, { width = 700, y = "p", yLabel 
           x: "gen",
           y,
           title: (d) =>
-            `${hasScenario ? d.scenario + "\n" : ""}Replikat ${d.rep}\nGeneration ${d.gen}\np = ${fmt(d.p)}\nN = ${fmtN(d.N)}`,
+            `${hasScenario ? d.scenario + "\n" : ""}Replikat ${d.rep} · Generation ${d.gen}\np = ${fmt(d.p)}\nN = ${fmtN(d.N)}`,
         }),
       ),
     ],
@@ -76,20 +69,25 @@ export function alleleTrajectoryPlot(Plot, rows, { width = 700, y = "p", yLabel 
 }
 
 /**
- * Genotype frequencies (A1A1, A1A2, A2A2) over time for ONE population.
+ * Genotype frequencies over time for one population.
  * @param long rows from R `genotypes_long()`: {gen, genotype, freq, hw}
  *   (hw = Hardy-Weinberg expectation at the same p, drawn dashed)
  */
 export function genotypePlot(Plot, long, { width = 700, showHW = true } = {}) {
   return Plot.plot({
-    ...baseOptions(width),
-    y: { domain: [0, 1], label: "↑ Genotypfrequenz", grid: true },
-    color: { domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS, legend: true },
+    ...base(width),
+    y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },
+    color: { domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
-      Plot.ruleY([0], { stroke: COLORS.axis }),
-      showHW ? Plot.line(long, { x: "gen", y: "hw", stroke: "genotype", strokeDasharray: "3,3", strokeWidth: 1.5 }) : null,
-      Plot.line(long, { x: "gen", y: "freq", stroke: "genotype", strokeWidth: 2 }),
-      Plot.tip(long, Plot.pointer({ x: "gen", y: "freq", title: (d) => `Generation ${d.gen}\n${d.genotype}: ${fmt(d.freq)}\nHWG-Erwartung: ${fmt(d.hw)}` })),
+      showHW
+        ? Plot.line(long, { x: "gen", y: "hw", stroke: "genotype", strokeDasharray: "2,4", strokeWidth: 1.5, strokeOpacity: 0.7 })
+        : null,
+      Plot.line(long, { x: "gen", y: "freq", stroke: "genotype", strokeWidth: 2.25 }),
+      Plot.tip(long, Plot.pointer({
+        x: "gen",
+        y: "freq",
+        title: (d) => `Generation ${d.gen} · ${d.genotype}\n${fmt(d.freq)} (HWG: ${fmt(d.hw)})`,
+      })),
     ],
   });
 }
@@ -102,30 +100,35 @@ export function genotypePlot(Plot, long, { width = 700, showHW = true } = {}) {
 export function hardyWeinbergCurves(Plot, curves, here, { width = 700 } = {}) {
   const p = here[0]?.p;
   return Plot.plot({
-    ...baseOptions(width),
-    x: { domain: [0, 1], label: "Allelfrequenz p (A1) →" },
-    y: { domain: [0, 1], label: "↑ Genotypfrequenz", grid: true },
-    color: { domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS, legend: true },
+    ...base(width),
+    x: { domain: [0, 1], label: "Allelfrequenz p (A1)", labelAnchor: "right", tickSize: 0 },
+    y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },
+    color: { domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
-      Plot.ruleX([p], { stroke: COLORS.reference, strokeDasharray: "4,4" }),
-      Plot.line(curves, { x: "p", y: "freq", stroke: "genotype", strokeWidth: 2 }),
+      Plot.ruleX([p], { stroke: COLORS.axis, strokeDasharray: "3,3" }),
+      Plot.line(curves, { x: "p", y: "freq", stroke: "genotype", strokeWidth: 2.25 }),
       Plot.dot(here, { x: "p", y: "freq", fill: "genotype", r: 6, stroke: "white", strokeWidth: 2 }),
-      Plot.tip(curves, Plot.pointer({ x: "p", y: "freq", title: (d) => `p = ${fmt(d.p)}\n${d.genotype}: ${fmt(d.freq)}` })),
+      Plot.tip(curves, Plot.pointer({
+        x: "p",
+        y: "freq",
+        title: (d) => `p = ${fmt(d.p)} · ${d.genotype}: ${fmt(d.freq)}`,
+      })),
     ],
   });
 }
 
-/** Histogram of final allele frequencies across replicates (optionally per scenario). */
+/** Histogram of final allele frequencies across replicates (one panel per scenario). */
 export function finalFrequencyHistogram(Plot, rows, { width = 700, bins = 20 } = {}) {
   const finals = finalRows(rows);
-  const hasScenario = finals.length && finals[0].scenario !== undefined;
+  const hasScenario = finals.length > 0 && finals[0].scenario !== undefined;
   const scenarios = hasScenario ? [...new Set(finals.map((d) => d.scenario))] : [];
   return Plot.plot({
-    ...baseOptions(width),
-    marginRight: hasScenario ? 110 : 20,
-    height: hasScenario ? 120 * scenarios.length + 40 : 240,
-    x: { domain: [0, 1], label: "Allelfrequenz p in der letzten Generation →" },
-    y: { label: "↑ Anzahl Replikate", grid: true },
+    ...base(width),
+    marginLeft: 48,
+    marginRight: hasScenario ? 100 : 12,
+    height: hasScenario ? 96 * scenarios.length + 36 : 240,
+    x: { domain: [0, 1], label: "Allelfrequenz in der letzten Generation", labelAnchor: "right", tickSize: 0 },
+    y: { label: "Replikate", grid: true, tickSize: 0, labelAnchor: "top" },
     fy: hasScenario ? { label: null, domain: scenarios } : undefined,
     color: hasScenario ? { domain: scenarios, range: SCENARIO_COLORS } : undefined,
     marks: [
@@ -138,23 +141,23 @@ export function finalFrequencyHistogram(Plot, rows, { width = 700, bins = 20 } =
             fy: hasScenario ? "scenario" : undefined,
             fill: hasScenario ? "scenario" : COLORS.series,
             thresholds: Array.from({ length: bins + 1 }, (_, i) => i / bins),
-            inset: 1,
+            inset: 1.5,
             tip: true,
           },
         ),
       ),
-      Plot.ruleY([0], { stroke: COLORS.axis }),
     ],
   });
 }
 
 /**
  * Heterozygosity over time.
- * @param het rows from R, either wide {gen, observed, expected}
- *   (heterozygosity_decay) or long {gen, value, kind} (bottleneck_experiment)
+ * @param het either wide rows {gen, observed, expected} (drift page)
+ *   or long rows {gen, value, kind} (bottleneck page)
+ * @param band optional {x1, x2} range to shade
  */
-export function heterozygosityPlot(Plot, het, { width = 700, labels = ["simuliert (Mittelwert)", "erwartet: H₀(1 − 1/2N)ᵗ"], band = null } = {}) {
-  const data = het.length && het[0].kind !== undefined
+export function heterozygosityPlot(Plot, het, { width = 700, labels = ["simuliert", "Erwartung"], band = null } = {}) {
+  const data = het.length > 0 && het[0].kind !== undefined
     ? het
     : het.flatMap((d) => [
         { gen: d.gen, value: d.observed, kind: labels[0] },
@@ -162,48 +165,57 @@ export function heterozygosityPlot(Plot, het, { width = 700, labels = ["simulier
       ]);
   const kinds = [...new Set(data.map((d) => d.kind))];
   return Plot.plot({
-    ...baseOptions(width),
-    y: { domain: [0, 0.55], label: "↑ Heterozygotie H", grid: true },
-    color: { domain: kinds, range: [COLORS.series, COLORS.reference], legend: true },
+    ...base(width),
+    y: { domain: [0, 0.55], label: "Heterozygotie H", grid: true, tickSize: 0, labelAnchor: "top" },
+    color: { domain: kinds, range: [COLORS.series, COLORS.reference], legend: true, position: "top" },
     marks: [
-      band ? Plot.rectX([band], { x1: "x1", x2: "x2", y1: 0, y2: 0.55, fill: COLORS.reference, fillOpacity: 0.12 }) : null,
-      Plot.ruleY([0], { stroke: COLORS.axis }),
-      Plot.line(data, { x: "gen", y: "value", stroke: "kind", strokeWidth: 2 }),
-      Plot.tip(data, Plot.pointer({ x: "gen", y: "value", title: (d) => `${d.kind}\nGeneration ${d.gen}\nH = ${fmt(d.value)}` })),
+      band ? Plot.rectX([band], { x1: "x1", x2: "x2", y1: 0, y2: 0.55, fill: COLORS.band }) : null,
+      Plot.line(data, { x: "gen", y: "value", stroke: "kind", strokeWidth: 2.25 }),
+      Plot.tip(data, Plot.pointer({
+        x: "gen",
+        y: "value",
+        title: (d) => `${d.kind} · Generation ${d.gen}\nH = ${fmt(d.value)}`,
+      })),
     ],
   });
 }
 
-/** Bar chart of genotype frequencies per group, e.g. R `inbreeding_genotypes()`. */
+/** Genotype frequencies as bars, one panel per group (e.g. with and without inbreeding). */
 export function genotypeBars(Plot, rows, { width = 700, facet = "mating" } = {}) {
   return Plot.plot({
     width,
     height: 260,
-    marginLeft: 60,
-    style: { fontSize: "13px", background: "transparent" },
-    x: { label: null, domain: ["A1A1", "A1A2", "A2A2"] },
-    y: { domain: [0, 1], label: "↑ Genotypfrequenz", grid: true },
+    marginLeft: 48,
+    marginBottom: 36,
+    style: { fontSize: "13px", background: "transparent", overflow: "visible" },
+    x: { label: null, domain: ["A1A1", "A1A2", "A2A2"], tickSize: 0 },
+    y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },
     fx: { label: null, domain: [...new Set(rows.map((d) => d[facet]))] },
     color: { domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS },
     marks: [
-      Plot.barY(rows, { x: "genotype", y: "freq", fx: facet, fill: "genotype", inset: 4, tip: true }),
-      Plot.ruleY([0]),
+      Plot.barY(rows, { x: "genotype", y: "freq", fx: facet, fill: "genotype", inset: 12, rx: 4, tip: true }),
+      Plot.ruleY([0], { stroke: COLORS.axis }),
     ],
   });
 }
 
-/** Simple x/y line with a highlighted point, e.g. mean fitness against F. */
+/** A single curve with the current point marked, e.g. mean fitness against F. */
 export function curvePlot(Plot, rows, { x, y, xLabel, yLabel, highlightX = null, width = 700 } = {}) {
-  const near = highlightX === null ? [] : [rows.reduce((a, b) => (Math.abs(b[x] - highlightX) < Math.abs(a[x] - highlightX) ? b : a))];
+  const near = highlightX === null
+    ? []
+    : [rows.reduce((a, b) => (Math.abs(b[x] - highlightX) < Math.abs(a[x] - highlightX) ? b : a))];
   return Plot.plot({
-    width, height: 260, marginLeft: 60, marginBottom: 40,
-    style: { fontSize: "13px", background: "transparent" },
-    x: { label: xLabel },
-    y: { label: yLabel, grid: true },
+    ...base(width, 260),
+    x: { label: xLabel, labelAnchor: "right", tickSize: 0 },
+    y: { label: yLabel, grid: true, tickSize: 0, labelAnchor: "top" },
     marks: [
-      Plot.line(rows, { x, y, stroke: COLORS.series, strokeWidth: 2 }),
-      Plot.dot(near, { x, y, fill: COLORS.series, r: 6, stroke: "white" }),
-      Plot.tip(rows, Plot.pointer({ x, y, title: (d) => `${xLabel?.replace(" →", "")} = ${fmt(d[x])}\n${yLabel?.replace("↑ ", "")} = ${fmt(d[y])}` })),
+      Plot.line(rows, { x, y, stroke: COLORS.series, strokeWidth: 2.25 }),
+      Plot.dot(near, { x, y, fill: COLORS.series, r: 6, stroke: "white", strokeWidth: 2 }),
+      Plot.tip(rows, Plot.pointer({
+        x,
+        y,
+        title: (d) => `${xLabel.replace(" →", "")} ${fmt(d[x])}\n${yLabel.replace("↑ ", "")} ${fmt(d[y])}`,
+      })),
     ],
   });
 }
@@ -211,12 +223,16 @@ export function curvePlot(Plot, rows, { x, y, xLabel, yLabel, highlightX = null,
 /** Allele trajectories with a shaded band (e.g. a bottleneck from x1 to x2). */
 export function trajectoryWithBand(Plot, rows, band, { width = 700 } = {}) {
   return Plot.plot({
-    ...baseOptions(width),
-    y: { domain: [0, 1], label: "↑ Allelfrequenz p (A1)", grid: true },
+    ...base(width),
+    y: { domain: [0, 1], label: "Allelfrequenz p (A1)", grid: true, tickSize: 0, labelAnchor: "top" },
     marks: [
-      Plot.rectX([band], { x1: "x1", x2: "x2", y1: 0, y2: 1, fill: COLORS.reference, fillOpacity: 0.12 }),
-      Plot.line(rows, { x: "gen", y: "p", z: "rep", stroke: COLORS.series, strokeOpacity: 0.6, strokeWidth: 2 }),
-      Plot.tip(rows, Plot.pointer({ x: "gen", y: "p", title: (d) => `Replikat ${d.rep}\nGeneration ${d.gen}\np = ${fmt(d.p)}\nN = ${fmtN(d.N)}` })),
+      Plot.rectX([band], { x1: "x1", x2: "x2", y1: 0, y2: 1, fill: COLORS.band }),
+      Plot.line(rows, { x: "gen", y: "p", z: "rep", stroke: COLORS.series, strokeOpacity: 0.4, strokeWidth: 2 }),
+      Plot.tip(rows, Plot.pointer({
+        x: "gen",
+        y: "p",
+        title: (d) => `Replikat ${d.rep} · Generation ${d.gen}\np = ${fmt(d.p)}\nN = ${fmtN(d.N)}`,
+      })),
     ],
   });
 }

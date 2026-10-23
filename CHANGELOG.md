@@ -5,6 +5,15 @@ versions: [SemVer](https://semver.org).
 
 ## [Unreleased]
 
+### Changed
+- Simpler, lighter pages: one navbar, no sidebar, light theme only, short intro and questions per page.
+- Advanced controls (other forces in the Explorer) are in a collapsed box, so the main sliders stay visible.
+- Each concept page shows its main result in one sentence under the chart.
+- Charts use a plainer style with legends on top.
+
+### Fixed
+- Chart legends no longer fail with "unknown legend type" in Observable Plot.
+
 ## [0.2.0] – 2026-10-22
 
 All population genetics is now written in R.

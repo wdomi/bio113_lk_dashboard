@@ -71,8 +71,7 @@ Every concept page ends with *Fragen zum Nachdenken* and collapsible *Lösungshi
 ├── explorer.qmd           ← all forces combined
 ├── glossar.qmd, ueber.qmd
 ├── _partials/
-│   ├── _setup.qmd         ← starts webR, loads popgen/R/*.R (included on every interactive page)
-│   └── _model-note.qmd    ← "Wie rechnet die Simulation?" box
+│   └── _setup.qmd         ← starts webR, loads popgen/R/*.R (included on every interactive page)
 ├── js/
 │   ├── r-bridge.js        ← JavaScript ↔ R glue (you should not need to touch it)
 │   ├── plots.js           ← chart functions (draw only, no maths)

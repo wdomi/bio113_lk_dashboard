@@ -5,6 +5,21 @@ Newest entries on top. Add an entry whenever you make a decision someone might l
 
 ---
 
+## 2026-10-23 · Redesign: simpler pages, analysis stays in R
+
+### Why
+Dorea asked for simpler and more modern pages. The model stays in R (`popgen/`) so that her colleague can
+change it in RStudio. Only the layout and the charts changed.
+
+### Decisions
+- Single navbar, no sidebar, light theme only (dark mode removed, so chart colours only need one check).
+- Main sliders on top, other forces in a collapsed box (Explorer).
+- Legends on top; Observable Plot needs `legend: true, position: "top"`, not `legend: "top"`.
+- `_partials/_model-note.qmd` removed. The model explanation moved to `ueber.qmd`.
+
+### Measured (headless Chromium, webR 0.6.0)
+- All 11 pages render with no JavaScript errors; R tests pass (46).
+
 ## 2026-10-22 · v0.2.0 · Population genetics moved to R (webR)
 
 ### Why

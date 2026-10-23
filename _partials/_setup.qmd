@@ -19,24 +19,24 @@ import {
 } from "/js/plots.js"
 import { GENOTYPE_COLORS, SCENARIO_COLORS, COLORS } from "/js/theme.js"
 
-// Wrapped in an object so the status line below can show progress while R starts.
-Rstart = ({ready: createR([
+Rstart = createR([
   await FileAttachment("/popgen/R/models.R").text(),
   await FileAttachment("/popgen/R/simulate.R").text(),
   await FileAttachment("/popgen/R/stats.R").text()
-])})
-R = Rstart.ready
+])
+R = Rstart
 ```
 
 ```{ojs}
 //| echo: false
+// Shows a short note only while R is starting (or if it failed to start).
 Rstatus = {
-  yield html`<div class="r-status">⏳ R wird im Browser gestartet … (beim ersten Besuch einige Sekunden)</div>`;
+  yield html`<div class="r-status">R wird im Browser geladen … (beim ersten Besuch einige Sekunden)</div>`;
   try {
-    await Rstart.ready;
-    yield html`<div class="r-status r-ready">✓ R läuft im Browser</div>`;
+    await Rstart;
+    yield html``;
   } catch (e) {
-    yield html`<div class="r-status r-error">R konnte nicht gestartet werden (${e.message}). Bitte Seite neu laden.</div>`;
+    yield html`<div class="r-status r-error">R konnte nicht geladen werden. Bitte Seite neu laden.</div>`;
   }
 }
 ```

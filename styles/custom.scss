@@ -1,73 +1,126 @@
 /* =============================================================================
-   custom.scss — site look, applied on top of the Bootswatch themes
-   (light: cosmo, dark: darkly; set in _quarto.yml).
-   Chart colours are NOT here: see js/popgen/theme.js.
+   custom.scss: site look, on top of the Flatly theme (set in _quarto.yml).
+   Keep it calm: one accent colour, generous spacing, rounded cards.
+   Chart colours are NOT here: see js/theme.js.
    ========================================================================== */
 
 /*-- scss:defaults --*/
 $primary: #2a78d6;
-$font-size-root: 17px;
+$body-bg: #ffffff;
+$body-color: #1f1f1d;
+$font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-size-root: 1rem;
+$headings-font-weight: 600;
+$border-radius: 12px;
+$link-color: $primary;
+$navbar-bg: #ffffff;
 
 /*-- scss:rules --*/
 
-// Control panels produced by `//| panel: input`
-.panel-input {
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
+body {
+  font-size: 1.02rem;
+  line-height: 1.65;
 }
 
-// Observable Inputs: give labels enough room for German words
-// (Inputs reads its label width from this CSS variable)
+.navbar {
+  border-bottom: 1px solid #ebebe8;
+  .navbar-brand { font-weight: 600; }
+}
+
+main.content {
+  max-width: 760px;
+}
+
+h1.title { font-size: 2.2rem; letter-spacing: -0.01em; }
+.quarto-title-block .subtitle { color: #6b6a66; font-size: 1.15rem; margin-bottom: 0.5rem; }
+
+h2 {
+  font-size: 1.35rem;
+  margin-top: 2.6rem;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Interactive control panel: a single quiet card */
+.panel-input {
+  background: #f6f6f4;
+  border: 1px solid #ebebe8;
+  border-radius: $border-radius;
+  padding: 1rem 1.25rem 0.5rem;
+  margin: 1rem 0 1.25rem;
+}
+
+/* Observable Inputs: labels get room, the number box stays compact */
 form[class*="oi-"] {
-  --label-width: 13rem;
+  --label-width: 12rem;
+  font-size: 0.95rem;
 }
 @media (max-width: 576px) {
-  form[class*="oi-"] { --label-width: 8rem; }
+  form[class*="oi-"] { --label-width: 7.5rem; }
 }
 
-// Small "stat tiles" used under charts (mean, sd, fixed/lost …)
-.stat-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin: 0.5rem 0 1rem;
-}
-.stat-tile {
-  flex: 1 1 8rem;
-  border: 1px solid rgba(128, 128, 128, 0.3);
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  .stat-label { font-size: 0.8rem; opacity: 0.75; }
-  .stat-value { font-size: 1.4rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+/* The one result line under a chart (replaces the old stat tiles) */
+.result {
+  font-size: 1rem;
+  color: #3d3d3a;
+  margin: 0.25rem 0 1.5rem;
+  b { color: $primary; font-weight: 600; font-variant-numeric: tabular-nums; }
 }
 
-// Concept cards on the start page
-.concept-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 1rem;
-  margin: 1rem 0 2rem;
-  a.concept-card {
-    display: block;
-    border: 1px solid rgba(128, 128, 128, 0.3);
-    border-radius: 10px;
-    padding: 1rem;
-    text-decoration: none;
-    color: inherit;
-    &:hover { border-color: $primary; }
-    strong { display: block; color: $primary; margin-bottom: 0.25rem; }
-  }
-}
-
-// Charts scale with the page
-figure svg, .cell-output-display svg { max-width: 100%; height: auto; }
-
-// Status line "R wird gestartet / R läuft" (from _partials/_setup.qmd)
+/* Small status line while R starts (hidden once it is ready) */
 .r-status {
   font-size: 0.85rem;
-  opacity: 0.8;
+  color: #6b6a66;
   margin: 0 0 1rem;
-  &.r-ready { opacity: 0.55; }
-  &.r-error { color: #c0392b; opacity: 1; }
+  &.r-error { color: #b03a2e; }
+}
+
+/* Long explanations collapse into one quiet box */
+.callout {
+  border-radius: $border-radius;
+  border: 1px solid #ebebe8;
+  box-shadow: none;
+}
+
+/* Home page: concept cards */
+.hero-lead {
+  font-size: 1.15rem;
+  color: #3d3d3a;
+  margin-bottom: 0.5rem;
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.9rem;
+  margin: 1.25rem 0 2rem;
+}
+
+a.concept-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: 1px solid #ebebe8;
+  border-radius: $border-radius;
+  padding: 1rem 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  background: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: $primary;
+    box-shadow: 0 4px 16px rgba(42, 120, 214, 0.08);
+  }
+
+  strong { color: $primary; font-weight: 600; }
+  span { color: #5a5a56; font-size: 0.92rem; line-height: 1.45; }
+}
+
+/* Charts scale with the page and never overflow on a phone */
+figure svg, .cell-output-display svg { max-width: 100%; height: auto; }
+
+@media (max-width: 576px) {
+  body { font-size: 1rem; }
+  h1.title { font-size: 1.8rem; }
 }

@@ -1,31 +1,23 @@
 ---
-title: "Hardy-Weinberg-Gleichgewicht"
-subtitle: "Das Nullmodell der Populationsgenetik"
-description: "Genotypfrequenzen p², 2pq und q², Test auf Abweichung vom HWG."
+title: "Hardy-Weinberg"
+subtitle: "Das Nullmodell: Was passiert, wenn nichts passiert?"
+description: "Genotypfrequenzen p², 2pq und q², Gleichgewicht und Test."
 ---
 
 {{< include /_partials/_setup.qmd >}}
 
-Das **Hardy-Weinberg-Gleichgewicht** (HWG; Hardy 1908, Weinberg 1908) beschreibt, was in einer Population passiert,
-wenn *keine* evolutionäre Kraft wirkt: Die Vererbung allein verändert die genetische Zusammensetzung nicht.
-Es ist darum das **Nullmodell**, mit dem wir echte Populationen vergleichen.
-
-Für einen Genort mit zwei Allelen A1 (Frequenz $p$) und A2 (Frequenz $q$) gilt:
+Ohne evolutionäre Kräfte bleiben Allel- und Genotypfrequenzen über die Generationen gleich.
+Bei zwei Allelen A1 (Frequenz $p$) und A2 (Frequenz $q = 1 - p$) sind die erwarteten Genotypfrequenzen
 
 $$
-p + q = 1 \qquad\qquad p^2 + 2pq + q^2 = 1
+\text{A1A1: } p^2 \qquad \text{A1A2: } 2pq \qquad \text{A2A2: } q^2
 $$
 
-$p^2$, $2pq$ und $q^2$ sind die erwarteten Frequenzen der Genotypen A1A1, A1A2 und A2A2.
+Sie summieren sich zu 1. Dieses Modell ist der Massstab, an dem Sie echte Daten messen.
 
-::: {.callout-important}
-## Annahmen des HWG
-Keine Selektion · keine Mutation · keine Migration · unendlich grosse Population (keine Drift) · Zufallspaarung.
-:::
+## Die Kurven
 
-## 1 · Von Allel- zu Genotypfrequenzen
-
-Verschieben Sie $p$ und beobachten Sie, wie sich die drei Genotypfrequenzen verändern.
+Verschieben Sie $p$ und beobachten Sie die drei Genotypfrequenzen.
 
 ```{ojs}
 //| panel: input
@@ -33,24 +25,18 @@ viewof p = Inputs.range([0, 1], {value: 0.3, step: 0.01, label: "Allelfrequenz p
 ```
 
 ```{ojs}
-//| include: false
 curves = R.call("hw_curves")
 here = R.call("hw_curves", {p}, {key: "hw-here"})
-```
-
-```{ojs}
 hardyWeinbergCurves(Plot, curves, here, {width})
 ```
 
 ```{ojs}
-html`<div class="stat-row">
-  ${here.map(d => html`<div class="stat-tile"><div class="stat-label">${d.genotype} = ${{A1A1: "p²", A1A2: "2pq", A2A2: "q²"}[d.genotype]}</div><div class="stat-value">${d.freq.toFixed(3)}</div></div>`)}
-</div>`
+html`<p class="result">${here.map(d => html`${d.genotype}: <b>${d.freq.toFixed(3)}</b>&nbsp;&nbsp;`)}</p>`
 ```
 
-## 2 · Ohne Evolution bleibt alles gleich
+## Ohne Evolution bleibt alles gleich
 
-Eine unendlich grosse Population, in der alle Annahmen erfüllt sind: Allel- und Genotypfrequenzen bleiben über alle Generationen konstant.
+Eine unendlich grosse Population, in der alle Annahmen gelten.
 
 ```{ojs}
 //| panel: input
@@ -62,51 +48,46 @@ res_hw = R.call("experiment", {p0: p0_hw, generations: 50}, {key: "hw-sim"})
 genotypePlot(Plot, res_hw.genotypes, {width})
 ```
 
-## 3 · Ist meine Population im HWG?
+```{ojs}
+html`<p class="result">Nach 50 Generationen: <b>p = ${res_hw.rows.at(-1).p.toFixed(3)}</b>, unverändert.</p>`
+```
 
-Geben Sie beobachtete Genotyp-Anzahlen ein. Aus ihnen werden $p$ und die unter HWG erwarteten Anzahlen berechnet.
-Der $\chi^2$-Test (1 Freiheitsgrad) zeigt, ob die Abweichung grösser ist, als man durch Zufall erwarten würde
-(kritischer Wert 3.84 für $\alpha = 0.05$).
+## Ist meine Population im Gleichgewicht?
 
-Das Beispiel aus der Vorlesung: 2 × A1A1, 3 × A1A2, 1 × A2A2 ergibt $p = 7/12 \approx 0.58$.
+Geben Sie beobachtete Genotyp-Anzahlen ein. Der $\chi^2$-Test (1 Freiheitsgrad, kritischer Wert 3.84 bei $\alpha = 0.05$) prüft,
+ob die Abweichung grösser ist, als Zufall erklären kann. Das Beispiel aus der Vorlesung: 2 A1A1, 3 A1A2, 1 A2A2.
 
 ```{ojs}
 //| panel: input
 viewof counts = Inputs.form({
-  n11: Inputs.number({value: 2, min: 0, step: 1, label: "Anzahl A1A1"}),
-  n12: Inputs.number({value: 3, min: 0, step: 1, label: "Anzahl A1A2"}),
-  n22: Inputs.number({value: 1, min: 0, step: 1, label: "Anzahl A2A2"})
+  n11: Inputs.number({value: 2, min: 0, step: 1, label: "A1A1"}),
+  n12: Inputs.number({value: 3, min: 0, step: 1, label: "A1A2"}),
+  n22: Inputs.number({value: 1, min: 0, step: 1, label: "A2A2"})
 })
 ```
 
 ```{ojs}
 test = R.call("hwe_test", counts)
+t1 = test[0]
 Inputs.table(test.map(d => ({Genotyp: d.genotype, beobachtet: d.observed, erwartet: d.expected})),
   {format: {erwartet: d => d.toFixed(2)}, layout: "auto"})
 ```
 
 ```{ojs}
-t1 = test[0]
-md`**p = ${t1.p.toFixed(3)}**, **q = ${(1 - t1.p).toFixed(3)}**, n = ${t1.n} ·
-χ² = **${t1.chi2.toFixed(2)}** (p-Wert ${t1.p_value.toFixed(3)}) → ${t1.chi2 > 3.84
-  ? "Die Abweichung vom HWG ist **signifikant** (χ² > 3.84)."
-  : "Keine signifikante Abweichung vom HWG (χ² ≤ 3.84)."}
-${t1.n < 30 ? "\n\n*Achtung: Bei so kleinen Stichproben ist der χ²-Test unzuverlässig.*" : ""}`
+html`<p class="result">p = <b>${t1.p.toFixed(3)}</b> · χ² = <b>${t1.chi2.toFixed(2)}</b> (p-Wert ${t1.p_value.toFixed(3)}) →
+${t1.chi2 > 3.84 ? "signifikante Abweichung vom Gleichgewicht" : "keine signifikante Abweichung"}.
+${t1.n < 30 ? html`<br><small>Bei so kleinen Stichproben ist der Test unzuverlässig.</small>` : ""}</p>`
 ```
 
-{{< include /_partials/_model-note.qmd >}}
+## Fragen
 
-## Fragen zum Nachdenken
-
-1. Bei welchem Wert von $p$ ist der Anteil Heterozygoter am grössten? Wie gross ist er dann?
-2. Ein rezessives Merkmal kommt bei 1 % der Individuen vor. Wie häufig ist das rezessive Allel, wie häufig sind Träger (Heterozygote)?
-3. Sie beobachten 50 A1A1, 0 A1A2 und 50 A2A2. Wie gross ist $p$? Welche Annahme des HWG könnte verletzt sein?
-4. Warum ist ein Modell, das „nichts passieren lässt“, für die Evolutionsbiologie so nützlich?
+1. Bei welchem $p$ ist der Anteil Heterozygoter am grössten?
+2. Ein rezessives Merkmal kommt bei 1 % vor. Wie häufig sind das Allel und die Träger?
+3. Sie beobachten 50 A1A1, 0 A1A2, 50 A2A2. Welche Annahme des Modells könnte verletzt sein?
 
 ::: {.callout-tip collapse="true"}
 ## Lösungshinweise
-1. Bei $p = 0.5$; dann ist $2pq = 0.5$.
-2. $q^2 = 0.01 \Rightarrow q = 0.1$; Heterozygote $2pq = 2 \cdot 0.9 \cdot 0.1 = 0.18$, also 18 %.
-3. $p = 0.5$, erwartet wären 25 / 50 / 25. Kandidaten: Inzucht bzw. nicht-zufällige Paarung, oder zwei getrennte Teilpopulationen (Wahlund-Effekt).
-4. Abweichungen vom Nullmodell zeigen, *dass* und *welche* evolutionären Kräfte wirken.
+1. Bei $p = 0.5$, dann ist $2pq = 0.5$.
+2. $q^2 = 0.01$, also $q = 0.1$. Heterozygote: $2 \cdot 0.9 \cdot 0.1 = 0.18$, also 18 %.
+3. $p = 0.5$, erwartet wären 25 / 50 / 25. Mögliche Ursachen: Inzucht, nicht zufällige Paarung oder zwei getrennte Teilpopulationen.
 :::
