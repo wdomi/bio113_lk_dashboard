@@ -1,11 +1,11 @@
 # =============================================================================
-# _quarto.yml — site configuration (navigation, theme, global options)
+# _quarto.yml: site configuration (navigation, theme, global options)
 # -----------------------------------------------------------------------------
-# To add a page: create the .qmd file and add it to `navbar` and/or `sidebar`
-# below. Everything else (simulation code, colours, presets) lives elsewhere:
-#   js/popgen/      simulation engine + charts (JavaScript modules)
-#   config/         presets / scenarios (JSON)
-#   _partials/      text snippets reused on several pages
+# To add a page: create the .qmd file and add it to `navbar` below.
+#   popgen/         R package: ALL population genetics (runs in the browser via webR)
+#   js/             webR bridge + charts (JavaScript, drawing only)
+#   config/         Explorer presets (JSON)
+#   _partials/      code shared by the pages (starts R)
 #   styles/         site look (SCSS)
 # See docs/DEVELOPER_GUIDE.md for details.
 # =============================================================================
@@ -21,19 +21,20 @@ project:
   resources:
     - js/
     - config/
+    - popgen/R/
 
 lang: de
 
 website:
-  title: "Bio 113 · Populationsgenetik interaktiv"
-  description: "Interaktive Simulationen zu Hardy-Weinberg, Drift, Selektion, Mutation, Migration und Inzucht – Begleitmaterial zur Vorlesung Bio 113 (Evolution & Biodiversität), Universität Zürich."
+  title: "Populationsgenetik"
+  description: "Interaktive Simulationen zu Hardy-Weinberg, Drift, Selektion, Mutation, Migration und Inzucht. Begleitmaterial zu Bio 113, Universität Zürich."
   site-url: "https://wdomi.github.io/bio113_lk_dashboard/"
   repo-url: "https://github.com/wdomi/bio113_lk_dashboard"
-  repo-actions: [edit, issue]
+  repo-actions: [issue]
   page-navigation: true
   back-to-top-navigation: true
-  search: true
   navbar:
+    background: light
     left:
       - href: index.qmd
         text: Start
@@ -53,33 +54,17 @@ website:
     right:
       - href: ueber.qmd
         text: Über
-  sidebar:
-    - title: Konzepte
-      style: docked
-      contents:
-        - konzepte/hardy-weinberg.qmd
-        - konzepte/drift.qmd
-        - konzepte/selektion.qmd
-        - konzepte/mutation.qmd
-        - konzepte/migration.qmd
-        - konzepte/inzucht.qmd
-        - konzepte/flaschenhals.qmd
   page-footer:
-    left: "Bio 113 · Evolution & Biodiversität · Universität Zürich"
-    right: "Gebaut mit [Quarto](https://quarto.org) · [Quellcode](https://github.com/wdomi/bio113_lk_dashboard)"
+    center: "Bio 113 · Universität Zürich · [Quellcode](https://github.com/wdomi/bio113_lk_dashboard)"
 
 format:
   html:
-    theme:
-      light: [cosmo, styles/custom.scss]
-      dark: [darkly, styles/custom.scss]
-    toc: true
-    toc-title: "Auf dieser Seite"
-    number-sections: false
+    theme: [flatly, styles/custom.scss]
+    toc: false
     html-math-method: katex
     code-fold: true
     code-summary: "Code anzeigen"
-    # Students should see controls and plots, not the code behind them.
+    # Students see controls and plots, not the code behind them.
     echo: false
 
 execute:

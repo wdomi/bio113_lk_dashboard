@@ -1,19 +1,18 @@
 ---
-title: "Flaschenhals und Gründereffekt"
+title: "Flaschenhals"
 subtitle: "Kurz klein sein hat lange Folgen"
 description: "Populationsengpässe verstärken Drift und reduzieren die genetische Variation."
 ---
 
 {{< include /_partials/_setup.qmd >}}
 
-Ein **Flaschenhals** (*bottleneck*) ist eine vorübergehende, starke Verkleinerung einer Population, z. B. durch eine Katastrophe,
+Ein **Flaschenhals** ist eine vorübergehende, starke Verkleinerung einer Population, etwa durch Katastrophe,
 Bejagung oder Krankheit. Ein **Gründereffekt** ist ein Spezialfall: Wenige Individuen gründen eine neue Population.
-Während des Engpasses wirkt Drift stark, und die verlorene Variation kommt nach der Erholung nur sehr langsam
-(durch Mutation oder Migration) zurück.
+Im Engpass wirkt Drift stark, und die verlorene Variation kommt danach nur langsam zurück, durch Mutation oder Migration.
 
-## 1 · Simulation eines Flaschenhalses
+## Simulation eines Flaschenhalses
 
-Der grau hinterlegte Bereich markiert den Engpass.
+Der graue Bereich markiert den Engpass. Jede Linie ist eine Population.
 
 ```{ojs}
 //| panel: input
@@ -26,63 +25,27 @@ viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 ```
 
 ```{ojs}
-//| include: false
-generations = Math.max(80, start + duration + 40)
-params = ({N, p0: 0.5, generations, seed, bottleneck: {start, duration, size: Nb}})
-rows = simulateReplicates(params, replicates)
-rows_ref = simulateReplicates({...params, bottleneck: null}, replicates)
+res = R.call("bottleneck_experiment", {N, size: Nb, start, duration, replicates, seed}, {key: "bn-main"})
+trajectoryWithBand(Plot, res.rows, {x1: start, x2: start + duration}, {width})
 ```
+
+Die **Heterozygotie** (Mittel über alle Populationen) mit Flaschenhals (blau) und ohne (grau):
 
 ```{ojs}
-//| include: false
-bottleneckBand = Plot.rectX([{x1: start, x2: start + duration}], {x1: "x1", x2: "x2", y1: 0, y2: 1, fill: COLORS.reference, fillOpacity: 0.12})
+heterozygosityPlot(Plot, res.heterozygosity, {width, band: {x1: start, x2: start + duration}})
 ```
 
-```{ojs}
-Plot.plot({
-  width, height: 320, marginLeft: 50,
-  style: {fontSize: "13px", background: "transparent"},
-  x: {label: "Generation →"},
-  y: {domain: [0, 1], label: "↑ Allelfrequenz p (A1)", grid: true},
-  marks: [
-    bottleneckBand,
-    Plot.line(rows, {x: "gen", y: "p", z: "rep", stroke: COLORS.series, strokeOpacity: 0.6, strokeWidth: 2}),
-    Plot.tip(rows, Plot.pointer({x: "gen", y: "p", title: d => `Replikat ${d.rep}\nGeneration ${d.gen}\np = ${d.p.toFixed(3)}\nN = ${d.N}`}))
-  ]
-})
-```
+## Fragen
 
-**Heterozygotie** (Mittel über alle Populationen): mit Flaschenhals (blau) und ohne (grau).
-
-```{ojs}
-H = (rs) => meanByGeneration(rs.map(d => ({...d, H: 2 * d.p * (1 - d.p)})), "H")
-Plot.plot({
-  width, height: 280, marginLeft: 50,
-  style: {fontSize: "13px", background: "transparent"},
-  x: {label: "Generation →"},
-  y: {domain: [0, 0.55], label: "↑ Heterozygotie H", grid: true},
-  color: {domain: ["mit Flaschenhals", "ohne Flaschenhals"], range: [COLORS.series, COLORS.reference], legend: true},
-  marks: [
-    bottleneckBand,
-    Plot.line([...H(rows).map(d => ({...d, k: "mit Flaschenhals"})), ...H(rows_ref).map(d => ({...d, k: "ohne Flaschenhals"}))],
-      {x: "gen", y: "value", stroke: "k", strokeWidth: 2, tip: true})
-  ]
-})
-```
-
-{{< include /_partials/_model-note.qmd >}}
-
-## Fragen zum Nachdenken
-
-1. Vergleichen Sie einen Flaschenhals von 25 mit einem von 1000 Individuen. Was ändert sich?
+1. Vergleichen Sie einen Engpass auf 25 mit einem auf 1000 Individuen. Was ändert sich?
 2. Erholt sich die Heterozygotie, wenn die Population wieder gross ist? Warum (nicht)?
-3. Ist ein kurzer, extremer Engpass (N = 5 für 1 Generation) oder ein langer, milder (N = 100 für 20 Generationen) schlimmer?
-4. Nennen Sie reale Beispiele für Flaschenhälse oder Gründereffekte (z. B. Gepard, Nördlicher See-Elefant, Steinbock in der Schweiz).
+3. Ist ein kurzer, extremer Engpass (N = 5 für eine Generation) schlimmer als ein langer, milder (N = 100 für 20 Generationen)?
+4. Nennen Sie reale Beispiele für Flaschenhälse oder Gründereffekte.
 
 ::: {.callout-tip collapse="true"}
 ## Lösungshinweise
-1. Bei 1000 ist der Effekt kaum sichtbar; bei 25 streuen die Allelfrequenzen stark, einige Allele gehen verloren.
-2. Nein, nicht ohne Mutation oder Migration: Verlorene Allele kommen nicht zurück, und die Heterozygotie bleibt tief.
-3. Vergleichen Sie $(1 - 1/2N)^t$: $(1 - 1/10)^1 = 0.90$ gegenüber $(1 - 1/200)^{20} \approx 0.90$, also ähnlich. Probieren Sie es aus!
-4. Der Alpensteinbock wurde aus rund 100 Tieren wieder angesiedelt und hat heute eine geringe genetische Vielfalt.
+1. Bei 1000 ist der Effekt kaum sichtbar. Bei 25 streuen die Allelfrequenzen stark, und einige Allele gehen verloren.
+2. Nein, nicht ohne Mutation oder Migration. Verlorene Allele kommen nicht zurück, und die Heterozygotie bleibt tief.
+3. Beide verlieren ähnlich viel Heterozygotie. Probieren Sie es aus und vergleichen Sie die Werte.
+4. Der Alpensteinbock wurde aus wenigen Dutzend Tieren wieder angesiedelt und hat heute wenig genetische Vielfalt.
 :::

@@ -9,7 +9,7 @@ Hardy–Weinberg, genetic drift, selection, mutation, migration, inbreeding and 
 
 The student-facing text is in German, matching the lectures and their notation
 (A1/A2, *p*, *q*, *w*₁₁, *s*, *h*, *u*, *v*, *m*, *p*<sub>C</sub>, *F*).
-Code, comments and developer documentation are in English.
+Code, comments and developer documentation are in English. **All population genetics is written in R** (`popgen/`).
 
 ---
 
@@ -32,82 +32,80 @@ Every concept page ends with *Fragen zum Nachdenken* and collapsible *Lösungshi
 
 ## How it works (and why)
 
-- **[Quarto](https://quarto.org)** builds a static website from `.qmd` files (Markdown + code), which you can edit in RStudio.
-- The interactive parts use **[Observable JS (OJS)](https://quarto.org/docs/interactive/ojs/)**, which Quarto supports out of the box.
-  The simulations run **in the student's browser**, so there is **no server**. GitHub Pages can only host static files, so this is what makes free hosting possible.
-- **Why not Shiny?** Shiny needs a running R server (shinyapps.io, a university server, …).
-  *Shinylive/webR* runs R in the browser but downloads tens of MB and takes several seconds to start on each page.
-  OJS sliders respond instantly, even on phones.
-- The **simulation engine** is a small set of plain JavaScript modules in `js/popgen/` with no dependencies.
-  It is tested with Node's built-in test runner, so nothing needs installing besides Node.
+```
+ popgen/R/*.R  ── all population genetics, plain R (edit in RStudio, testthat tests)
+      │
+      │  the same files are loaded by every page …
+      ▼
+ webR (R compiled to WebAssembly) runs them in the student's browser
+      │  R.call("simulate", {N: 50, replicates: 20})  →  data frame
+      ▼
+ Observable JS (OJS): sliders + Observable Plot charts  (js/plots.js only draws)
+```
+
+- **[Quarto](https://quarto.org)** builds a static website from `.qmd` files, which you can edit in RStudio.
+- **All equations and simulations are R** (`popgen/`, structured as an R package). Someone who works in R can read,
+  run (`simulate(N = 50)`), change and test them in RStudio without touching JavaScript.
+- **[webR](https://docs.r-wasm.org/webr/latest/)** runs those exact R files in the browser, so there is no server and it works on free GitHub Pages hosting.
+  Nothing is translated into another language, so there is nothing to keep in sync.
+- **[Observable JS](https://quarto.org/docs/interactive/ojs/)** (built into Quarto) provides the sliders and the
+  Observable Plot graphics. When a slider moves, OJS asks R for new numbers and redraws.
+- **Trade-off:** on the first visit the browser downloads R (a few seconds; a status line says "R wird gestartet …").
+  After that it is cached, and simulations take ~50–500 ms. When a slider is dragged, only the newest value is computed.
+- **Why not Shiny?** Shiny needs a running R server. **Why not precompute everything in R at render time?**
+  Every slider combination and every random replicate would have to be computed in advance, so the sliders would be limited.
 
 ## Repository layout
 
 ```
+├── popgen/                ← R PACKAGE: all population genetics (start here)
+│   ├── R/models.R         ←   equations: HW, F, selection, mutation, migration, χ², equilibria
+│   ├── R/simulate.R       ←   simulate(): generation loop, replicates, scenarios
+│   ├── R/stats.R          ←   summaries + "experiments" the pages call
+│   ├── tests/testthat/    ←   R tests
+│   ├── popgen.Rproj       ←   open this in RStudio to work on the model
+│   └── README.md          ←   how to use it in RStudio + rules
 ├── _quarto.yml            ← site config: navigation, theme, language
 ├── index.qmd              ← start page
-├── konzepte/              ← one page per concept (edit text here)
-│   ├── hardy-weinberg.qmd
-│   ├── drift.qmd
-│   ├── selektion.qmd
-│   ├── mutation.qmd
-│   ├── migration.qmd
-│   ├── inzucht.qmd
-│   └── flaschenhals.qmd
+├── konzepte/*.qmd         ← one page per concept (text + which R function each slider calls)
 ├── explorer.qmd           ← all forces combined
 ├── glossar.qmd, ueber.qmd
-├── _partials/             ← snippets shared by several pages
-│   ├── _setup.qmd         ←   imports the engine (included on every interactive page)
-│   └── _model-note.qmd    ←   "Wie rechnet die Simulation?" box
-├── js/popgen/             ← the "package": simulation engine + charts
-│   ├── index.js           ←   single entry point (re-exports everything)
-│   ├── random.js          ←   seeded random numbers, binomial/multinomial
-│   ├── models.js          ←   equations: HW, F, selection, mutation, migration, χ²
-│   ├── simulate.js        ←   life cycle per generation, replicates, DEFAULT_PARAMS
-│   ├── stats.js           ←   mean, sd, final-generation summaries
-│   ├── plots.js           ←   reusable Observable Plot charts
-│   └── theme.js           ←   chart colours
-├── config/scenarios.json  ← Explorer presets (= shareable links)
+├── _partials/
+│   └── _setup.qmd         ← starts webR, loads popgen/R/*.R (included on every interactive page)
+├── js/
+│   ├── r-bridge.js        ← JavaScript ↔ R glue (you should not need to touch it)
+│   ├── plots.js           ← chart functions (draw only, no maths)
+│   └── theme.js           ← chart colours
+├── config/scenarios.json  ← Explorer presets (= shareable links); arguments of simulate()
 ├── styles/custom.scss     ← site look
-├── tests/                 ← automated checks (npm test)
+├── tests/                 ← Node test of the bridge (runs popgen through webR)
 ├── docs/DEVELOPER_GUIDE.md← how to change things, step by step
-├── CONTRIBUTING.md        ← workflow rules (branches, PRs, checks)
-├── CHANGELOG.md           ← what changed in each version
-├── DEVLOG.md              ← design decisions, open ideas, known limits
-└── .github/workflows/     ← build + deploy (publish.yml), PR checks (check.yml)
+├── CONTRIBUTING.md, CHANGELOG.md, DEVLOG.md
+└── .github/workflows/     ← publish.yml (main → Pages), check.yml (PRs)
 ```
 
-The rule of thumb: **text** in `.qmd`, **maths** in `js/popgen/models.js`,
-**presets** in `config/scenarios.json`, **colours** in `js/popgen/theme.js` / `styles/custom.scss`.
-Each piece can be changed without touching the others.
+Rule of thumb: **science** goes in `popgen/R/`, **text** in `.qmd`, **presets** in `config/scenarios.json`,
+**colours** in `js/theme.js` / `styles/custom.scss`.
 
 ## Working locally (RStudio)
 
-1. Install [Quarto](https://quarto.org/docs/get-started/) (RStudio ≥ 2022.07 already includes it) and, for the tests, [Node.js](https://nodejs.org) ≥ 22.
-2. Open `bio113_lk_dashboard.Rproj` in RStudio.
-3. Preview the site: in the RStudio **Terminal** tab run
+**Changing the model (R only):** open `popgen/popgen.Rproj`, then run `devtools::load_all()` and play with
+`simulate()`. Run the tests with *Build → Test Package*. See [popgen/README.md](popgen/README.md).
 
-   ```bash
-   quarto preview
-   ```
+**Previewing the website:**
 
-   A browser opens and reloads automatically when you save a file.
-   (Or open any `.qmd` and click **Render**.)
-4. Run the tests after changing anything in `js/` or `config/`:
-
-   ```bash
-   npm test
-   ```
-
-You do not need R packages: the site does not execute R code.
+1. Install [Quarto](https://quarto.org/docs/get-started/) (included in RStudio ≥ 2022.07).
+2. Open `bio113_lk_dashboard.Rproj`, and in the **Terminal** tab run `quarto preview`.
+   A browser opens and reloads whenever you save a file. R itself is not needed for this, because the website brings its own R (webR).
+3. Optional, for the JavaScript bridge test: [Node.js](https://nodejs.org) ≥ 22, then `npm ci && npm test`.
 
 ## Publishing
 
-Publishing is automatic. Every push to `main` runs `.github/workflows/publish.yml`, which tests, renders and deploys the site.
+Publishing is automatic. Every push to `main` runs `.github/workflows/publish.yml`, which runs the R tests, renders the site and deploys it.
 
 **One-time setup:** on GitHub, go to *Settings → Pages → Build and deployment → Source* and choose **GitHub Actions**.
 
-Pull requests run `.github/workflows/check.yml` (tests + render, nothing is published), so problems show up before merging.
+Pull requests run `.github/workflows/check.yml` (R tests, bridge test, render; nothing is published), so problems show up before merging.
 
 ## Further reading
 

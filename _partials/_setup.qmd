@@ -1,21 +1,42 @@
 <!--
-  _partials/_setup.qmd — loaded at the top of every interactive page.
-  It imports the simulation engine (js/popgen/) once, so every page uses the
-  same code. If you add a new exported function to js/popgen/ and want to use
-  it on a page, add its name to the list below.
+  _partials/_setup.qmd: loaded at the top of every interactive page.
+
+  1. Starts R in the browser (webR) and loads the R package popgen/R/*.R.
+     All population genetics happens there. Afterwards a page can call any
+     R function:   rows = R.call("simulate", {N: 50, replicates: 20})
+  2. Imports the chart functions (js/plots.js), which only draw.
+
+  If you add a new .R file to popgen/R/, add it to the list below.
   Files starting with "_" are not rendered as pages by Quarto.
 -->
 
 ```{ojs}
 //| include: false
+import { createR } from "/js/r-bridge.js"
 import {
-  simulate, simulateReplicates, simulateScenarios, DEFAULT_PARAMS,
-  genotypeFreqs, alleleFreqFromGenotypes, fitnessFromSH, meanFitness,
-  mutationEquilibrium, mutationSelectionBalance, expectedHeterozygosity,
-  heterozygosity, hweChiSquare,
-  mean, sd, finalRows, summarizeFinal, meanByGeneration, genotypesLong,
-  alleleTrajectoryPlot, genotypePlot, hardyWeinbergCurves,
-  finalFrequencyHistogram, heterozygosityPlot,
-  GENOTYPE_COLORS, SCENARIO_COLORS, COLORS
-} from "/js/popgen/index.js"
+  alleleTrajectoryPlot, genotypePlot, hardyWeinbergCurves, finalFrequencyHistogram,
+  heterozygosityPlot, genotypeBars, curvePlot, trajectoryWithBand
+} from "/js/plots.js"
+import { GENOTYPE_COLORS, SCENARIO_COLORS, COLORS } from "/js/theme.js"
+
+Rstart = createR([
+  await FileAttachment("/popgen/R/models.R").text(),
+  await FileAttachment("/popgen/R/simulate.R").text(),
+  await FileAttachment("/popgen/R/stats.R").text()
+])
+R = Rstart
+```
+
+```{ojs}
+//| echo: false
+// Shows a short note only while R is starting (or if it failed to start).
+Rstatus = {
+  yield html`<div class="r-status">R wird im Browser geladen … (beim ersten Besuch einige Sekunden)</div>`;
+  try {
+    await Rstart;
+    yield html``;
+  } catch (e) {
+    yield html`<div class="r-status r-error">R konnte nicht geladen werden. Bitte Seite neu laden.</div>`;
+  }
+}
 ```

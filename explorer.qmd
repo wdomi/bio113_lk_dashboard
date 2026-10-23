@@ -1,41 +1,41 @@
 ---
 title: "Explorer"
-subtitle: "Alle evolutionären Kräfte kombinieren"
+subtitle: "Alle Kräfte kombinieren und eigene Experimente planen"
 description: "Eigene Experimente mit Drift, Selektion, Mutation, Migration, Inzucht und Flaschenhals."
 toc: false
 ---
 
 {{< include /_partials/_setup.qmd >}}
 
-Hier können Sie alle Prozesse gleichzeitig einschalten und eigene Experimente planen.
-Wählen Sie eine **Voreinstellung** oder beginnen Sie mit dem Hardy-Weinberg-Fall und verändern Sie einen Parameter nach dem anderen.
+Wählen Sie eine Voreinstellung oder stellen Sie alles selbst ein. Die wichtigsten Regler stehen oben. Weitere Kräfte
+finden Sie unten, aufklappbar.
 
 ```{ojs}
 //| include: false
 // Presets come from config/scenarios.json. A link like explorer.html?preset=drift-10 selects one.
-scenarioFile = FileAttachment("/config/scenarios.json").json()
-scenarios = scenarioFile.scenarios
-urlPreset = new URLSearchParams(window.location.search).get("preset")
-initialScenario = scenarios.find(s => s.id === urlPreset) ?? scenarios[0]
-```
-
-```{ojs}
-//| panel: input
-viewof scenario = Inputs.select(scenarios, {label: "Voreinstellung", format: s => s.label, value: initialScenario})
+scenarios = FileAttachment("/config/scenarios.json").json().then(f => f.scenarios)
 ```
 
 ```{ojs}
 //| include: false
-S = ({...DEFAULT_PARAMS, replicates: 1, ...scenario.params})
+urlPreset = new URLSearchParams(window.location.search).get("preset")
+```
+
+```{ojs}
+//| panel: input
+viewof scenario = Inputs.select(await scenarios, {label: "Voreinstellung", format: s => s.label, value: (await scenarios).find(s => s.id === urlPreset) ?? (await scenarios)[0]})
+```
+
+```{ojs}
+//| include: false
+// Defaults come straight from the R function simulate() (its formal arguments).
+defaults = R.eval("lapply(formals(simulate), eval)")
+S = ({...defaults, ...scenario.params})
 ```
 
 ```{ojs}
 md`*${scenario.description ?? ""}*`
 ```
-
-::: {.panel-tabset}
-
-## Population
 
 ```{ojs}
 //| panel: input
@@ -43,57 +43,30 @@ viewof infinite = Inputs.toggle({label: "Unendlich grosse Population (keine Drif
 viewof N = Inputs.range([2, 100000], {value: Number.isFinite(S.N) ? S.N : 1000, step: 1, transform: Math.log, label: "Populationsgrösse N", disabled: infinite})
 viewof p0 = Inputs.range([0, 1], {value: S.p0, step: 0.01, label: "Start-Allelfrequenz p₀"})
 viewof generations = Inputs.range([1, 1000], {value: S.generations, step: 1, label: "Generationen"})
-viewof replicates = Inputs.range([1, 100], {value: S.replicates, step: 1, label: "Anzahl Populationen", disabled: infinite})
-```
-
-## Selektion
-
-```{ojs}
-//| panel: input
 viewof w11 = Inputs.range([0, 1], {value: S.w11, step: 0.01, label: "Fitness w₁₁ (A1A1)"})
 viewof w12 = Inputs.range([0, 1], {value: S.w12, step: 0.01, label: "Fitness w₁₂ (A1A2)"})
 viewof w22 = Inputs.range([0, 1], {value: S.w22, step: 0.01, label: "Fitness w₂₂ (A2A2)"})
+viewof replicates = Inputs.range([1, 100], {value: S.replicates, step: 1, label: "Anzahl Populationen", disabled: infinite})
+viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (x) => x + 1})
 ```
 
-## Mutation
+::: {.callout-note collapse="true"}
+## Weitere Kräfte: Mutation, Migration, Inzucht, Flaschenhals
 
 ```{ojs}
 //| panel: input
-viewof u = Inputs.number([0, 0.1], {value: S.u, step: 0.00001, label: "u (A1 → A2)"})
-viewof v = Inputs.number([0, 0.1], {value: S.v, step: 0.00001, label: "v (A2 → A1)"})
-```
-
-## Migration
-
-```{ojs}
-//| panel: input
+viewof u = Inputs.number([0, 0.1], {value: S.u, step: 0.00001, label: "Mutation u (A1 → A2)"})
+viewof v = Inputs.number([0, 0.1], {value: S.v, step: 0.00001, label: "Mutation v (A2 → A1)"})
 viewof m = Inputs.range([0, 0.5], {value: S.m, step: 0.005, label: "Migrationsrate m"})
 viewof pC = Inputs.range([0, 1], {value: S.pC, step: 0.01, label: "Allelfrequenz der Quelle p_C"})
-```
-
-## Inzucht
-
-```{ojs}
-//| panel: input
 viewof F = Inputs.range([0, 1], {value: S.F, step: 0.01, label: "Inzuchtkoeffizient F"})
-```
-
-## Flaschenhals
-
-```{ojs}
-//| panel: input
 viewof useBottleneck = Inputs.toggle({label: "Flaschenhals einschalten", value: S.bottleneck !== null})
-viewof bStart = Inputs.range([1, 500], {value: S.bottleneck?.start ?? 20, step: 1, label: "Beginn (Generation)", disabled: !useBottleneck})
-viewof bDuration = Inputs.range([1, 100], {value: S.bottleneck?.duration ?? 5, step: 1, label: "Dauer (Generationen)", disabled: !useBottleneck})
-viewof bSize = Inputs.range([2, 1000], {value: S.bottleneck?.size ?? 25, step: 1, transform: Math.log, label: "Grösse im Flaschenhals", disabled: !useBottleneck})
+viewof bStart = Inputs.range([1, 500], {value: S.bottleneck?.start ?? 20, step: 1, label: "Flaschenhals: Beginn (Generation)", disabled: !useBottleneck})
+viewof bDuration = Inputs.range([1, 100], {value: S.bottleneck?.duration ?? 5, step: 1, label: "Flaschenhals: Dauer (Generationen)", disabled: !useBottleneck})
+viewof bSize = Inputs.range([2, 1000], {value: S.bottleneck?.size ?? 25, step: 1, transform: Math.log, label: "Flaschenhals: Grösse", disabled: !useBottleneck})
 ```
 
 :::
-
-```{ojs}
-//| panel: input
-viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (x) => x + 1})
-```
 
 ```{ojs}
 //| include: false
@@ -103,11 +76,12 @@ params = ({
   bottleneck: useBottleneck && !infinite ? {start: bStart, duration: bDuration, size: bSize} : null
 })
 nRep = infinite ? 1 : replicates
-rows = simulateReplicates(params, nRep)
-summary = summarizeFinal(rows)
+res = R.call("experiment", {...params, replicates: nRep}, {key: "explorer"})
+rows = res.rows
+summary = res.summary[0]
 ```
 
-### Allelfrequenz
+## Allelfrequenz
 
 ```{ojs}
 alleleTrajectoryPlot(Plot, rows, {width})
@@ -122,17 +96,17 @@ html`<div class="stat-row">
 </div>`
 ```
 
-### Genotypfrequenzen (Population 1)
+## Genotypfrequenzen (Population 1)
 
 ```{ojs}
-genotypePlot(Plot, rows.filter(d => d.rep === 1), {width})
+genotypePlot(Plot, res.genotypes, {width})
 ```
 
 ```{ojs}
 nRep > 1 ? html`<h3>Verteilung der Endfrequenzen</h3>${finalFrequencyHistogram(Plot, rows, {width})}` : html``
 ```
 
-### Daten
+## Daten
 
 ```{ojs}
 csv = d3.csvFormat(rows.map(({rep, gen, N, p, q, f11, f12, f22}) => ({population: rep, generation: gen, N, p, q, A1A1: f11, A1A2: f12, A2A2: f22})))
@@ -144,5 +118,3 @@ html`<p>${DOM.download(new Blob([csv], {type: "text/csv"}), "popgen-simulation.c
 shareUrl = `${window.location.origin}${window.location.pathname}?preset=${scenario.id}`
 md`Link zu dieser Voreinstellung: [${shareUrl}](${shareUrl})`
 ```
-
-{{< include /_partials/_model-note.qmd >}}

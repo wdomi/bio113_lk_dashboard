@@ -1,26 +1,24 @@
 ---
-title: "Migration (Genfluss)"
+title: "Migration"
 subtitle: "Genfluss macht Populationen einander ähnlicher"
 description: "Insel-Festland-Modell mit Migrationsrate m."
 ---
 
 {{< include /_partials/_setup.qmd >}}
 
-Migration bedeutet in der Populationsgenetik **Genfluss**: Allele wandern mit Individuen (oder Gameten, Pollen …)
-von einer Population in eine andere. Auch Hybridisierung ist aus genetischer Sicht Genfluss.
-
-Im **Ein-Insel-Modell** fliesst Genfluss nur in eine Richtung, vom Festland (Allelfrequenz $p_C$) auf die Insel ($p_I$).
-Die Migrationsrate $m$ ist der Anteil des Insel-Genpools, der aus Zuwanderern stammt:
+Migration heisst in der Populationsgenetik **Genfluss**: Allele wandern mit Individuen (oder Pollen, Samen, Gameten)
+von einer Population in eine andere. Im Insel-Festland-Modell fliesst Genfluss vom Festland ($p_C$) auf die Insel ($p_I$).
+Die Migrationsrate $m$ ist der Anteil des Inselgenpools, der aus Zuwanderern stammt:
 
 $$
 p_I' = (1 - m)\,p_I + m\,p_C \qquad\qquad \Delta p_I = m\,(p_C - p_I)
 $$
 
-Im Gleichgewicht ($\Delta p_I = 0$) gilt $p_I = p_C$: Migration **homogenisiert** Populationen.
+Im Gleichgewicht gilt $p_I = p_C$. Migration **gleicht Populationen an**.
 
-## 1 · Insel und Festland
+## Insel und Festland
 
-Wie im HHMI-Arbeitsblatt: Insel $p_0 = 0.4$, Festland $p_C = 0.8$, drei Migrationsraten.
+Insel bei $p_0 = 0.4$, Festland bei $p_C = 0.8$. Vergleichen Sie drei Migrationsraten und probieren Sie eine eigene.
 
 ```{ojs}
 //| panel: input
@@ -31,23 +29,17 @@ viewof generations = Inputs.range([1, 200], {value: 50, step: 1, label: "Generat
 ```
 
 ```{ojs}
-rows = simulateScenarios([
-  {label: "m = 0", params: {p0, pC, m: 0, generations}},
-  {label: "m = 0.05", params: {p0, pC, m: 0.05, generations}},
-  {label: "m = 0.2", params: {p0, pC, m: 0.2, generations}},
-  {label: `eigener Wert m = ${m}`, params: {p0, pC, m, generations}}
-])
+rows = R.call("simulate_scenarios", {
+  scenarios: {"m = 0": {m: 0}, "m = 0.05": {m: 0.05}, "m = 0.2": {m: 0.2}, [`eigener Wert m = ${m}`]: {m}},
+  p0, pC, generations
+}, {key: "mig-main"})
 alleleTrajectoryPlot(Plot, rows, {width, highlight: pC})
 ```
 
-```{ojs}
-Inputs.table(finalRows(rows).map(d => ({"Szenario": d.scenario, [`p nach ${generations} Generationen`]: d.p.toFixed(3)})), {layout: "auto"})
-```
+## Migration gegen Drift
 
-## 2 · Migration gegen Drift
-
-Kleine Inselpopulationen driften. Wie viel Genfluss braucht es, damit sie nicht auseinanderdriften?
-(Faustregel aus der Populationsgenetik: etwa ein Migrant pro Generation, $Nm \approx 1$.)
+Kleine Inseln driften stark auseinander. Wie viel Genfluss hält sie zusammen? Eine Faustregel sagt: etwa ein Migrant
+pro Generation, also $N m \approx 1$.
 
 ```{ojs}
 //| panel: input
@@ -57,27 +49,24 @@ viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 ```
 
 ```{ojs}
-rows_md = simulateReplicates({N: N_md, m: m_md, pC: 0.5, p0: 0.5, generations: 200, seed}, 20)
-alleleTrajectoryPlot(Plot, rows_md, {width, highlight: 0.5})
+res_md = R.call("experiment", {N: N_md, m: m_md, pC: 0.5, p0: 0.5, generations: 200, replicates: 20, seed}, {key: "mig-drift"})
+alleleTrajectoryPlot(Plot, res_md.rows, {width, highlight: 0.5})
 ```
 
 ```{ojs}
-md`N · m = **${(N_md * m_md).toFixed(1)}** Migranten pro Generation · Standardabweichung zwischen den Inseln am Ende: **${summarizeFinal(rows_md).sd.toFixed(2)}**`
+html`<p class="result">Nm = <b>${(N_md * m_md).toFixed(1)}</b> Migranten pro Generation ·
+Streuung zwischen den Inseln am Ende: <b>${res_md.summary[0].sd.toFixed(2)}</b></p>`
 ```
 
-{{< include /_partials/_model-note.qmd >}}
+## Fragen
 
-## Fragen zum Nachdenken
-
-1. Macht Migration die Insel dem Festland ähnlicher oder unähnlicher? Wie hängt die Geschwindigkeit von $m$ ab?
-2. Unterstützen die Daten die Aussage, dass Genfluss Populationen in ihren Allelfrequenzen angleicht?
-3. Wie könnten Naturschutzbiologen den Genfluss für eine seltene Pflanzen- oder Insektenart erhöhen?
-4. Warum kann Migration der Selektion entgegenwirken (z. B. lokale Anpassung)?
+1. Wie hängt die Geschwindigkeit der Angleichung von $m$ ab?
+2. Welche Massnahmen würden Naturschutzbiologen ergreifen, um den Genfluss für eine seltene Art zu erhöhen?
+3. Warum kann Migration lokale Anpassung behindern?
 
 ::: {.callout-tip collapse="true"}
 ## Lösungshinweise
-1. Ähnlicher. Der Abstand $p_C - p_I$ schrumpft jede Generation um den Faktor $(1 - m)$.
-2. Ja: Mit $m > 0$ nähern sich alle Kurven $p_C$ an.
-3. Wildtierkorridore, Trittsteinbiotope, Umsiedlung von Individuen, Samen- oder Pollentransfer.
-4. Zuwanderer bringen immer wieder Allele, die lokal schlechter angepasst sind.
+1. Der Abstand $p_C - p_I$ schrumpft jede Generation um den Faktor $(1 - m)$. Grosses $m$ bedeutet schnelle Angleichung.
+2. Wildtierkorridore, Trittsteinbiotope, Umsiedlung von Individuen oder Pollen- und Samentransfer.
+3. Zuwanderer bringen immer wieder Allele mit, die lokal schlechter angepasst sind.
 :::

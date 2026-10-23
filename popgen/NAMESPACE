@@ -1,0 +1,3 @@
+exportPattern("^[^\\.]")
+importFrom(stats, rbinom, pchisq, sd, aggregate, ave, setNames)
+importFrom(utils, modifyList)
