@@ -131,6 +131,7 @@ With `N = Inf` step 5 is skipped and the result is deterministic. All replicates
 | `bottleneck_experiment(...)` | Flaschenhals | list `rows`, `heterozygosity` |
 | `mutation_trajectory(...)` | Mutation | closed-form *p*ₜ (fast for 100 000 generations) |
 | `hw_curves()`, `hwe_test()` | HWG | data frames |
+| `hw_life_cycle(p, N)` | HWG (mouse life cycle, drawn by `js/lifecycle.js`) | counts per stage: adults, sperm, eggs, zygotes, juveniles |
 | `inbreeding_genotypes()`, `inbreeding_depression()` | Inzucht | data frames |
 | `mutation_equilibrium()`, `mutation_selection_balance()` | Mutation | single numbers |
 

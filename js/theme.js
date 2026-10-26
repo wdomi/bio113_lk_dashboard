@@ -8,6 +8,10 @@
 
 export const GENOTYPE_COLORS = ["#2a78d6", "#eb6834", "#1baf7a"]; // AA, Aa, aa
 
+// Mice in the life-cycle figure (Hardy-Weinberg page): coat colour by genotype.
+export const MOUSE_COLORS = { AA: "#5c3a21", Aa: "#a0703f", aa: "#ecdcb8" }; // dark brown, mid brown, beige
+export const ALLELE_COLORS = { A: MOUSE_COLORS.AA, a: MOUSE_COLORS.aa }; // sperm and eggs
+
 export const SCENARIO_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#6250d6"]; // up to 4 scenarios
 
 export const COLORS = {

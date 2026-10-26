@@ -5,6 +5,9 @@ versions: [SemVer](https://semver.org).
 
 ## [Unreleased]
 
+### Added
+- Hardy-Weinberg page: the lecture's mouse life cycle (adults → sperm/eggs → zygotes → juveniles) next to the genotype-frequency chart. Counts of AA, Aa, aa mice (dark brown, mid brown, beige) and of A/a gametes follow the slider *p* (R: `hw_life_cycle()`, drawing: `js/lifecycle.js`).
+
 ### Changed
 - Simpler, lighter pages: one navbar, no sidebar, light theme only, short intro and questions per page.
 - Advanced controls (other forces in the Explorer) are in a collapsed box, so the main sliders stay visible.

@@ -124,3 +124,35 @@ figure svg, .cell-output-display svg { max-width: 100%; height: auto; }
   body { font-size: 1rem; }
   h1.title { font-size: 1.8rem; }
 }
+
+/* Hardy-Weinberg page: chart and mouse life cycle side by side on wide
+   screens, stacked on a phone */
+.hw-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem 2rem;
+  align-items: start;
+}
+.hw-pair-item { min-width: 0; }
+@media (min-width: 1200px) {
+  /* break out of the 760px text column so both halves stay readable */
+  .hw-pair {
+    grid-template-columns: 1fr 1fr;
+    width: min(1180px, calc(100vw - 4rem));
+    margin-left: calc(50% - min(590px, calc(50vw - 2rem)));
+  }
+}
+svg.mouse-cycle { display: block; max-width: 520px; margin: 0 auto; }
+
+.mouse-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 1rem;
+  font-size: 0.9rem;
+  color: #3d3d3a;
+  margin: 0.4rem 0 0;
+  span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  i { display: inline-block; width: 0.9rem; height: 0.9rem; border-radius: 50%; border: 1px solid #5b4632; }
+  small { flex-basis: 100%; text-align: center; color: #6b6a66; }
+}
