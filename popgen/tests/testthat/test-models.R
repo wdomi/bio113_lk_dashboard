@@ -44,6 +44,33 @@ test_that("chi-square is 0 for perfect HW counts and matches the lecture example
   expect_equal(hwe_test(2, 3, 1)$p[1], 7 / 12)
 })
 
+test_that("whole-number counts add up to N", {
+  expect_equal(round_counts(c(0.09, 0.42, 0.49), 20), c(2, 8, 10))
+  expect_equal(round_counts(c(0.36, 0.48, 0.16), 100), c(36, 48, 16))
+  for (p in seq(0, 1, by = 0.01)) {
+    g <- genotype_freqs(p)
+    expect_equal(sum(round_counts(c(g$f11, g$f12, g$f22), 20)), 20)
+  }
+})
+
+test_that("mouse life cycle: lecture numbers 36 / 48 / 16 and p stays 0.6", {
+  d <- hw_life_cycle(0.6, N = 100)
+  adults <- d[d$stage == "adults", ]
+  expect_equal(adults$count, c(36, 48, 16))
+  expect_equal(d$count[d$stage == "juveniles"], adults$count)
+  expect_equal(sum(d$count[d$stage == "sperm"]), 100)
+  expect_equal(d$count[d$stage == "sperm" & d$class == "A"] + d$count[d$stage == "eggs" & d$class == "A"], 120)
+  expect_equal(unique(d$p[d$stage %in% c("adults", "juveniles")]), 0.6)
+})
+
+test_that("mouse life cycle keeps p (up to rounding) for every slider value", {
+  for (p in seq(0, 1, by = 0.01)) {
+    d <- hw_life_cycle(p, N = 20)
+    expect_equal(sum(d$count[d$stage == "zygotes"]), 20)
+    expect_lt(abs(d$p[d$stage == "juveniles"][1] - p), 0.05)
+  }
+})
+
 test_that("mean fitness falls with inbreeding when allele a is deleterious and recessive", {
   d <- inbreeding_depression(q = 0.1, s = 0.5)
   expect_true(all(diff(d$wbar) < 0))

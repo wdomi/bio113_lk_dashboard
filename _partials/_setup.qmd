@@ -17,7 +17,8 @@ import {
   alleleTrajectoryPlot, genotypePlot, hardyWeinbergCurves, finalFrequencyHistogram,
   heterozygosityPlot, genotypeBars, curvePlot, trajectoryWithBand
 } from "/js/plots.js"
-import { GENOTYPE_COLORS, SCENARIO_COLORS, COLORS } from "/js/theme.js"
+import { mouseLifeCycle } from "/js/lifecycle.js"
+import { GENOTYPE_COLORS, SCENARIO_COLORS, COLORS, MOUSE_COLORS } from "/js/theme.js"
 
 Rstart = createR([
   await FileAttachment("/popgen/R/models.R").text(),

@@ -75,6 +75,7 @@ Every concept page ends with *Fragen zum Nachdenken* and collapsible *Lösungshi
 ├── js/
 │   ├── r-bridge.js        ← JavaScript ↔ R glue (you should not need to touch it)
 │   ├── plots.js           ← chart functions (draw only, no maths)
+│   ├── lifecycle.js       ← mouse life-cycle figure (Hardy-Weinberg page, draw only)
 │   └── theme.js           ← chart colours
 ├── config/scenarios.json  ← Explorer presets (= shareable links); arguments of simulate()
 ├── styles/custom.scss     ← site look

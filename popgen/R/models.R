@@ -120,6 +120,54 @@ hw_curves <- function(p = seq(0, 1, by = 0.01)) {
   )
 }
 
+#' Turn frequencies into whole numbers that add up to exactly N
+#' (largest remainder: round down, then give the leftovers to the
+#' largest fractional parts). Example: round_counts(c(0.09, 0.42, 0.49), 20)
+round_counts <- function(freqs, N) {
+  raw <- freqs * N
+  n <- floor(raw + 1e-9)
+  left <- N - sum(n)
+  if (left > 0) {
+    extra <- order(raw - n, decreasing = TRUE)[seq_len(left)]
+    n[extra] <- n[extra] + 1
+  }
+  n
+}
+
+#' One turn of the Hardy-Weinberg life cycle (lecture figure with the mice),
+#' counted in a small population of N mice:
+#'   adults -> gametes (N sperm + N eggs) -> zygotes -> juveniles.
+#' Adults are in HW proportions p^2, 2pq, q^2. Each adult passes on both of
+#' its alleles: half of the 2N alleles go into sperm, half into eggs.
+#' Sperm and eggs meet at random, so zygotes are again in HW proportions.
+#' Without selection, juveniles are the zygotes grown up.
+#' @param p frequency of A in the adults
+#' @param N number of mice (also the number of sperm and of eggs)
+#' @return long data.frame(stage, class, count, p): one row per genotype
+#'   (adults, zygotes, juveniles) or allele (sperm, eggs); p = frequency of A
+#'   in that stage
+hw_life_cycle <- function(p = 0.5, N = 20) {
+  stage_rows <- function(stage, class, count) {
+    p_stage <- if (length(class) == 3) (2 * count[1] + count[2]) / (2 * N) else count[1] / N
+    data.frame(stage = stage, class = class, count = count, p = p_stage)
+  }
+  g <- genotype_freqs(p)
+  adults <- round_counts(c(g$f11, g$f12, g$f22), N)
+  n_A <- 2 * adults[1] + adults[2] # copies of A among the 2N alleles
+  eggs_A <- ceiling(n_A / 2)
+  sperm_A <- n_A - eggs_A
+  pe <- eggs_A / N
+  ps <- sperm_A / N
+  zygotes <- round_counts(c(pe * ps, pe * (1 - ps) + (1 - pe) * ps, (1 - pe) * (1 - ps)), N)
+  rbind(
+    stage_rows("adults", c("AA", "Aa", "aa"), adults),
+    stage_rows("sperm", c("A", "a"), c(sperm_A, N - sperm_A)),
+    stage_rows("eggs", c("A", "a"), c(eggs_A, N - eggs_A)),
+    stage_rows("zygotes", c("AA", "Aa", "aa"), zygotes),
+    stage_rows("juveniles", c("AA", "Aa", "aa"), zygotes)
+  )
+}
+
 #' Genotype frequencies with and without inbreeding, for a bar chart.
 inbreeding_genotypes <- function(p = 0.5, F = 0.2) {
   g0 <- genotype_freqs(p, 0)

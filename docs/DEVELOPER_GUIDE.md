@@ -96,7 +96,7 @@ Useful inputs: `Inputs.range`, `Inputs.select`, `Inputs.toggle`, `Inputs.number`
 For a log-scale slider (population sizes) add `transform: Math.log`.
 
 ### Change colours
-Chart colours: `js/theme.js` (keep the three genotype colours distinct for colour-blind readers).
+Chart colours: `js/theme.js` (genotypes: AA dark brown, Aa mid brown, aa beige, as the mice in the lecture; keep them clearly different in lightness).
 Site colours/fonts: `styles/custom.scss`.
 
 ### Upgrade webR
@@ -131,6 +131,7 @@ With `N = Inf` step 5 is skipped and the result is deterministic. All replicates
 | `bottleneck_experiment(...)` | Flaschenhals | list `rows`, `heterozygosity` |
 | `mutation_trajectory(...)` | Mutation | closed-form *p*ₜ (fast for 100 000 generations) |
 | `hw_curves()`, `hwe_test()` | HWG | data frames |
+| `hw_life_cycle(p, N)` | HWG (mouse life cycle, drawn by `js/lifecycle.js`) | counts per stage: adults, sperm, eggs, zygotes, juveniles |
 | `inbreeding_genotypes()`, `inbreeding_depression()` | Inzucht | data frames |
 | `mutation_equilibrium()`, `mutation_selection_balance()` | Mutation | single numbers |
 
