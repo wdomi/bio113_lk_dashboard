@@ -96,7 +96,7 @@ Useful inputs: `Inputs.range`, `Inputs.select`, `Inputs.toggle`, `Inputs.number`
 For a log-scale slider (population sizes) add `transform: Math.log`.
 
 ### Change colours
-Chart colours: `js/theme.js` (keep the three genotype colours distinct for colour-blind readers).
+Chart colours: `js/theme.js` (genotypes: AA dark brown, Aa mid brown, aa beige, as the mice in the lecture; keep them clearly different in lightness).
 Site colours/fonts: `styles/custom.scss`.
 
 ### Upgrade webR
