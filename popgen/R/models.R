@@ -1,13 +1,13 @@
 # =============================================================================
 # models.R: the population-genetic equations (deterministic part)
 # -----------------------------------------------------------------------------
-# One locus, two alleles: A1 (frequency p) and A2 (frequency q = 1 - p).
+# One locus, two alleles: A (frequency p) and a (frequency q = 1 - p).
 # Notation follows the Bio 113 lectures (Keller, Vorlesungen 7-9):
 #
 #   Hardy-Weinberg     p^2 + 2pq + q^2 = 1
 #   Inbreeding (F)     f11 = p^2 + Fpq,  f12 = 2pq(1 - F),  f22 = q^2 + Fpq
 #   Selection          w11, w12, w22  (or w11 = 1, w12 = 1 - hs, w22 = 1 - s)
-#   Mutation           u: A1 -> A2,  v: A2 -> A1,   delta p = v - p(u + v)
+#   Mutation           u: A -> a,  v: a -> A,   delta p = v - p(u + v)
 #   Migration          p_I' = (1 - m) p_I + m p_C   (one-island model)
 #
 # Every function does ONE thing, has no side effects and works on vectors
@@ -18,9 +18,9 @@
 #' Keep frequencies inside [0, 1] (guards against rounding errors).
 clamp01 <- function(x) pmin(1, pmax(0, x))
 
-#' Genotype frequencies from the allele frequency of A1.
+#' Genotype frequencies from the allele frequency of A.
 #' With F = 0 these are the Hardy-Weinberg proportions p^2, 2pq, q^2.
-#' @param p frequency of A1 (vector allowed)
+#' @param p frequency of A (vector allowed)
 #' @param F inbreeding coefficient (0 = random mating, 1 = complete inbreeding)
 #' @return list(f11, f12, f22)
 genotype_freqs <- function(p, F = 0) {
@@ -32,11 +32,11 @@ genotype_freqs <- function(p, F = 0) {
   )
 }
 
-#' Allele frequency of A1 from genotype frequencies: p = f11 + f12 / 2.
+#' Allele frequency of A from genotype frequencies: p = f11 + f12 / 2.
 allele_freq <- function(g) clamp01(g$f11 + g$f12 / 2)
 
 #' Lecture parametrisation: w11 = 1, w12 = 1 - h s, w22 = 1 - s.
-#' h = 0: A1 dominant; h = 0.5: additive; h = 1: A1 recessive.
+#' h = 0: A dominant; h = 0.5: additive; h = 1: A recessive.
 fitness_from_sh <- function(s = 0, h = 0.5) {
   list(w11 = 1, w12 = 1 - h * s, w22 = 1 - s)
 }
@@ -61,7 +61,7 @@ apply_mutation <- function(p, u = 0, v = 0) clamp01(p * (1 - u) + (1 - p) * v)
 #' One-island migration: p_I' = (1 - m) p_I + m p_C.
 apply_migration <- function(p, m = 0, pC = 0.5) clamp01((1 - m) * p + m * pC)
 
-#' Equilibrium frequency of A1 under mutation alone: p_hat = v / (u + v).
+#' Equilibrium frequency of A under mutation alone: p_hat = v / (u + v).
 mutation_equilibrium <- function(u, v) if (u + v > 0) v / (u + v) else NA_real_
 
 #' Mutation alone has a closed-form solution:
@@ -75,7 +75,7 @@ mutation_trajectory <- function(p0 = 1, u = 1e-4, v = 1e-5, generations = 50000,
   data.frame(gen = gen, p = p, q = 1 - p)
 }
 
-#' Approximate mutation-selection balance for a deleterious allele A2.
+#' Approximate mutation-selection balance for a deleterious allele a.
 #' Recessive (h = 0): q_hat ~ sqrt(u / s); otherwise q_hat ~ u / (h s).
 mutation_selection_balance <- function(u, s, h = 0) {
   if (s <= 0) return(NA_real_)
@@ -98,7 +98,7 @@ hwe_test <- function(n11, n12, n22) {
   observed <- c(n11, n12, n22)
   chi2 <- sum(ifelse(expected > 0, (observed - expected)^2 / expected, 0))
   data.frame(
-    genotype = c("A1A1", "A1A2", "A2A2"),
+    genotype = c("AA", "Aa", "aa"),
     observed = observed,
     expected = expected,
     p = p,
@@ -115,7 +115,7 @@ hw_curves <- function(p = seq(0, 1, by = 0.01)) {
   g <- genotype_freqs(p)
   data.frame(
     p = rep(p, 3),
-    genotype = rep(c("A1A1", "A1A2", "A2A2"), each = length(p)),
+    genotype = rep(c("AA", "Aa", "aa"), each = length(p)),
     freq = c(g$f11, g$f12, g$f22)
   )
 }
@@ -125,14 +125,14 @@ inbreeding_genotypes <- function(p = 0.5, F = 0.2) {
   g0 <- genotype_freqs(p, 0)
   gF <- genotype_freqs(p, F)
   data.frame(
-    genotype = rep(c("A1A1", "A1A2", "A2A2"), 2),
+    genotype = rep(c("AA", "Aa", "aa"), 2),
     mating = rep(c("Zufallspaarung (F = 0)", sprintf("Inzucht (F = %s)", F)), each = 3),
     freq = c(g0$f11, g0$f12, g0$f22, gF$f11, gF$f12, gF$f22),
     p = rep(c(allele_freq(g0), allele_freq(gF)), each = 3) # unchanged by F!
   )
 }
 
-#' Mean fitness as a function of F when A2A2 has fitness 1 - s (inbreeding depression).
+#' Mean fitness as a function of F when aa has fitness 1 - s (inbreeding depression).
 inbreeding_depression <- function(q = 0.1, s = 0.5, points = 101) {
   F <- seq(0, 1, length.out = points)
   g <- genotype_freqs(1 - q, F)

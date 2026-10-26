@@ -105,7 +105,7 @@ Change `WEBR_URL` in `js/r-bridge.js` and the `webr` version in `package.json` (
 ## 3. The R package popgen
 
 ### Model
-One locus, two alleles A1 (*p*) and A2 (*q* = 1 − *p*), diploid, discrete generations.
+One locus, two alleles A (*p*) and a (*q* = 1 − *p*), diploid, discrete generations.
 Each generation (loop in `simulate()`):
 
 | # | Stage | Equation | Function (`models.R`) |

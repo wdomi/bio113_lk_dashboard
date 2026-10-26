@@ -6,7 +6,7 @@
 // The page look (fonts, spacing, cards) is in styles/custom.scss.
 // =============================================================================
 
-export const GENOTYPE_COLORS = ["#2a78d6", "#eb6834", "#1baf7a"]; // A1A1, A1A2, A2A2
+export const GENOTYPE_COLORS = ["#2a78d6", "#eb6834", "#1baf7a"]; // AA, Aa, aa
 
 export const SCENARIO_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#6250d6"]; // up to 4 scenarios
 

@@ -93,6 +93,10 @@ The variance of *p* per generation is ≈ *pq*/2N, as in the Wright–Fisher mod
 Matches the lecture slides (Keller, Vorlesungen 7–9: A1/A2, *w*₁₁ = 1, *w*₁₂ = 1 − *hs*, *w*₂₂ = 1 − *s*,
 Δ*p* = *v* − *p*(*u*+*v*), *p*<sub>I</sub>′ = (1−*m*)*p*<sub>I</sub> + *m p*<sub>C</sub>).
 
+**Allele names A/a instead of A1/A2** (2026-10-26, requested by Dorea). Fitness keeps the subscripts
+*w*₁₁, *w*₁₂, *w*₂₂ (= AA, Aa, aa) and the R/JS field names (`f11`, `w12`, …) are unchanged; only names shown
+to people changed. Older entries above still say A1/A2.
+
 **Colours:** genotype colours (blue/orange/green) are the first three slots of a colour-blind-validated palette and
 mean the same genotype on every page. Replicates share one colour with transparency, because they are not separate categories.
 

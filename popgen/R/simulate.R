@@ -44,14 +44,14 @@ drift_sample <- function(g, N) {
 #' With the defaults nothing evolves (Hardy-Weinberg). Change one argument at
 #' a time to see its effect.
 #'
-#' @param p0 starting frequency of A1
+#' @param p0 starting frequency of A
 #' @param N population size (individuals); Inf = no drift
 #' @param generations number of generations
 #' @param replicates number of independent populations
 #' @param w11,w12,w22 genotype fitnesses
 #' @param s,h alternative to w: if s is given, w11 = 1, w12 = 1 - h s, w22 = 1 - s
-#' @param u,v mutation rates A1 -> A2 and A2 -> A1
-#' @param m,pC migration rate and A1 frequency of the source (continent)
+#' @param u,v mutation rates A -> a and a -> A
+#' @param m,pC migration rate and frequency of A in the source (continent)
 #' @param F inbreeding coefficient
 #' @param bottleneck NULL or list(start, duration, size)
 #' @param seed random seed (same seed = same result)

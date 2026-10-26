@@ -44,7 +44,7 @@ config: add preset for worksheet part 3
 ## Conventions
 
 - **Language:** student-facing text in German (Swiss spelling: "ss" not "ß"), notation as in the lectures
-  (A1/A2, *p*, *q*, *w*₁₁, *s*, *h*, *u*, *v*, *m*, *p*<sub>C</sub>, *F*). Code, comments and docs in English.
+  (A/a, *p*, *q*, *w*₁₁, *s*, *h*, *u*, *v*, *m*, *p*<sub>C</sub>, *F*). Code, comments and docs in English.
 - **All population genetics is R** (`popgen/R/`). JavaScript only draws (`js/plots.js`) and connects (`js/r-bridge.js`).
 - **R functions are pure**: arguments in, data frame out, no global state. Base R + `stats`/`utils` only (the browser downloads every package).
 - **Defaults mean "no effect"**, so adding an argument never changes existing pages.

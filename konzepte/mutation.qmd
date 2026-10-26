@@ -7,7 +7,7 @@ description: "Mutationsraten u und v, Gleichgewicht und Mutation-Selektion-Gleic
 {{< include /_partials/_setup.qmd >}}
 
 Mutation erzeugt neue Allele. Als Kraft, die Allelfrequenzen verändert, ist sie aber sehr langsam, weil Mutationsraten
-klein sind. Mit $u$ (A1 → A2) und $v$ (A2 → A1) gilt
+klein sind. Mit $u$ (A → a) und $v$ (a → A) gilt
 
 $$
 \Delta p = v - p\,(u + v) \qquad\text{Gleichgewicht:}\qquad \hat{p} = \frac{v}{u + v}
@@ -19,8 +19,8 @@ Die Vorlesung verwendet $u = 10^{-4}$ und $v = 10^{-5}$. Achten Sie auf die Zahl
 
 ```{ojs}
 //| panel: input
-viewof logu = Inputs.range([-6, -1], {value: -4, step: 0.1, label: "log₁₀ u (A1 → A2)"})
-viewof logv = Inputs.range([-6, -1], {value: -5, step: 0.1, label: "log₁₀ v (A2 → A1)"})
+viewof logu = Inputs.range([-6, -1], {value: -4, step: 0.1, label: "log₁₀ u (A → a)"})
+viewof logv = Inputs.range([-6, -1], {value: -5, step: 0.1, label: "log₁₀ v (a → A)"})
 viewof p0 = Inputs.range([0, 1], {value: 1, step: 0.01, label: "Start-Allelfrequenz p₀"})
 viewof generations = Inputs.select([1000, 10000, 50000, 100000], {value: 50000, label: "Generationen"})
 ```
@@ -39,21 +39,21 @@ html`<p class="result">Gleichgewicht (gestrichelt): <b>p̂ = ${p_hat.toFixed(3)}
 
 ## Mutation gegen Selektion
 
-Ein schädliches Allel A2 entsteht immer wieder neu und wird durch Selektion entfernt. Es stellt sich ein
+Ein schädliches Allel a entsteht immer wieder neu und wird durch Selektion entfernt. Es stellt sich ein
 Gleichgewicht ein: für ein rezessives Allel etwa $\hat{q} \approx \sqrt{u/s}$.
 
 ```{ojs}
 //| panel: input
-viewof s = Inputs.range([0.01, 1], {value: 0.1, step: 0.01, label: "Selektion gegen A2A2: s"})
-viewof h = Inputs.range([0, 1], {value: 0, step: 0.05, label: "Dominanz von A2: h"})
-viewof logu2 = Inputs.range([-6, -2], {value: -3, step: 0.1, label: "log₁₀ u (A1 → A2)"})
+viewof s = Inputs.range([0.01, 1], {value: 0.1, step: 0.01, label: "Selektion gegen aa: s"})
+viewof h = Inputs.range([0, 1], {value: 0, step: 0.05, label: "Dominanz von a: h"})
+viewof logu2 = Inputs.range([-6, -2], {value: -3, step: 0.1, label: "log₁₀ u (A → a)"})
 ```
 
 ```{ojs}
 u2 = 10 ** logu2
 q_hat = R.call("mutation_selection_balance", {u: u2, s, h}, {key: "mut-bal"})
 rows_ms = R.call("simulate", {p0: 1, u: u2, s, h, generations: 1000}, {key: "mut-sel"})
-alleleTrajectoryPlot(Plot, rows_ms, {width, y: "q", yLabel: "Allelfrequenz q (A2)", highlight: q_hat})
+alleleTrajectoryPlot(Plot, rows_ms, {width, y: "q", yLabel: "Allelfrequenz q (a)", highlight: q_hat})
 ```
 
 ```{ojs}

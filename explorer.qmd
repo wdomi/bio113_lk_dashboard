@@ -43,9 +43,9 @@ viewof infinite = Inputs.toggle({label: "Unendlich grosse Population (keine Drif
 viewof N = Inputs.range([2, 100000], {value: Number.isFinite(S.N) ? S.N : 1000, step: 1, transform: Math.log, label: "Populationsgrösse N", disabled: infinite})
 viewof p0 = Inputs.range([0, 1], {value: S.p0, step: 0.01, label: "Start-Allelfrequenz p₀"})
 viewof generations = Inputs.range([1, 1000], {value: S.generations, step: 1, label: "Generationen"})
-viewof w11 = Inputs.range([0, 1], {value: S.w11, step: 0.01, label: "Fitness w₁₁ (A1A1)"})
-viewof w12 = Inputs.range([0, 1], {value: S.w12, step: 0.01, label: "Fitness w₁₂ (A1A2)"})
-viewof w22 = Inputs.range([0, 1], {value: S.w22, step: 0.01, label: "Fitness w₂₂ (A2A2)"})
+viewof w11 = Inputs.range([0, 1], {value: S.w11, step: 0.01, label: "Fitness w₁₁ (AA)"})
+viewof w12 = Inputs.range([0, 1], {value: S.w12, step: 0.01, label: "Fitness w₁₂ (Aa)"})
+viewof w22 = Inputs.range([0, 1], {value: S.w22, step: 0.01, label: "Fitness w₂₂ (aa)"})
 viewof replicates = Inputs.range([1, 100], {value: S.replicates, step: 1, label: "Anzahl Populationen", disabled: infinite})
 viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (x) => x + 1})
 ```
@@ -55,8 +55,8 @@ viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (x) => x + 1})
 
 ```{ojs}
 //| panel: input
-viewof u = Inputs.number([0, 0.1], {value: S.u, step: 0.00001, label: "Mutation u (A1 → A2)"})
-viewof v = Inputs.number([0, 0.1], {value: S.v, step: 0.00001, label: "Mutation v (A2 → A1)"})
+viewof u = Inputs.number([0, 0.1], {value: S.u, step: 0.00001, label: "Mutation u (A → a)"})
+viewof v = Inputs.number([0, 0.1], {value: S.v, step: 0.00001, label: "Mutation v (a → A)"})
 viewof m = Inputs.range([0, 0.5], {value: S.m, step: 0.005, label: "Migrationsrate m"})
 viewof pC = Inputs.range([0, 1], {value: S.pC, step: 0.01, label: "Allelfrequenz der Quelle p_C"})
 viewof F = Inputs.range([0, 1], {value: S.F, step: 0.01, label: "Inzuchtkoeffizient F"})
@@ -91,8 +91,8 @@ alleleTrajectoryPlot(Plot, rows, {width})
 html`<div class="stat-row">
   <div class="stat-tile"><div class="stat-label">Mittelwert p (letzte Gen.)</div><div class="stat-value">${summary.mean.toFixed(3)}</div></div>
   <div class="stat-tile"><div class="stat-label">Standardabweichung</div><div class="stat-value">${nRep > 1 ? summary.sd.toFixed(3) : "–"}</div></div>
-  <div class="stat-tile"><div class="stat-label">A1 fixiert</div><div class="stat-value">${summary.fixed} / ${summary.n}</div></div>
-  <div class="stat-tile"><div class="stat-label">A1 verloren</div><div class="stat-value">${summary.lost} / ${summary.n}</div></div>
+  <div class="stat-tile"><div class="stat-label">A fixiert</div><div class="stat-value">${summary.fixed} / ${summary.n}</div></div>
+  <div class="stat-tile"><div class="stat-label">A verloren</div><div class="stat-value">${summary.lost} / ${summary.n}</div></div>
 </div>`
 ```
 
@@ -109,7 +109,7 @@ nRep > 1 ? html`<h3>Verteilung der Endfrequenzen</h3>${finalFrequencyHistogram(P
 ## Daten
 
 ```{ojs}
-csv = d3.csvFormat(rows.map(({rep, gen, N, p, q, f11, f12, f22}) => ({population: rep, generation: gen, N, p, q, A1A1: f11, A1A2: f12, A2A2: f22})))
+csv = d3.csvFormat(rows.map(({rep, gen, N, p, q, f11, f12, f22}) => ({population: rep, generation: gen, N, p, q, AA: f11, Aa: f12, aa: f22})))
 html`<p>${DOM.download(new Blob([csv], {type: "text/csv"}), "popgen-simulation.csv", "Daten als CSV herunterladen")}
 <span style="opacity:.7"> · ${rows.length.toLocaleString("de-CH")} Zeilen, z. B. für die Auswertung in R</span></p>`
 ```

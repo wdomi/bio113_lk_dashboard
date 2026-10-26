@@ -77,7 +77,7 @@ export function genotypePlot(Plot, long, { width = 700, showHW = true } = {}) {
   return Plot.plot({
     ...base(width),
     y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },
-    color: { domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS, legend: true, position: "top" },
+    color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
       showHW
         ? Plot.line(long, { x: "gen", y: "hw", stroke: "genotype", strokeDasharray: "2,4", strokeWidth: 1.5, strokeOpacity: 0.7 })
@@ -101,9 +101,9 @@ export function hardyWeinbergCurves(Plot, curves, here, { width = 700 } = {}) {
   const p = here[0]?.p;
   return Plot.plot({
     ...base(width),
-    x: { domain: [0, 1], label: "Allelfrequenz p (A1)", labelAnchor: "right", tickSize: 0 },
+    x: { domain: [0, 1], label: "Allelfrequenz p (A)", labelAnchor: "right", tickSize: 0 },
     y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },
-    color: { domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS, legend: true, position: "top" },
+    color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
       Plot.ruleX([p], { stroke: COLORS.axis, strokeDasharray: "3,3" }),
       Plot.line(curves, { x: "p", y: "freq", stroke: "genotype", strokeWidth: 2.25 }),
@@ -188,10 +188,10 @@ export function genotypeBars(Plot, rows, { width = 700, facet = "mating" } = {})
     marginLeft: 48,
     marginBottom: 36,
     style: { fontSize: "13px", background: "transparent", overflow: "visible" },
-    x: { label: null, domain: ["A1A1", "A1A2", "A2A2"], tickSize: 0 },
+    x: { label: null, domain: ["AA", "Aa", "aa"], tickSize: 0 },
     y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },
     fx: { label: null, domain: [...new Set(rows.map((d) => d[facet]))] },
-    color: { domain: ["A1A1", "A1A2", "A2A2"], range: GENOTYPE_COLORS },
+    color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS },
     marks: [
       Plot.barY(rows, { x: "genotype", y: "freq", fx: facet, fill: "genotype", inset: 12, rx: 4, tip: true }),
       Plot.ruleY([0], { stroke: COLORS.axis }),
@@ -224,7 +224,7 @@ export function curvePlot(Plot, rows, { x, y, xLabel, yLabel, highlightX = null,
 export function trajectoryWithBand(Plot, rows, band, { width = 700 } = {}) {
   return Plot.plot({
     ...base(width),
-    y: { domain: [0, 1], label: "Allelfrequenz p (A1)", grid: true, tickSize: 0, labelAnchor: "top" },
+    y: { domain: [0, 1], label: "Allelfrequenz p (A)", grid: true, tickSize: 0, labelAnchor: "top" },
     marks: [
       Plot.rectX([band], { x1: "x1", x2: "x2", y1: 0, y2: 1, fill: COLORS.band }),
       Plot.line(rows, { x: "gen", y: "p", z: "rep", stroke: COLORS.series, strokeOpacity: 0.4, strokeWidth: 2 }),
