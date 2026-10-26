@@ -4,13 +4,13 @@ description: "Begriffe der Populationsgenetik, wie sie in Bio 113 verwendet werd
 ---
 
 Allel
-: Eine Variante eines Gens bzw. Genorts. Hier betrachten wir immer zwei Allele, A1 und A2.
+: Eine Variante eines Gens bzw. Genorts. Hier betrachten wir immer zwei Allele, A und a.
 
 Allelfrequenz ($p$, $q$)
-: Anteil eines Allels an allen Kopien des Genorts in der Population. $p$ für A1, $q = 1 - p$ für A2.
+: Anteil eines Allels an allen Kopien des Genorts in der Population. $p$ für A, $q = 1 - p$ für a.
 
 Genotypfrequenz
-: Anteil der Individuen mit einem bestimmten Genotyp (A1A1, A1A2, A2A2).
+: Anteil der Individuen mit einem bestimmten Genotyp (AA, Aa, aa).
 
 Genpool
 : Gesamtheit aller Allele (Gameten) einer Population, die zur nächsten Generation beitragen.
@@ -40,7 +40,7 @@ Mittlere Fitness ($\bar{w}$)
 : Durchschnittliche Fitness aller Individuen einer Population.
 
 Mutationsrate ($u$, $v$)
-: Wahrscheinlichkeit pro Generation, dass A1 zu A2 mutiert ($u$) bzw. umgekehrt ($v$). → [Seite](konzepte/mutation.qmd)
+: Wahrscheinlichkeit pro Generation, dass A zu a mutiert ($u$) bzw. umgekehrt ($v$). → [Seite](konzepte/mutation.qmd)
 
 Migration / Genfluss ($m$)
 : Übertragung von Allelen zwischen Populationen. $m$ = Anteil des Genpools, der aus Zuwanderern stammt. → [Seite](konzepte/migration.qmd)

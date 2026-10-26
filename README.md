@@ -8,7 +8,7 @@ Hardy–Weinberg, genetic drift, selection, mutation, migration, inbreeding and 
 (after the one-time GitHub Pages setup below)
 
 The student-facing text is in German, matching the lectures and their notation
-(A1/A2, *p*, *q*, *w*₁₁, *s*, *h*, *u*, *v*, *m*, *p*<sub>C</sub>, *F*).
+(A/a, *p*, *q*, *w*₁₁, *s*, *h*, *u*, *v*, *m*, *p*<sub>C</sub>, *F*).
 Code, comments and developer documentation are in English. **All population genetics is written in R** (`popgen/`).
 
 ---

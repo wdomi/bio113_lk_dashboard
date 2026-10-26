@@ -33,19 +33,19 @@ genotypeBars(Plot, bars, {width})
 ```
 
 ```{ojs}
-het = bars.filter(d => d.genotype === "A1A2")
+het = bars.filter(d => d.genotype === "Aa")
 html`<p class="result">Heterozygote: <b>${het[0].freq.toFixed(3)} → ${het[1].freq.toFixed(3)}</b> ·
 Allelfrequenz p = <b>${bars[3].p.toFixed(3)}</b> (unverändert)</p>`
 ```
 
 ## Inzuchtdepression
 
-Ein schädliches rezessives Allel A2 macht A2A2 weniger fit ($s$). Wie verändert Inzucht die mittlere Fitness?
+Ein schädliches rezessives Allel a macht aa weniger fit ($s$). Wie verändert Inzucht die mittlere Fitness?
 
 ```{ojs}
 //| panel: input
 viewof q_del = Inputs.range([0.01, 0.5], {value: 0.1, step: 0.01, label: "Frequenz q des schädlichen Allels"})
-viewof s_del = Inputs.range([0, 1], {value: 0.5, step: 0.01, label: "Fitnessverlust s von A2A2"})
+viewof s_del = Inputs.range([0, 1], {value: 0.5, step: 0.01, label: "Fitnessverlust s von aa"})
 ```
 
 ```{ojs}

@@ -24,7 +24,7 @@ test_that("migration pulls the island towards the continent", {
   expect_equal(tail(d$p, 1), 0.8, tolerance = 1e-3)
 })
 
-test_that("HHMI case study 1 (lactase): A1 rises from 0.05 to ~0.95 in 200 generations", {
+test_that("HHMI case study 1 (lactase): A rises from 0.05 to ~0.95 in 200 generations", {
   d <- simulate(p0 = 0.05, generations = 200, w11 = 1, w12 = 1, w22 = 0.9)
   expect_gt(tail(d$p, 1), 0.9)
   expect_lt(tail(d$p, 1), 0.99)

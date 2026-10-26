@@ -7,10 +7,10 @@ description: "Genotypfrequenzen p², 2pq und q², Gleichgewicht und Test."
 {{< include /_partials/_setup.qmd >}}
 
 Ohne evolutionäre Kräfte bleiben Allel- und Genotypfrequenzen über die Generationen gleich.
-Bei zwei Allelen A1 (Frequenz $p$) und A2 (Frequenz $q = 1 - p$) sind die erwarteten Genotypfrequenzen
+Bei zwei Allelen A (Frequenz $p$) und a (Frequenz $q = 1 - p$) sind die erwarteten Genotypfrequenzen
 
 $$
-\text{A1A1: } p^2 \qquad \text{A1A2: } 2pq \qquad \text{A2A2: } q^2
+\text{AA: } p^2 \qquad \text{Aa: } 2pq \qquad \text{aa: } q^2
 $$
 
 Sie summieren sich zu 1. Dieses Modell ist der Massstab, an dem Sie echte Daten messen.
@@ -21,7 +21,7 @@ Verschieben Sie $p$ und beobachten Sie die drei Genotypfrequenzen.
 
 ```{ojs}
 //| panel: input
-viewof p = Inputs.range([0, 1], {value: 0.3, step: 0.01, label: "Allelfrequenz p (A1)"})
+viewof p = Inputs.range([0, 1], {value: 0.3, step: 0.01, label: "Allelfrequenz p (A)"})
 ```
 
 ```{ojs}
@@ -55,14 +55,14 @@ html`<p class="result">Nach 50 Generationen: <b>p = ${res_hw.rows.at(-1).p.toFix
 ## Ist meine Population im Gleichgewicht?
 
 Geben Sie beobachtete Genotyp-Anzahlen ein. Der $\chi^2$-Test (1 Freiheitsgrad, kritischer Wert 3.84 bei $\alpha = 0.05$) prüft,
-ob die Abweichung grösser ist, als Zufall erklären kann. Das Beispiel aus der Vorlesung: 2 A1A1, 3 A1A2, 1 A2A2.
+ob die Abweichung grösser ist, als Zufall erklären kann. Das Beispiel aus der Vorlesung: 2 AA, 3 Aa, 1 aa.
 
 ```{ojs}
 //| panel: input
 viewof counts = Inputs.form({
-  n11: Inputs.number({value: 2, min: 0, step: 1, label: "A1A1"}),
-  n12: Inputs.number({value: 3, min: 0, step: 1, label: "A1A2"}),
-  n22: Inputs.number({value: 1, min: 0, step: 1, label: "A2A2"})
+  n11: Inputs.number({value: 2, min: 0, step: 1, label: "AA"}),
+  n12: Inputs.number({value: 3, min: 0, step: 1, label: "Aa"}),
+  n22: Inputs.number({value: 1, min: 0, step: 1, label: "aa"})
 })
 ```
 
@@ -83,7 +83,7 @@ ${t1.n < 30 ? html`<br><small>Bei so kleinen Stichproben ist der Test unzuverlä
 
 1. Bei welchem $p$ ist der Anteil Heterozygoter am grössten?
 2. Ein rezessives Merkmal kommt bei 1 % vor. Wie häufig sind das Allel und die Träger?
-3. Sie beobachten 50 A1A1, 0 A1A2, 50 A2A2. Welche Annahme des Modells könnte verletzt sein?
+3. Sie beobachten 50 AA, 0 Aa, 50 aa. Welche Annahme des Modells könnte verletzt sein?
 
 ::: {.callout-tip collapse="true"}
 ## Lösungshinweise

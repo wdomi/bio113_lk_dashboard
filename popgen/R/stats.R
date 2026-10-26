@@ -10,7 +10,7 @@ final_rows <- function(d) {
 }
 
 #' Summary of final allele frequencies across replicates, one row per scenario.
-#' fixed = A1 reached 1, lost = A1 reached 0.
+#' fixed = A reached 1, lost = A reached 0.
 summarize_final <- function(d, tol = 1e-9) {
   f <- final_rows(d)
   if (is.null(f$scenario)) f$scenario <- ""
@@ -34,7 +34,7 @@ genotypes_long <- function(d) {
   data.frame(
     rep = rep(d$rep, 3),
     gen = rep(d$gen, 3),
-    genotype = rep(c("A1A1", "A1A2", "A2A2"), each = nrow(d)),
+    genotype = rep(c("AA", "Aa", "aa"), each = nrow(d)),
     freq = c(d$f11, d$f12, d$f22),
     hw = c(hw$f11, hw$f12, hw$f22)
   )

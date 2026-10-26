@@ -7,7 +7,7 @@ Sie soll ein Gefühl dafür vermitteln, wie die Prozesse aus der Vorlesung Allel
 
 ## Das Modell
 
-Ein Genort mit zwei Allelen, **A1** (Frequenz $p$) und **A2** (Frequenz $q = 1 - p$). Jede Generation durchläuft
+Ein Genort mit zwei Allelen, **A** (Frequenz $p$) und **a** (Frequenz $q = 1 - p$). Jede Generation durchläuft
 dieselben Schritte:
 
 1. **Gameten** der Adulten bilden den Genpool ($p$).

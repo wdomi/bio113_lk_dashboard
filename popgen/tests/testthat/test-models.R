@@ -12,11 +12,11 @@ test_that("inbreeding F = 1 removes heterozygotes but keeps p", {
   expect_equal(allele_freq(g), 0.3)
 })
 
-test_that("lecture example: 2 A1A1, 3 A1A2, 1 A2A2 gives p = 7/12", {
+test_that("lecture example: 2 AA, 3 Aa, 1 aa gives p = 7/12", {
   expect_equal(allele_freq(list(f11 = 2 / 6, f12 = 3 / 6, f22 = 1 / 6)), 7 / 12)
 })
 
-test_that("equal fitness changes nothing; selection against A2A2 increases p", {
+test_that("equal fitness changes nothing; selection against aa increases p", {
   g <- genotype_freqs(0.4)
   expect_equal(apply_selection(g, list(w11 = 1, w12 = 1, w22 = 1)), g)
   expect_gt(allele_freq(apply_selection(genotype_freqs(0.5), fitness_from_sh(0.5, 0))), 0.5)
@@ -44,7 +44,7 @@ test_that("chi-square is 0 for perfect HW counts and matches the lecture example
   expect_equal(hwe_test(2, 3, 1)$p[1], 7 / 12)
 })
 
-test_that("mean fitness falls with inbreeding when A2 is deleterious and recessive", {
+test_that("mean fitness falls with inbreeding when allele a is deleterious and recessive", {
   d <- inbreeding_depression(q = 0.1, s = 0.5)
   expect_true(all(diff(d$wbar) < 0))
 })

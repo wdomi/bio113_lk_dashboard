@@ -15,7 +15,7 @@ d <- simulate(N = 50, p0 = 0.5, generations = 100, replicates = 20)
 head(d)
 summarize_final(d)
 matplot(matrix(d$p, ncol = 20), type = "l", lty = 1, ylim = c(0, 1),
-        xlab = "Generation", ylab = "p (A1)")
+        xlab = "Generation", ylab = "p (A)")
 
 simulate(p0 = 0.05, generations = 200, w22 = 0.9)   # lactase case study
 hwe_test(2, 3, 1)                                    # lecture example

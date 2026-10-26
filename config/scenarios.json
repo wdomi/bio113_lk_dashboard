@@ -22,13 +22,13 @@
     {
       "id": "laktase",
       "label": "Selektion: Laktase-Persistenz",
-      "description": "A1 (Laktase-Persistenz) ist dominant und vorteilhaft; A2A2 hat eine um 10 % reduzierte Fitness. Generationszeit Mensch ≈ 25 Jahre.",
+      "description": "A (Laktase-Persistenz) ist dominant und vorteilhaft; aa hat eine um 10 % reduzierte Fitness. Generationszeit Mensch ≈ 25 Jahre.",
       "params": { "N": null, "generations": 200, "p0": 0.05, "w11": 1, "w12": 1, "w22": 0.9, "replicates": 1 }
     },
     {
       "id": "hund",
       "label": "Selektion: Fellfarbe Schäferhund (letal)",
-      "description": "A1A1 ist embryonal letal (w11 = 0), Heterozygote haben eine weisse Scheckung. A1 wird selten, verschwindet aber nicht ganz.",
+      "description": "AA ist embryonal letal (w11 = 0), Heterozygote haben eine weisse Scheckung. A wird selten, verschwindet aber nicht ganz.",
       "params": { "N": null, "generations": 50, "p0": 0.5, "w11": 0, "w12": 1, "w22": 1, "replicates": 1 }
     },
     {
@@ -52,7 +52,7 @@
     {
       "id": "mut-sel",
       "label": "Mutation–Selektion-Gleichgewicht",
-      "description": "Schädliches rezessives Allel A2 (s = 0.1) entsteht durch Mutation (u = 0.001) neu. Gleichgewicht q̂ ≈ √(u/s) ≈ 0.1.",
+      "description": "Schädliches rezessives Allel a (s = 0.1) entsteht durch Mutation (u = 0.001) neu. Gleichgewicht q̂ ≈ √(u/s) ≈ 0.1.",
       "params": { "N": null, "generations": 500, "p0": 1, "w11": 1, "w12": 1, "w22": 0.9, "u": 0.001, "replicates": 1 }
     }
   ]

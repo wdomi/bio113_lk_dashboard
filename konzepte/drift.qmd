@@ -65,7 +65,7 @@ Inputs.table(cmp.summary.map(s => ({"Grösse": s.scenario, "Mittelwert": s.mean,
 ## Fragen
 
 1. Wie verändert sich die Streuung der Endfrequenzen, wenn Sie $N$ verzehnfachen?
-2. Mit $p_0 = 0.2$ und $N = 20$: In welchem Anteil der Populationen wird A1 fixiert? Vergleichen Sie mit $p_0$.
+2. Mit $p_0 = 0.2$ und $N = 20$: In welchem Anteil der Populationen wird A fixiert? Vergleichen Sie mit $p_0$.
 3. Die Heterozygotie sinkt im Mittel, obwohl einzelne Populationen auch wieder zur Mitte schwanken. Wie passt das zusammen?
 
 ::: {.callout-tip collapse="true"}
