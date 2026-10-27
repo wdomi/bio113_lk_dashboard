@@ -27,7 +27,7 @@ const base = (width, height = 300) => ({
   height,
   marginLeft: 48,
   marginBottom: 40,
-  marginTop: 12,
+  marginTop: 32, // room for the y-axis label above the top tick
   style: { fontSize: "13px", background: "transparent", overflow: "visible" },
   x: { label: "Generation", labelAnchor: "right", grid: false, tickSize: 0 },
   y: { grid: true, tickSize: 0, labelAnchor: "top" },
@@ -126,10 +126,10 @@ export function finalFrequencyHistogram(Plot, rows, { width = 700, bins = 20 } =
     ...base(width),
     marginLeft: 48,
     marginRight: hasScenario ? 100 : 12,
-    height: hasScenario ? 96 * scenarios.length + 36 : 240,
+    height: hasScenario ? 96 * scenarios.length + 56 : 260,
     x: { domain: [0, 1], label: "Allelfrequenz in der letzten Generation", labelAnchor: "right", tickSize: 0 },
     y: { label: "Replikate", grid: true, tickSize: 0, labelAnchor: "top" },
-    fy: hasScenario ? { label: null, domain: scenarios } : undefined,
+    fy: hasScenario ? { label: null, domain: scenarios, padding: 0.2 } : undefined,
     color: hasScenario ? { domain: scenarios, range: SCENARIO_COLORS } : undefined,
     marks: [
       Plot.rectY(
@@ -184,9 +184,10 @@ export function heterozygosityPlot(Plot, het, { width = 700, labels = ["simulier
 export function genotypeBars(Plot, rows, { width = 700, facet = "mating" } = {}) {
   return Plot.plot({
     width,
-    height: 260,
+    height: 280,
     marginLeft: 48,
     marginBottom: 36,
+    marginTop: 52, // y-axis label sits above the panel titles
     style: { fontSize: "13px", background: "transparent", overflow: "visible" },
     x: { label: null, domain: ["AA", "Aa", "aa"], tickSize: 0 },
     y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },

@@ -15,6 +15,7 @@ versions: [SemVer](https://semver.org).
 - Advanced controls (other forces in the Explorer) are in a collapsed box, so the main sliders stay visible.
 - Each concept page shows its main result in one sentence under the chart.
 - Charts use a plainer style with legends on top.
+- Charts: more space above the plot area, so the y-axis label (e.g. "↑ Genotypfrequenz") no longer overlaps the top tick numbers; histogram panels no longer touch each other.
 - Alleles are now called **A** and **a** (genotypes AA, Aa, aa) instead of A1/A2 everywhere: page text, slider labels,
   chart legends, CSV export columns and the R package (`genotype` column returned by `hwe_test()`, `hw_curves()`, `inbreeding_genotypes()` and `genotypes_long()`).
 
