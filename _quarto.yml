@@ -27,7 +27,7 @@ lang: de
 
 website:
   title: "Populationsgenetik"
-  description: "Interaktive Simulationen zu Hardy-Weinberg, Drift, Selektion, Mutation, Migration und Inzucht. Begleitmaterial zu Bio 113, Universität Zürich."
+  description: "Interaktive Simulationen zu Hardy-Weinberg, Mutation, Selektion, Drift, Migration. Begleitmaterial zu Bio 113, Universität Zürich."
   site-url: "https://wdomi.github.io/bio113_lk_dashboard/"
   repo-url: "https://github.com/wdomi/bio113_lk_dashboard"
   repo-actions: [issue]
@@ -41,16 +41,16 @@ website:
       - text: Konzepte
         menu:
           - konzepte/hardy-weinberg.qmd
-          - konzepte/drift.qmd
           - konzepte/selektion.qmd
           - konzepte/mutation.qmd
           - konzepte/migration.qmd
-          - konzepte/inzucht.qmd
-          - konzepte/flaschenhals.qmd
-      - href: explorer.qmd
-        text: Explorer
-      - href: glossar.qmd
-        text: Glossar
+          - konzepte/drift.qmd
+          # - konzepte/inzucht.qmd
+          # - konzepte/flaschenhals.qmd
+      # - href: explorer.qmd
+      #   text: Explorer
+      # - href: glossar.qmd
+      #   text: Glossar
     right:
       - href: ueber.qmd
         text: Über
