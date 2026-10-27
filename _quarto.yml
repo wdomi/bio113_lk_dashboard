@@ -41,8 +41,8 @@ website:
       - text: Konzepte
         menu:
           - konzepte/hardy-weinberg.qmd
-          - konzepte/selektion.qmd
           - konzepte/mutation.qmd
+          - konzepte/selektion.qmd
           - konzepte/migration.qmd
           - konzepte/drift.qmd
           # - konzepte/inzucht.qmd

@@ -71,12 +71,14 @@ genotypePlot(Plot, res_hw.genotypes, {width})
 html`<p class="result">Nach 50 Generationen: <b>p = ${res_hw.rows.at(-1).p.toFixed(3)}</b>, unverändert.</p>`
 ```
 
+<!-- Ausgeblendet: Gleichgewichtstest (chi²)
 ## Ist meine Population im Gleichgewicht?
 
 Geben Sie beobachtete Genotyp-Anzahlen ein. Der $\chi^2$-Test (1 Freiheitsgrad, kritischer Wert 3.84 bei $\alpha = 0.05$) prüft,
 ob die Abweichung grösser ist, als Zufall erklären kann. Das Beispiel aus der Vorlesung: 2 AA, 3 Aa, 1 aa.
 
 ```{ojs}
+//| eval: false
 //| panel: input
 viewof counts = Inputs.form({
   n11: Inputs.number({value: 2, min: 0, step: 1, label: "AA"}),
@@ -86,6 +88,7 @@ viewof counts = Inputs.form({
 ```
 
 ```{ojs}
+//| eval: false
 test = R.call("hwe_test", counts)
 t1 = test[0]
 Inputs.table(test.map(d => ({Genotyp: d.genotype, beobachtet: d.observed, erwartet: d.expected})),
@@ -93,10 +96,12 @@ Inputs.table(test.map(d => ({Genotyp: d.genotype, beobachtet: d.observed, erwart
 ```
 
 ```{ojs}
+//| eval: false
 html`<p class="result">p = <b>${t1.p.toFixed(3)}</b> · χ² = <b>${t1.chi2.toFixed(2)}</b> (p-Wert ${t1.p_value.toFixed(3)}) →
 ${t1.chi2 > 3.84 ? "signifikante Abweichung vom Gleichgewicht" : "keine signifikante Abweichung"}.
 ${t1.n < 30 ? html`<br><small>Bei so kleinen Stichproben ist der Test unzuverlässig.</small>` : ""}</p>`
 ```
+-->
 
 ## Fragen
 
@@ -110,3 +115,48 @@ ${t1.n < 30 ? html`<br><small>Bei so kleinen Stichproben ist der Test unzuverlä
 2. $q^2 = 0.01$, also $q = 0.1$. Heterozygote: $2 \cdot 0.9 \cdot 0.1 = 0.18$, also 18 %.
 3. $p = 0.5$, erwartet wären 25 / 50 / 25. Mögliche Ursachen: Inzucht, nicht zufällige Paarung oder zwei getrennte Teilpopulationen.
 :::
+
+<!-- Übersicht: welche Kräfte das Gleichgewicht stören -->
+Das Hardy-Weinberg-Gleichgewicht gilt nur, wenn **keine** der folgenden Kräfte wirkt.
+
+| Prozess | verändert | Richtung |
+|---|---|---|
+| Mutation | Allelfrequenzen | gerichtet, sehr langsam |
+| Selektion | Allelfrequenzen | gerichtet, nach Fitness |
+| Migration | Allelfrequenzen | Richtung Quellpopulation |
+| Genetische Drift | Allelfrequenzen | zufällig |
+<!-- | Inzucht | nur Genotypfrequenzen | mehr Homozygote | -->
+
+Zusätzliche Annahmen sind:
+
+- Zufallspaarung
+- grosse Population
+
+<!-- Abweichungen: Karten zu den einzelnen Kräften -->
+```{=html}
+<h3 class="concept-heading">Abweichungen vom Nullmodell:</h3>
+
+<div class="concept-grid">
+
+    <a class="concept-card" href="mutation.html">
+      <strong>Mutation</strong>
+      <span>Die Quelle neuer Allele, aber langsam.</span>
+    </a>
+
+    <a class="concept-card" href="selektion.html">
+      <strong>Selektion</strong>
+      <span>Unterschiedliche Fitness verschiebt Allelfrequenzen gerichtet.</span>
+    </a>
+
+    <a class="concept-card" href="migration.html">
+      <strong>Migration</strong>
+      <span>Genfluss macht Populationen einander ähnlicher.</span>
+    </a>
+
+    <a class="concept-card" href="drift.html">
+      <strong>Genetische Drift</strong>
+      <span>Zufall in endlichen Populationen.</span>
+    </a>
+
+</div>
+```
