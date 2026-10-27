@@ -137,8 +137,11 @@ export function mouseLifeCycle(rows) {
     ]),
   ]));
 
-  // faint disc behind the cycle, as in the lecture figure
-  svg.append(el("circle", { cx: CX, cy: CY, r: 235, fill: "#f4efe9" }));
+  // faint disc behind the cycle, as in the lecture figure: light green for the
+  // diploid stages, its top-left quarter light red for the gametes
+  const R0 = 235;
+  svg.append(el("circle", { cx: CX, cy: CY, r: R0, fill: "#eaf5e6" }));
+  svg.append(el("path", { d: `M${CX} ${CY} L${CX - R0} ${CY} A${R0} ${R0} 0 0 1 ${CX} ${CY - R0} Z`, fill: "#fbe9e7" }));
 
   // arrows: adults (bottom left) -> gametes (top left) -> zygotes -> juveniles -> adults
   svg.append(arrow(180), arrow(270), arrow(0), arrow(90));
