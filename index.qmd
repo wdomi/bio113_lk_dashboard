@@ -4,14 +4,14 @@ subtitle: "Wie sich Allelfrequenzen verändern: ausprobieren statt nur lesen"
 toc: false
 ---
 
-<!-- ::: {.callout-tip}
+::: {.howto-box}
 ## So arbeiten Sie mit den Seiten
 
 1. **Vorhersagen.** Überlegen Sie zuerst, was passieren sollte.
 2. **Verändern.** Ändern Sie jeweils einen Regler und beobachten Sie die Kurve.
 3. **Wiederholen.** Bei Drift sieht jeder Lauf anders aus. Drücken Sie *Neu simulieren*.
 4. **Erklären.** Beantworten Sie die Fragen am Ende jeder Seite mit Begriffen aus der Vorlesung.
-::: -->
+:::
 
 Evolution heisst aus populationsgenetischer Sicht: **Allelfrequenzen ändern sich über die Zeit.**
 Auf diesen Seiten verändern Sie die Bedingungen selbst und sehen sofort, was passiert.

@@ -156,3 +156,24 @@ svg.mouse-cycle { display: block; max-width: 520px; margin: 0 auto; }
   i { display: inline-block; width: 0.9rem; height: 0.9rem; border-radius: 50%; border: 1px solid #5b4632; }
   small { flex-basis: 100%; text-align: center; color: #6b6a66; }
 }
+
+/* Home page: "So arbeiten Sie mit den Seiten" as a small green box,
+   set apart from the running text */
+.howto-box {
+  background: #eef7ee;
+  border: 1px solid #cfe6cf;
+  border-left: 4px solid #3f9142;
+  border-radius: $border-radius;
+  padding: 0.8rem 1.1rem 0.4rem;
+  margin: 0.5rem 0 1.75rem;
+  font-size: 0.93rem;
+  line-height: 1.5;
+
+  h2 {
+    font-size: 1rem;
+    margin: 0 0 0.4rem;
+    color: #2e6b30;
+  }
+  ol { margin-bottom: 0.4rem; padding-left: 1.3rem; }
+  li { margin-bottom: 0.15rem; }
+}
