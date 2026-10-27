@@ -13,13 +13,13 @@ toc: false
 4. **Erklären.** Beantworten Sie die Fragen am Ende jeder Seite mit Begriffen aus der Vorlesung.
 :::
 
-```{=html}
-<h3 class="concept-heading">Nullmodell Hardy-Weinberg</h3>
-```
-
 Evolution heisst aus populationsgenetischer Sicht: **Allelfrequenzen ändern sich über die Zeit.**
 Auf diesen Seiten verändern Sie die Bedingungen selbst und sehen sofort, was passiert.
 Alle Berechnungen laufen in Ihrem Browser, mit R.
+
+```{=html}
+<h3 class="concept-heading">Nullmodell Hardy-Weinberg</h3>
+```
 
 
 <!-- Nullmodell: Karte zu Hardy-Weinberg -->
@@ -32,7 +32,7 @@ Alle Berechnungen laufen in Ihrem Browser, mit R.
 </div>
 ```
 
-<!-- Übersicht: welche Kräfte das Gleichgewicht stören -->
+<!-- Übersichtstabelle verschoben nach konzepte/hardy-weinberg.qmd
 Das Hardy-Weinberg-Gleichgewicht gilt nur, wenn **keine** der folgenden Kräfte wirkt.
 
 | Prozess | verändert | Richtung |
@@ -41,7 +41,8 @@ Das Hardy-Weinberg-Gleichgewicht gilt nur, wenn **keine** der folgenden Kräfte 
 | Selektion | Allelfrequenzen | gerichtet, nach Fitness |
 | Mutation | Allelfrequenzen | gerichtet, sehr langsam |
 | Migration | Allelfrequenzen | Richtung Quellpopulation |
-<!-- | Inzucht | nur Genotypfrequenzen | mehr Homozygote | -->
+| Inzucht | nur Genotypfrequenzen | mehr Homozygote |
+-->
 
 <!-- Abweichungen: Karten zu den einzelnen Kräften -->
 ```{=html}
@@ -59,14 +60,14 @@ Das Hardy-Weinberg-Gleichgewicht gilt nur, wenn **keine** der folgenden Kräfte 
       <span>Unterschiedliche Fitness verschiebt Allelfrequenzen gerichtet.</span>
     </a>
 
-    <a class="concept-card" href="konzepte/drift.html">
-      <strong>Genetische Drift</strong>
-      <span>Zufall in endlichen Populationen.</span>
-    </a>
-
     <a class="concept-card" href="konzepte/migration.html">
       <strong>Migration</strong>
       <span>Genfluss macht Populationen einander ähnlicher.</span>
+    </a>
+
+    <a class="concept-card" href="konzepte/drift.html">
+      <strong>Genetische Drift</strong>
+      <span>Zufall in endlichen Populationen.</span>
     </a>
 
  <!--  <a class="concept-card" href="konzepte/inzucht.html">
