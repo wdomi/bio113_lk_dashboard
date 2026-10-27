@@ -106,13 +106,13 @@ ${t1.n < 30 ? html`<br><small>Bei so kleinen Stichproben ist der Test unzuverlä
 ## Fragen
 
 1. Bei welchem $p$ ist der Anteil Heterozygoter am grössten?
-2. Ein rezessives Merkmal kommt bei 1 % vor. Wie häufig sind das Allel und die Träger?
+2. Ein rezessives Merkmal kommt bei 25 % vor. Wie häufig sind das Allel a und die Träger (Aa)?
 3. Sie beobachten 50 AA, 0 Aa, 50 aa. Welche Annahme des Modells könnte verletzt sein?
 
 ::: {.callout-tip collapse="true"}
 ## Lösungshinweise
 1. Bei $p = 0.5$, dann ist $2pq = 0.5$.
-2. $q^2 = 0.01$, also $q = 0.1$. Heterozygote: $2 \cdot 0.9 \cdot 0.1 = 0.18$, also 18 %.
+2. $q^2 = 0.25$, also $q = \sqrt{0.25} = 0.5$ und $p = 0.5$. Träger (Aa): $2pq = 2 \cdot 0.5 \cdot 0.5 = 0.5$, also 50 %. Mit dem Schieberegler bei $p = 0.5$ zeigen die 20 Mäuse 5 aa, 10 Aa und 5 AA.
 3. $p = 0.5$, erwartet wären 25 / 50 / 25. Mögliche Ursachen: Inzucht, nicht zufällige Paarung oder zwei getrennte Teilpopulationen.
 :::
 
