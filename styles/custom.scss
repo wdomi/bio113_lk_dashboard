@@ -41,6 +41,9 @@ h2 {
   border-bottom: none;
 }
 
+/* Extra space before a section that starts a new topic (e.g. HW assumptions) */
+section.section-spaced { margin-top: 4.5rem; }
+
 /* Interactive control panel: a single quiet card */
 .panel-input {
   background: #f6f6f4;
