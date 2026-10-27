@@ -1,27 +1,53 @@
 ---
-title: "BIO113 - Prof. Lukas Keller -Populationsgenetik"
+title: "BIO113 - Prof. Lukas Keller – Populationsgenetik"
 subtitle: "Wie sich Allelfrequenzen verändern: ausprobieren statt nur lesen"
 toc: false
 ---
+
+::: {.howto-box}
+## So arbeiten Sie mit den Seiten
+
+1. **Vorhersagen.** Überlegen Sie zuerst, was passieren sollte.
+2. **Verändern.** Ändern Sie jeweils einen Regler und beobachten Sie die Kurve.
+3. **Wiederholen.** Bei Drift sieht jeder Lauf anders aus. Drücken Sie *Neu simulieren*.
+4. **Erklären.** Beantworten Sie die Fragen am Ende jeder Seite mit Begriffen aus der Vorlesung.
+:::
+
+```{=html}
+<h3 class="concept-heading">Nullmodell Hardy-Weinberg</h3>
+```
 
 Evolution heisst aus populationsgenetischer Sicht: **Allelfrequenzen ändern sich über die Zeit.**
 Auf diesen Seiten verändern Sie die Bedingungen selbst und sehen sofort, was passiert.
 Alle Berechnungen laufen in Ihrem Browser, mit R.
 
 
+<!-- Nullmodell: Karte zu Hardy-Weinberg -->
 ```{=html}
-<div class="concept-section">
+<div class="concept-grid">
+  <a class="concept-card" href="konzepte/hardy-weinberg.html">
+    <strong>Hardy-Weinberg</strong>
+    <span>Das Nullmodell: Was passiert, wenn nichts passiert?</span>
+  </a>
+</div>
+```
 
-  <div class="concept-grid">
-    <a class="concept-card" href="konzepte/hardy-weinberg.html">
-      <strong>Hardy-Weinberg</strong>
-      <span>Das Nullmodell: Was passiert, wenn nichts passiert?</span>
-    </a>
-  </div>
+<!-- Übersicht: welche Kräfte das Gleichgewicht stören -->
+Das Hardy-Weinberg-Gleichgewicht gilt nur, wenn **keine** der folgenden Kräfte wirkt.
 
-  <h3 class="concept-heading">Abweichungen vom Nullmodell:</h3>
+| Prozess | verändert | Richtung |
+|---|---|---|
+| Genetische Drift | Allelfrequenzen | zufällig |
+| Selektion | Allelfrequenzen | gerichtet, nach Fitness |
+| Mutation | Allelfrequenzen | gerichtet, sehr langsam |
+| Migration | Allelfrequenzen | Richtung Quellpopulation |
+<!-- | Inzucht | nur Genotypfrequenzen | mehr Homozygote | -->
 
-  <div class="concept-grid">
+<!-- Abweichungen: Karten zu den einzelnen Kräften -->
+```{=html}
+<h3 class="concept-heading">Abweichungen vom Nullmodell:</h3>
+
+<div class="concept-grid">
 
     <a class="concept-card" href="konzepte/mutation.html">
       <strong>Mutation</strong>
@@ -56,29 +82,10 @@ Alle Berechnungen laufen in Ihrem Browser, mit R.
     <span>Alle Kräfte kombinieren und eigene Experimente planen.</span>
   </a> -->
 
-  </div>
 </div>
 ```
 
 
-## So arbeiten Sie mit den Seiten
-
-1. **Vorhersagen.** Überlegen Sie zuerst, was passieren sollte.
-2. **Verändern.** Ändern Sie jeweils einen Regler und beobachten Sie die Kurve.
-3. **Wiederholen.** Bei Drift sieht jeder Lauf anders aus. Drücken Sie *Neu simulieren*.
-4. **Erklären.** Beantworten Sie die Fragen am Ende jeder Seite mit Begriffen aus der Vorlesung.
-
-## Das Nullmodell und seine Abweichungen
-
-Das Hardy-Weinberg-Gleichgewicht gilt nur, wenn **keine** der folgenden Kräfte wirkt.
-
-| Prozess | verändert | Richtung |
-|---|---|---|
-| Genetische Drift | Allelfrequenzen | zufällig |
-| Selektion | Allelfrequenzen | gerichtet, nach Fitness |
-| Mutation | Allelfrequenzen | gerichtet, sehr langsam |
-| Migration | Allelfrequenzen | Richtung Quellpopulation |
-<!-- | Inzucht | nur Genotypfrequenzen | mehr Homozygote | -->
 
 <!-- ::: {.callout-tip}
 ## Für Dozierende
