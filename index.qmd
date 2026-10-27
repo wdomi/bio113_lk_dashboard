@@ -13,6 +13,10 @@ toc: false
 4. **Erklären.** Beantworten Sie die Fragen am Ende jeder Seite mit Begriffen aus der Vorlesung.
 :::
 
+```{=html}
+<h3 class="concept-heading">Nullmodell Hardy-Weinberg</h3>
+```
+
 Evolution heisst aus populationsgenetischer Sicht: **Allelfrequenzen ändern sich über die Zeit.**
 Auf diesen Seiten verändern Sie die Bedingungen selbst und sehen sofort, was passiert.
 Alle Berechnungen laufen in Ihrem Browser, mit R.
