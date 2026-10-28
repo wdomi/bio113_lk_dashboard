@@ -11,7 +11,7 @@ versions: [SemVer](https://semver.org).
 ### Changed
 - Mouse life cycle: background circle light green, gamete quarter light red.
 - Genotype colours on all charts now match the mice: AA dark brown, Aa mid brown, aa beige.
-- New genotype palette for mice and charts, further apart in lightness: AA dark brown `#5e3d1d`, Aa mid brown `#cab272`, aa light beige `#f0efd1`. The beige gets a brown edge on lines, bars, dots and legend swatches so it shows on the white page.
+- New genotype palette for mice and charts, further apart in lightness: AA dark brown `#392b0f`, Aa mid brown `#a67f2b`, aa light brown `#e4cb95`. The light brown gets a brown edge on lines, bars, dots and legend swatches so it shows on the white page.
 - Simpler, lighter pages: one navbar, no sidebar, light theme only, short intro and questions per page.
 - Advanced controls (other forces in the Explorer) are in a collapsed box, so the main sliders stay visible.
 - Each concept page shows its main result in one sentence under the chart.

@@ -8,14 +8,14 @@
 // =============================================================================
 
 // Genotypes look like the mice in the lecture figure: AA dark brown, Aa mid
-// brown, aa beige (Dorea's palette, 2026-10-28). The three are far apart in
+// brown, aa light brown (Dorea's palette, 2026-10-28). The three are far apart in
 // lightness so the mice are easy to tell apart. Mice, lines, bars and dots all
-// use the same three colours; the very light beige gets a brown edge
+// use the same three colours; the light brown gets a brown edge
 // (GENOTYPE_EDGE) wherever it sits on the white page.
-export const MOUSE_COLORS = { AA: "#5e3d1d", Aa: "#cab272", aa: "#f0efd1" }; // dark brown, mid brown, beige
+export const MOUSE_COLORS = { AA: "#392b0f", Aa: "#a67f2b", aa: "#e4cb95" }; // dark brown, mid brown, light brown
 export const ALLELE_COLORS = { A: MOUSE_COLORS.AA, a: MOUSE_COLORS.aa }; // sperm and eggs
 export const GENOTYPE_COLORS = [MOUSE_COLORS.AA, MOUSE_COLORS.Aa, MOUSE_COLORS.aa]; // AA, Aa, aa
-export const GENOTYPE_EDGE = "#8c7b55"; // outline for the beige aa lines, bars and dots
+export const GENOTYPE_EDGE = "#8c7b55"; // outline for the light aa lines, bars and dots
 
 export const SCENARIO_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#6250d6"]; // up to 4 scenarios
 
