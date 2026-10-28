@@ -183,8 +183,8 @@ svg.mouse-cycle { display: block; max-width: 520px; margin: 0 auto; }
 
 /* Chart legends: the beige aa swatch gets the same brown edge as its line,
    otherwise it disappears on the white page (colour from theme.js) */
-[class$="-swatch"] svg[fill="#e4cb95" i] > *,
-[class$="-swatch"] svg rect[fill="#e4cb95" i] {
+[class$="-swatch"] svg[fill="#ebd9b2" i] > *,
+[class$="-swatch"] svg rect[fill="#ebd9b2" i] {
   stroke: #8c7b55;
   stroke-width: 1.5px;
 }
