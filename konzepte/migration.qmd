@@ -6,6 +6,10 @@ description: "Insel-Festland-Modell mit Migrationsrate m."
 
 {{< include /_partials/_setup.qmd >}}
 
+<!-- Intro text left, life-cycle wheel right (stacked on a phone).
+     The wheel greys out everything but Migration (Genfluss): images/lebenszyklus-migration.svg -->
+::::: {.intro-pair}
+:::: {.intro-text}
 Migration heisst in der Populationsgenetik **Genfluss**: Allele wandern mit Individuen (oder Pollen, Samen, Gameten)
 von einer Population in eine andere. Im Insel-Festland-Modell fliesst Genfluss vom Festland ($p_C$) auf die Insel ($p_I$).
 Die Migrationsrate $m$ ist der Anteil des Inselgenpools, der aus Zuwanderern stammt:
@@ -15,6 +19,11 @@ p_I' = (1 - m)\,p_I + m\,p_C \qquad\qquad \Delta p_I = m\,(p_C - p_I)
 $$
 
 Im Gleichgewicht gilt $p_I = p_C$. Migration **gleicht Populationen an**.
+::::
+:::: {.intro-figure}
+![Lebenszyklus: Migration (Genfluss) ist hervorgehoben, die übrigen Prozesse sind grau.](../images/lebenszyklus-migration.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Genflusspfeil, die übrigen Prozesse sind ausgegraut."}
+::::
+:::::
 
 ## Insel und Festland
 

@@ -6,6 +6,10 @@ description: "Fitness der Genotypen, Selektionskoeffizient s und Dominanz h."
 
 {{< include /_partials/_setup.qmd >}}
 
+<!-- Intro text left, life-cycle wheel right (stacked on a phone).
+     The wheel greys out everything but Selektion: images/lebenszyklus-selektion.svg -->
+::::: {.intro-pair}
+:::: {.intro-text}
 Selektion wirkt, wenn Genotypen unterschiedlich viele überlebende Nachkommen haben. Jedem Genotyp wird dafür eine
 **relative Fitness** zugeordnet. In der Vorlesung geschieht das über den Selektionskoeffizienten $s$ und den
 Dominanzkoeffizienten $h$:
@@ -16,6 +20,11 @@ $$
 
 Mit $h = 0$ ist A dominant, mit $h = 1$ rezessiv. Wie schnell sich $p$ ändert, hängt also von der Fitness, von $p$ selbst
 und von der Dominanz ab.
+::::
+:::: {.intro-figure}
+![Lebenszyklus: Selektion ist hervorgehoben, die übrigen Prozesse sind grau.](../images/lebenszyklus-selektion.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Selektionspfeil, die übrigen Prozesse sind ausgegraut."}
+::::
+:::::
 
 ## Ausprobieren
 
