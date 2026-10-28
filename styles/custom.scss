@@ -145,6 +145,25 @@ figure svg, .cell-output-display svg { max-width: 100%; height: auto; }
     margin-left: calc(50% - min(590px, calc(50vw - 2rem)));
   }
 }
+/* Force pages: intro text with the life-cycle wheel to its right,
+   stacked on a phone */
+.intro-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem 1.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.intro-text, .intro-figure { min-width: 0; }
+.intro-figure {
+  figure, p { margin: 0; }
+  img { display: block; width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
+  figcaption { font-size: 0.85rem; text-align: center; }
+}
+@media (min-width: 768px) {
+  .intro-pair { grid-template-columns: 3fr 2fr; }
+}
+
 svg.mouse-cycle { display: block; max-width: 520px; margin: 0 auto; }
 
 .mouse-legend {
