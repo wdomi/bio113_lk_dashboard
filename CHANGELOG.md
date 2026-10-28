@@ -10,6 +10,7 @@ versions: [SemVer](https://semver.org).
 
 ### Changed
 - Mouse life cycle: background circle light green, gamete quarter light red.
+- Mouse life cycle: mice now use Dorea's own mouse drawing (`js/mouse-shape.js`), filled with the genotype colour; eyes and whiskers turn light on the dark AA mouse.
 - Genotype colours on all charts now match the mice: AA dark brown, Aa mid brown, aa beige.
 - New genotype palette for mice and charts, further apart in lightness: AA dark brown `#392b0f`, Aa mid brown `#a67f2b`, aa light brown `#ebd9b2`. The light brown gets a brown edge on dots, bars and the legend swatch (not on lines).
 - Simpler, lighter pages: one navbar, no sidebar, light theme only, short intro and questions per page.

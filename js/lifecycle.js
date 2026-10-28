@@ -10,6 +10,7 @@
 // =============================================================================
 
 import { MOUSE_COLORS, ALLELE_COLORS } from "./theme.js";
+import { MOUSE_BODY, MOUSE_DETAILS, MOUSE_CENTER, MOUSE_HEIGHT, MOUSE_Y_SCALE } from "./mouse-shape.js";
 
 const NS = "http://www.w3.org/2000/svg";
 const W = 500;
@@ -34,23 +35,27 @@ function text(x, y, str, { size = 13, weight = 400, anchor = "start", fill = INK
   return t;
 }
 
-/** Light colours (beige) need dark text and an outline, dark ones white text. */
-const isLight = (hex) => {
+/** Perceived brightness 0-255 of a "#rrggbb" colour. */
+const brightness = (hex) => {
   const n = parseInt(hex.slice(1), 16);
-  return 0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255) > 150;
+  return 0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255);
 };
+/** Light colours (beige) need dark text and an outline, dark ones white text. */
+const isLight = (hex) => brightness(hex) > 150;
 
-/** One mouse facing right, about 44 x 28 units, top-left at (0, 0). */
+/** One mouse (Dorea's drawing, js/mouse-shape.js), centred on (0, 0), MOUSE_SIZE tall. */
+const MOUSE_SIZE = 30;
 function mouse(fill) {
+  const k = MOUSE_SIZE / (MOUSE_HEIGHT * MOUSE_Y_SCALE);
+  const [mx, my] = MOUSE_CENTER;
+  // eyes and whiskers are dark; on the dark brown mouse draw them light instead
+  const details = el("g", { fill: brightness(fill) > 90 ? INK : "#f3ead8" });
+  details.innerHTML = MOUSE_DETAILS;
   return el("g", {}, [
-    el("path", { d: "M7 19 C0 19 -2 12 -6 9", fill: "none", stroke: OUTLINE, "stroke-width": 1.4, "stroke-linecap": "round" }),
-    el("ellipse", { cx: 19, cy: 17, rx: 13, ry: 9, fill, stroke: OUTLINE, "stroke-width": 1 }),
-    el("ellipse", { cx: 32, cy: 13, rx: 8.5, ry: 6.5, fill, stroke: OUTLINE, "stroke-width": 1 }),
-    el("circle", { cx: 29, cy: 6, r: 4.5, fill, stroke: OUTLINE, "stroke-width": 1 }),
-    el("circle", { cx: 29, cy: 6, r: 2.2, fill: "#e9a9a2" }),
-    el("circle", { cx: 34.5, cy: 11.5, r: 1.3, fill: "#1f1f1d" }),
-    el("circle", { cx: 40.3, cy: 14, r: 1.4, fill: "#c97a72" }),
-    el("path", { d: "M14 25 l-1 3 M24 25 l1 3", stroke: OUTLINE, "stroke-width": 1.2, "stroke-linecap": "round" }),
+    el("g", { transform: `scale(${k} ${k * MOUSE_Y_SCALE}) translate(${-mx} ${-my})` }, [
+      el("path", { d: MOUSE_BODY, fill, stroke: OUTLINE, "stroke-width": 4, "stroke-linejoin": "round" }),
+      details,
+    ]),
   ]);
 }
 
@@ -165,13 +170,13 @@ export function mouseLifeCycle(rows) {
 
   // --- bottom right: juveniles ------------------------------------------------
   svg.append(grid(individuals(juveniles), { x: 270, y: 292, w: 210, h: 160, cols: colsMice },
-    (g) => mouse(MOUSE_COLORS[g]), { dx: -14, dy: -9, scale: 0.68 }));
+    (g) => mouse(MOUSE_COLORS[g]), { scale: 0.68 }));
   svg.append(text(375, 476, countLine(juveniles), { size: 12.5, anchor: "middle" }));
   svg.append(text(480, 502, "Juvenile", { size: 16, weight: 600, anchor: "end" }));
 
   // --- bottom left: adults ----------------------------------------------------
   svg.append(grid(individuals(adults), { x: 20, y: 292, w: 210, h: 160, cols: colsMice },
-    (g) => mouse(MOUSE_COLORS[g]), { dx: -20, dy: -14 }));
+    (g) => mouse(MOUSE_COLORS[g])));
   svg.append(text(125, 476, countLine(adults), { size: 12.5, anchor: "middle" }));
   svg.append(text(20, 502, "Adulte", { size: 16, weight: 600 }));
 
