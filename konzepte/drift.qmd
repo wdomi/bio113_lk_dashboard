@@ -6,9 +6,18 @@ description: "Wie die Populationsgrösse bestimmt, wie stark der Zufall Allelfre
 
 {{< include /_partials/_setup.qmd >}}
 
+<!-- Intro text left, life-cycle wheel right (stacked on a phone).
+     The wheel greys out everything but Genetische Drift: images/lebenszyklus-drift.svg -->
+::::: {.intro-pair}
+:::: {.intro-text}
 In jeder echten Population ist die Zahl der Individuen endlich. Welche Allele weitergegeben werden, ist deshalb
 teilweise Zufall. Diese Schwankungen heissen **genetische Drift**. Sie sind ungerichtet, und sie wirken in kleinen
 Populationen stärker. Ohne andere Kräfte gehen Allele irgendwann verloren oder werden fixiert.
+::::
+:::: {.intro-figure}
+![Lebenszyklus: Genetische Drift ist hervorgehoben, die übrigen Prozesse sind grau.](../images/lebenszyklus-drift.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist die Drift, die übrigen Prozesse sind ausgegraut."}
+::::
+:::::
 
 ## Viele Populationen, gleicher Start
 

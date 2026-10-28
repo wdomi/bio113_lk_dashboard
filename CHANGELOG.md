@@ -6,6 +6,7 @@ versions: [SemVer](https://semver.org).
 ## [Unreleased]
 
 ### Added
+- Selektion, Migration and Drift pages: the same life-cycle wheel, each with only its own process in colour (`images/lebenszyklus-selektion.svg`, `-migration.svg`, `-drift.svg`).
 - Mutation page: Dorea's life-cycle wheel to the right of the intro text (stacked on a phone), with everything greyed out except the mutation arrow (`images/lebenszyklus-mutation.svg`; the uncoloured original is `images/lebenszyklus.svg`, for the other force pages).
 - Hardy-Weinberg page: the lecture's mouse life cycle (adults → sperm/eggs → zygotes → juveniles) next to the genotype-frequency chart. Counts of AA, Aa, aa mice (dark brown, mid brown, beige) and of A/a gametes follow the slider *p* (R: `hw_life_cycle()`, drawing: `js/lifecycle.js`).
 
