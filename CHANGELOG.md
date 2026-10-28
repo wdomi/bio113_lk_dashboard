@@ -11,6 +11,7 @@ versions: [SemVer](https://semver.org).
 - Hardy-Weinberg page: the lecture's mouse life cycle (adults → sperm/eggs → zygotes → juveniles) next to the genotype-frequency chart. Counts of AA, Aa, aa mice (dark brown, mid brown, beige) and of A/a gametes follow the slider *p* (R: `hw_life_cycle()`, drawing: `js/lifecycle.js`).
 
 ### Changed
+- Force pages: Dorea's updated life-cycle wheel (process labels, A₁/A₂ arrows); same section in colour on each page.
 - Migration page title is now "Migration/Genfluss" (also in the Konzepte menu).
 - Mouse life cycle: background circle light green, gamete quarter light red.
 - Mouse life cycle: mice now use Dorea's own mouse drawing (`js/mouse-shape.js`, second version with bolder ears, eyes and whiskers), filled with the genotype colour; eyes and whiskers turn light on the dark AA mouse.
