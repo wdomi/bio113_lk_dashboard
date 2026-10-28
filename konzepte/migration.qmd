@@ -1,5 +1,5 @@
 ---
-title: "Migration"
+title: "Migration/Genfluss"
 subtitle: "Genfluss macht Populationen einander ähnlicher"
 description: "Insel-Festland-Modell mit Migrationsrate m."
 ---
