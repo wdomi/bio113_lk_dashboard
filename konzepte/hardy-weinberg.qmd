@@ -1,7 +1,7 @@
 ---
 title: "Hardy-Weinberg"
-subtitle: "Das Nullmodell: Was passiert, wenn nichts passiert?"
-description: "Genotypfrequenzen p², 2pq und q², Gleichgewicht und Test."
+subtitle: "Das Nullmodell mit einem Locus und zwei Allelen: Was passiert, wenn nichts passiert?"
+description: "Genotypfrequenzen p², 2pq und q² im Modell mit einem Locus und zwei Allelen, Gleichgewicht und Test."
 ---
 
 {{< include /_partials/_setup.qmd >}}
