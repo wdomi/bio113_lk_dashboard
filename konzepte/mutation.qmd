@@ -11,14 +11,23 @@ description: "Mutationsraten u und v, Gleichgewicht und Mutation-Selektion-Gleic
 ::::: {.intro-pair}
 :::: {.intro-text}
 Mutation erzeugt neue Allele. Als Kraft, die Allelfrequenzen verändert, ist sie aber sehr langsam, weil Mutationsraten
-klein sind. Mit $u$ (A → a) und $v$ (a → A) gilt
+klein sind.
+
+Mutationen können in beide Richtungen auftreten: Mit der Mutationsrate $u$ wird das Allel A in a umgewandelt
+(Vorwärtsmutation), mit der Mutationsrate $v$ das Allel a in A (Rückmutation). Mit $u$ (A → a) und $v$ (a → A) gilt also:
 
 $$
-\Delta p = v - p\,(u + v) \qquad\text{Gleichgewicht:}\qquad \hat{p} = \frac{v}{u + v}
+\Delta p = v\,q - u\,p = v - p\,(u + v)
+$$
+
+mit $q = 1 - p$. Im Gleichgewicht ($\Delta p = 0$) gilt
+
+$$
+\hat{p} = \frac{v}{u + v}
 $$
 ::::
 :::: {.intro-figure}
-![Lebenszyklus: Mutation ist hervorgehoben, die übrigen Prozesse sind grau.](../images/lebenszyklus-mutation.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Mutationspfeil, die übrigen Prozesse sind ausgegraut."}
+![Adaptiert nach © 2014 Pearson Education, Inc.](../images/lebenszyklus-mutation.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Mutationspfeil, die übrigen Prozesse sind ausgegraut."}
 ::::
 :::::
 
