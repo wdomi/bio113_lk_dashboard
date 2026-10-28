@@ -6,7 +6,10 @@
 // Colours live in theme.js. Change the look here, not on the pages.
 // =============================================================================
 
-import { COLORS, GENOTYPE_COLORS, SCENARIO_COLORS } from "./theme.js";
+import { COLORS, GENOTYPE_COLORS, GENOTYPE_EDGE, SCENARIO_COLORS } from "./theme.js";
+
+/** Rows of the light aa genotype, which gets a brown edge drawn underneath. */
+const aaOnly = (rows) => rows.filter((d) => d.genotype === "aa");
 
 const fmt = (x) => (Number.isFinite(x) ? x.toFixed(3) : "–");
 const fmtN = (N) => (N === null || N === Infinity ? "∞" : N);
@@ -80,9 +83,13 @@ export function genotypePlot(Plot, long, { width = 700, showHW = true } = {}) {
     color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
       showHW
+        ? Plot.line(aaOnly(long), { x: "gen", y: "hw", stroke: GENOTYPE_EDGE, strokeDasharray: "2,4", strokeWidth: 3.5, strokeOpacity: 0.7 })
+        : null,
+      showHW
         ? Plot.line(long, { x: "gen", y: "hw", stroke: "genotype", strokeDasharray: "2,4", strokeWidth: 1.5, strokeOpacity: 0.7 })
         : null,
-      Plot.line(long, { x: "gen", y: "freq", stroke: "genotype", strokeWidth: 2.25 }),
+      Plot.line(aaOnly(long), { x: "gen", y: "freq", stroke: GENOTYPE_EDGE, strokeWidth: 4.5 }),
+      Plot.line(long, { x: "gen", y: "freq", stroke: "genotype", strokeWidth: 2.5 }),
       Plot.tip(long, Plot.pointer({
         x: "gen",
         y: "freq",
@@ -106,8 +113,10 @@ export function hardyWeinbergCurves(Plot, curves, here, { width = 700 } = {}) {
     color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
       Plot.ruleX([p], { stroke: COLORS.axis, strokeDasharray: "3,3" }),
-      Plot.line(curves, { x: "p", y: "freq", stroke: "genotype", strokeWidth: 2.25 }),
+      Plot.line(aaOnly(curves), { x: "p", y: "freq", stroke: GENOTYPE_EDGE, strokeWidth: 4.5 }),
+      Plot.line(curves, { x: "p", y: "freq", stroke: "genotype", strokeWidth: 2.5 }),
       Plot.dot(here, { x: "p", y: "freq", fill: "genotype", r: 6, stroke: "white", strokeWidth: 2 }),
+      Plot.dot(aaOnly(here), { x: "p", y: "freq", r: 7, stroke: GENOTYPE_EDGE, strokeWidth: 1.2 }),
       Plot.tip(curves, Plot.pointer({
         x: "p",
         y: "freq",
@@ -194,7 +203,7 @@ export function genotypeBars(Plot, rows, { width = 700, facet = "mating" } = {})
     fx: { label: null, domain: [...new Set(rows.map((d) => d[facet]))] },
     color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS },
     marks: [
-      Plot.barY(rows, { x: "genotype", y: "freq", fx: facet, fill: "genotype", inset: 12, rx: 4, tip: true }),
+      Plot.barY(rows, { x: "genotype", y: "freq", fx: facet, fill: "genotype", stroke: GENOTYPE_EDGE, strokeWidth: 1, inset: 12, rx: 4, tip: true }),
       Plot.ruleY([0], { stroke: COLORS.axis }),
     ],
   });
