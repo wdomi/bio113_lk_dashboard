@@ -49,7 +49,8 @@ function mouse(fill) {
   const k = MOUSE_SIZE / (MOUSE_HEIGHT * MOUSE_Y_SCALE);
   const [mx, my] = MOUSE_CENTER;
   // eyes and whiskers are dark; on the dark brown mouse draw them light instead
-  const details = el("g", { fill: brightness(fill) > 90 ? INK : "#f3ead8" });
+  const ink = brightness(fill) > 90 ? INK : "#f3ead8";
+  const details = el("g", { fill: ink, color: ink });
   details.innerHTML = MOUSE_DETAILS;
   return el("g", {}, [
     el("g", { transform: `scale(${k} ${k * MOUSE_Y_SCALE}) translate(${-mx} ${-my})` }, [
