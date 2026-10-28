@@ -27,7 +27,7 @@ Alle Berechnungen laufen in Ihrem Browser, mit R.
 <div class="concept-grid">
   <a class="concept-card" href="konzepte/hardy-weinberg.html">
     <strong>Hardy-Weinberg</strong>
-    <span>Das Nullmodell: Was passiert, wenn nichts passiert?</span>
+    <span>Das Nullmodell mit einem Locus und zwei Allelen: Was passiert, wenn nichts passiert?</span>
   </a>
 </div>
 ```
