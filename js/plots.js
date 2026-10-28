@@ -83,12 +83,8 @@ export function genotypePlot(Plot, long, { width = 700, showHW = true } = {}) {
     color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
       showHW
-        ? Plot.line(aaOnly(long), { x: "gen", y: "hw", stroke: GENOTYPE_EDGE, strokeDasharray: "2,4", strokeWidth: 3.5, strokeOpacity: 0.7 })
-        : null,
-      showHW
         ? Plot.line(long, { x: "gen", y: "hw", stroke: "genotype", strokeDasharray: "2,4", strokeWidth: 1.5, strokeOpacity: 0.7 })
         : null,
-      Plot.line(aaOnly(long), { x: "gen", y: "freq", stroke: GENOTYPE_EDGE, strokeWidth: 4.5 }),
       Plot.line(long, { x: "gen", y: "freq", stroke: "genotype", strokeWidth: 2.5 }),
       Plot.tip(long, Plot.pointer({
         x: "gen",
@@ -113,7 +109,6 @@ export function hardyWeinbergCurves(Plot, curves, here, { width = 700 } = {}) {
     color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
       Plot.ruleX([p], { stroke: COLORS.axis, strokeDasharray: "3,3" }),
-      Plot.line(aaOnly(curves), { x: "p", y: "freq", stroke: GENOTYPE_EDGE, strokeWidth: 4.5 }),
       Plot.line(curves, { x: "p", y: "freq", stroke: "genotype", strokeWidth: 2.5 }),
       Plot.dot(here, { x: "p", y: "freq", fill: "genotype", r: 6, stroke: "white", strokeWidth: 2 }),
       Plot.dot(aaOnly(here), { x: "p", y: "freq", r: 7, stroke: GENOTYPE_EDGE, strokeWidth: 1.2 }),
