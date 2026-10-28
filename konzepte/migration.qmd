@@ -4,6 +4,11 @@ subtitle: "Genfluss macht Populationen einander ähnlicher"
 description: "Insel-Festland-Modell mit Migrationsrate m."
 ---
 
+<!-- Remove this box once the page is final (also drop "(folgt)" in the Konzepte menu, _quarto.yml) -->
+::: {.construction-box}
+**Im Aufbau:** Diese Seite wird noch überarbeitet und in den nächsten Wochen freigeschaltet.
+:::
+
 {{< include /_partials/_setup.qmd >}}
 
 <!-- Intro text left, life-cycle wheel right (stacked on a phone).
@@ -21,7 +26,7 @@ $$
 Im Gleichgewicht gilt $p_I = p_C$. Migration **gleicht Populationen an**.
 ::::
 :::: {.intro-figure}
-![Lebenszyklus: Migration (Genfluss) ist hervorgehoben, die übrigen Prozesse sind grau.](../images/lebenszyklus-migration.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Genflusspfeil, die übrigen Prozesse sind ausgegraut."}
+![Adaptiert nach © 2014 Pearson Education, Inc.](../images/lebenszyklus-migration.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Genflusspfeil, die übrigen Prozesse sind ausgegraut."}
 ::::
 :::::
 

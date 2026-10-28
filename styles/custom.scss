@@ -27,6 +27,12 @@ body {
   .navbar-brand { font-weight: 600; }
 }
 
+/* Konzepte menu: finished pages dark grey; pages still under construction
+   ("(folgt)" in _quarto.yml) lighter grey */
+.navbar .dropdown-menu .dropdown-item { color: #2b2b29; }
+.navbar .dropdown-menu .dropdown-item[href*="migration.html"],
+.navbar .dropdown-menu .dropdown-item[href*="drift.html"] { color: #a3a29d; }
+
 main.content {
   max-width: 760px;
 }
@@ -206,4 +212,16 @@ svg.mouse-cycle { display: block; max-width: 520px; margin: 0 auto; }
 [class$="-swatch"] svg rect[fill="#ebd9b2" i] {
   stroke: #8c7b55;
   stroke-width: 1.5px;
+}
+
+/* Migration and Drift pages: orange "Im Aufbau" note at the top */
+.construction-box {
+  background: #fff4e5;
+  border: 1px solid #f5d3a3;
+  border-left: 4px solid #e67e22;
+  border-radius: $border-radius;
+  padding: 0.7rem 1.1rem;
+  margin: 0 0 1.5rem;
+  color: #7a4510;
+  p { margin: 0; }
 }

@@ -4,6 +4,11 @@ subtitle: "Zufall in endlichen Populationen"
 description: "Wie die Populationsgrösse bestimmt, wie stark der Zufall Allelfrequenzen verändert."
 ---
 
+<!-- Remove this box once the page is final (also drop "(folgt)" in the Konzepte menu, _quarto.yml) -->
+::: {.construction-box}
+**Im Aufbau:** Diese Seite wird noch überarbeitet und in den nächsten Wochen freigeschaltet.
+:::
+
 {{< include /_partials/_setup.qmd >}}
 
 <!-- Intro text left, life-cycle wheel right (stacked on a phone).
@@ -15,7 +20,7 @@ teilweise Zufall. Diese Schwankungen heissen **genetische Drift**. Sie sind unge
 Populationen stärker. Ohne andere Kräfte gehen Allele irgendwann verloren oder werden fixiert.
 ::::
 :::: {.intro-figure}
-![Lebenszyklus: Genetische Drift ist hervorgehoben, die übrigen Prozesse sind grau.](../images/lebenszyklus-drift.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist die Drift, die übrigen Prozesse sind ausgegraut."}
+![Adaptiert nach © 2014 Pearson Education, Inc.](../images/lebenszyklus-drift.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist die Drift, die übrigen Prozesse sind ausgegraut."}
 ::::
 :::::
 

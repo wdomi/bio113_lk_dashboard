@@ -22,7 +22,7 @@ Mit $h = 0$ ist A dominant, mit $h = 1$ rezessiv. Wie schnell sich $p$ ändert, 
 und von der Dominanz ab.
 ::::
 :::: {.intro-figure}
-![Lebenszyklus: Selektion ist hervorgehoben, die übrigen Prozesse sind grau.](../images/lebenszyklus-selektion.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Selektionspfeil, die übrigen Prozesse sind ausgegraut."}
+![Adaptiert nach © 2014 Pearson Education, Inc.](../images/lebenszyklus-selektion.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Selektionspfeil, die übrigen Prozesse sind ausgegraut."}
 ::::
 :::::
 

@@ -43,8 +43,11 @@ website:
           - konzepte/hardy-weinberg.qmd
           - konzepte/mutation.qmd
           - konzepte/selektion.qmd
-          - konzepte/migration.qmd
-          - konzepte/drift.qmd
+          # "(folgt)": pages still under construction, shown lighter (styles/custom.scss)
+          - href: konzepte/migration.qmd
+            text: "Migration/Genfluss (folgt)"
+          - href: konzepte/drift.qmd
+            text: "Genetische Drift (folgt)"
           # - konzepte/inzucht.qmd
           # - konzepte/flaschenhals.qmd
       # - href: explorer.qmd
