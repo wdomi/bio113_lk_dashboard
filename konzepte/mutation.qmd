@@ -6,12 +6,21 @@ description: "Mutationsraten u und v, Gleichgewicht und Mutation-Selektion-Gleic
 
 {{< include /_partials/_setup.qmd >}}
 
+<!-- Intro text left, life-cycle wheel right (stacked on a phone).
+     The wheel greys out everything but Mutation: images/lebenszyklus-mutation.svg -->
+::::: {.intro-pair}
+:::: {.intro-text}
 Mutation erzeugt neue Allele. Als Kraft, die Allelfrequenzen verändert, ist sie aber sehr langsam, weil Mutationsraten
 klein sind. Mit $u$ (A → a) und $v$ (a → A) gilt
 
 $$
 \Delta p = v - p\,(u + v) \qquad\text{Gleichgewicht:}\qquad \hat{p} = \frac{v}{u + v}
 $$
+::::
+:::: {.intro-figure}
+![Lebenszyklus: Mutation ist hervorgehoben, die übrigen Prozesse sind grau.](../images/lebenszyklus-mutation.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Mutationspfeil, die übrigen Prozesse sind ausgegraut."}
+::::
+:::::
 
 ## Mutation allein
 
