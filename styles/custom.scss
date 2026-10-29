@@ -39,6 +39,8 @@ main.content {
 
 h1.title { font-size: 2.2rem; letter-spacing: -0.01em; }
 .quarto-title-block .subtitle { color: #6b6a66; font-size: 1.15rem; margin-bottom: 0.5rem; }
+/* Untertitel unter einer Abschnittsüberschrift (h2) */
+.section-subtitle { display: block; color: #6b6a66; font-size: 1.1rem; margin-top: -0.4rem; }
 
 h2 {
   font-size: 1.35rem;

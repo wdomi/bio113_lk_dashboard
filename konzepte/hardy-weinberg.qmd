@@ -53,9 +53,11 @@ html`<p class="result">${here.map(d => html`${d.genotype}: <b>${d.freq.toFixed(3
 <br>Mäuse: Allelfrequenz von A bei den Adulten <b>${life[0].p.toFixed(2)}</b>, bei den Juvenilen <b>${life.at(-1).p.toFixed(2)}</b>: unverändert (bis auf Rundung auf ganze Mäuse).</p>`
 ```
 
-## Ohne Evolution bleibt alles gleich
+## Ohne äussere Einwirkungen bleibt alles gleich
 
-Eine unendlich grosse Population, in der alle Annahmen gelten.
+[Der Vererbungsprozess allein ändert die Allelfrequenz nicht.]{.section-subtitle}
+
+In der Grafik unten sind die Genotypfrequenzen über die Generationen dargestellt, für eine unendlich grosse Population, in der alle Annahmen gelten.
 
 ```{ojs}
 //| panel: input
