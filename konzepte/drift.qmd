@@ -39,7 +39,7 @@ viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 
 ```{ojs}
 res = R.call("drift_experiment", {N, p0, generations, replicates, seed}, {key: "drift-main"})
-alleleTrajectoryPlot(Plot, res.rows, {width, highlight: p0})
+alleleTrajectoryPlot(Plot, res.rows, {width, yLabel: "Allelfrequenz p (A₁)", highlight: p0})
 ```
 
 ```{ojs}
@@ -79,7 +79,7 @@ Inputs.table(cmp.summary.map(s => ({"Grösse": s.scenario, "Mittelwert": s.mean,
 ## Fragen
 
 1. Wie verändert sich die Streuung der Endfrequenzen, wenn Sie $N$ verzehnfachen?
-2. Mit $p_0 = 0.2$ und $N = 20$: In welchem Anteil der Populationen wird A fixiert? Vergleichen Sie mit $p_0$.
+2. Mit $p_0 = 0.2$ und $N = 20$: In welchem Anteil der Populationen wird A₁ fixiert? Vergleichen Sie mit $p_0$.
 3. Die Heterozygotie sinkt im Mittel, obwohl einzelne Populationen auch wieder zur Mitte schwanken. Wie passt das zusammen?
 
 ::: {.callout-tip collapse="true"}

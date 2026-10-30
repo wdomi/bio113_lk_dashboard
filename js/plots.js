@@ -11,6 +11,9 @@ import { COLORS, GENOTYPE_COLORS, GENOTYPE_EDGE, SCENARIO_COLORS } from "./theme
 /** Rows of the light aa genotype, which gets a brown edge drawn underneath. */
 const aaOnly = (rows) => rows.filter((d) => d.genotype === "aa");
 
+/** Genotype names as shown on the force pages (alleles A₁/A₂); R keeps AA, Aa, aa. */
+const NUMBERED = { AA: "A₁A₁", Aa: "A₁A₂", aa: "A₂A₂" };
+
 const fmt = (x) => (Number.isFinite(x) ? x.toFixed(3) : "–");
 const fmtN = (N) => (N === null || N === Infinity ? "∞" : N);
 
@@ -75,12 +78,15 @@ export function alleleTrajectoryPlot(Plot, rows, { width = 700, y = "p", yLabel 
  * Genotype frequencies over time for one population.
  * @param long rows from R `genotypes_long()`: {gen, genotype, freq, hw}
  *   (hw = Hardy-Weinberg expectation at the same p, drawn dashed)
+ * @param numbered label genotypes A₁A₁, A₁A₂, A₂A₂ instead of AA, Aa, aa
  */
-export function genotypePlot(Plot, long, { width = 700, showHW = true } = {}) {
+export function genotypePlot(Plot, long, { width = 700, showHW = true, numbered = false } = {}) {
+  if (numbered) long = long.map((d) => ({ ...d, genotype: NUMBERED[d.genotype] ?? d.genotype }));
+  const domain = numbered ? Object.values(NUMBERED) : ["AA", "Aa", "aa"];
   return Plot.plot({
     ...base(width),
     y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },
-    color: { domain: ["AA", "Aa", "aa"], range: GENOTYPE_COLORS, legend: true, position: "top" },
+    color: { domain, range: GENOTYPE_COLORS, legend: true, position: "top" },
     marks: [
       showHW
         ? Plot.line(long, { x: "gen", y: "hw", stroke: "genotype", strokeDasharray: "2,4", strokeWidth: 1.5, strokeOpacity: 0.7 })
