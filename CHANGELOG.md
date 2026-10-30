@@ -13,6 +13,7 @@ versions: [SemVer](https://semver.org).
 - Hardy-Weinberg page: the lecture's mouse life cycle (adults → sperm/eggs → zygotes → juveniles) next to the genotype-frequency chart. Counts of AA, Aa, aa mice (dark brown, mid brown, beige) and of A/a gametes follow the slider *p* (R: `hw_life_cycle()`, drawing: `js/lifecycle.js`).
 
 ### Changed
+- Mutation page: alleles written A₁/A₂ (text, sliders, chart labels) to match the life-cycle wheel; the other pages keep A/a.
 - Life-cycle wheels: caption is now only the source credit "Adaptiert nach © 2014 Pearson Education, Inc.".
 - Konzepte menu: finished pages in dark grey; Migration/Genfluss and Genetische Drift lighter grey with "(folgt)".
 - Force pages: Dorea's updated life-cycle wheel (process labels, A₁/A₂ arrows); same section in colour on each page.
