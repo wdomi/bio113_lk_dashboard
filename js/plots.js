@@ -11,8 +11,9 @@ import { COLORS, GENOTYPE_COLORS, GENOTYPE_EDGE, SCENARIO_COLORS } from "./theme
 /** Rows of the light aa genotype, which gets a brown edge drawn underneath. */
 const aaOnly = (rows) => rows.filter((d) => d.genotype === "aa");
 
-/** Genotype names as shown on the force pages (alleles A₁/A₂); R keeps AA, Aa, aa. */
-const NUMBERED = { AA: "A₁A₁", Aa: "A₁A₂", aa: "A₂A₂" };
+/** Genotype names as shown on the force pages (alleles A₁/A₂, or B₁/B₂ on
+    Selektion); R keeps AA, Aa, aa. */
+const numberedNames = (L) => ({ AA: `${L}₁${L}₁`, Aa: `${L}₁${L}₂`, aa: `${L}₂${L}₂` });
 
 const fmt = (x) => (Number.isFinite(x) ? x.toFixed(3) : "–");
 const fmtN = (N) => (N === null || N === Infinity ? "∞" : N);
@@ -79,10 +80,12 @@ export function alleleTrajectoryPlot(Plot, rows, { width = 700, y = "p", yLabel 
  * @param long rows from R `genotypes_long()`: {gen, genotype, freq, hw}
  *   (hw = Hardy-Weinberg expectation at the same p, drawn dashed)
  * @param numbered label genotypes A₁A₁, A₁A₂, A₂A₂ instead of AA, Aa, aa
+ *   (true = letter A; or pass another letter, e.g. "B" for B₁B₁, B₁B₂, B₂B₂)
  */
 export function genotypePlot(Plot, long, { width = 700, showHW = true, numbered = false } = {}) {
-  if (numbered) long = long.map((d) => ({ ...d, genotype: NUMBERED[d.genotype] ?? d.genotype }));
-  const domain = numbered ? Object.values(NUMBERED) : ["AA", "Aa", "aa"];
+  const names = numbered ? numberedNames(numbered === true ? "A" : numbered) : null;
+  if (names) long = long.map((d) => ({ ...d, genotype: names[d.genotype] ?? d.genotype }));
+  const domain = names ? Object.values(names) : ["AA", "Aa", "aa"];
   return Plot.plot({
     ...base(width),
     y: { domain: [0, 1], label: "Genotypfrequenz", grid: true, tickSize: 0, labelAnchor: "top" },
