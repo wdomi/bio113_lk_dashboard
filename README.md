@@ -117,8 +117,6 @@ Pull requests run `.github/workflows/check.yml` (R tests, bridge test, render; n
 
 ## Credits
 
-Course: Lukas Keller, Dominique Waldvogel (UZH, IEU).
-Inspired by HHMI BioInteractive's *Population Genetics Explorer* (its worksheet case studies are reused here),
-Virtual Biology Lab, PopG and biologysimulations.com. See the site's *Über* page.
+Course - Evolution part: Lukas Keller, teaching assistant Dominique Waldvogel, DEBES - UZH. Inspired by HHMI BioInteractive's Population Genetics Explorer (its worksheet case studies are reused here), Virtual Biology Lab, PopG and biologysimulations.com.
 
 License: GPL-3.0 (see `LICENSE`).
