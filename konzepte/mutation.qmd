@@ -58,7 +58,7 @@ html`<p class="result">Gleichgewicht (gestrichelt): <b>p* = ${p_hat.toFixed(3)}<
 ## Mutation gegen Selektion
 
 Ein schädliches Allel A₂ entsteht immer wieder neu und wird durch Selektion entfernt. Es stellt sich ein
-Gleichgewicht ein: für ein rezessives Allel etwa $\hat{q} \approx \sqrt{u/s}$.
+Gleichgewicht ein: für ein rezessives Allel etwa $q^* \approx \sqrt{u/s}$.
 
 ```{ojs}
 //| panel: input
@@ -75,7 +75,7 @@ alleleTrajectoryPlot(Plot, rows_ms, {width, y: "q", yLabel: "Allelfrequenz q (A�
 ```
 
 ```{ojs}
-html`<p class="result">Näherung (gestrichelt): <b>q̂ ≈ ${q_hat.toFixed(4)}</b> · Simulation nach 1000 Generationen: <b>q = ${rows_ms.at(-1).q.toFixed(4)}</b></p>`
+html`<p class="result">Näherung (gestrichelt): <b>q* ≈ ${q_hat.toFixed(4)}</b> · Simulation nach 1000 Generationen: <b>q = ${rows_ms.at(-1).q.toFixed(4)}</b></p>`
 ```
 
 ## Fragen
