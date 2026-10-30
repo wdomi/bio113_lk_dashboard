@@ -23,7 +23,7 @@ $$
 mit $p$ der Frequenz von A₁ und $q = 1 - p$ der Frequenz von A₂. Im Gleichgewicht ($\Delta p = 0$) gilt
 
 $$
-\hat{p} = \frac{v}{u + v}
+p^* = \frac{v}{u + v}
 $$
 ::::
 :::: {.intro-figure}
@@ -52,7 +52,7 @@ alleleTrajectoryPlot(Plot, rows.map(d => ({...d, rep: 1})), {width, yLabel: "All
 ```
 
 ```{ojs}
-html`<p class="result">Gleichgewicht (gestrichelt): <b>p̂ = ${p_hat.toFixed(3)}</b> · nach ${generations.toLocaleString("de-CH")} Generationen: <b>p = ${rows.at(-1).p.toFixed(3)}</b></p>`
+html`<p class="result">Gleichgewicht (gestrichelt): <b>p* = ${p_hat.toFixed(3)}</b> · nach ${generations.toLocaleString("de-CH")} Generationen: <b>p = ${rows.at(-1).p.toFixed(3)}</b></p>`
 ```
 
 ## Mutation gegen Selektion
