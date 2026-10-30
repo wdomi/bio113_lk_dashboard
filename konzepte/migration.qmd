@@ -47,7 +47,7 @@ rows = R.call("simulate_scenarios", {
   scenarios: {"m = 0": {m: 0}, "m = 0.05": {m: 0.05}, "m = 0.2": {m: 0.2}, [`eigener Wert m = ${m}`]: {m}},
   p0, pC, generations
 }, {key: "mig-main"})
-alleleTrajectoryPlot(Plot, rows, {width, highlight: pC})
+alleleTrajectoryPlot(Plot, rows, {width, yLabel: "Allelfrequenz p (A₁)", highlight: pC})
 ```
 
 ## Migration gegen Drift
@@ -64,7 +64,7 @@ viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 
 ```{ojs}
 res_md = R.call("experiment", {N: N_md, m: m_md, pC: 0.5, p0: 0.5, generations: 200, replicates: 20, seed}, {key: "mig-drift"})
-alleleTrajectoryPlot(Plot, res_md.rows, {width, highlight: 0.5})
+alleleTrajectoryPlot(Plot, res_md.rows, {width, yLabel: "Allelfrequenz p (A₁)", highlight: 0.5})
 ```
 
 ```{ojs}
