@@ -166,7 +166,8 @@ figure svg, .cell-output-display svg { max-width: 100%; height: auto; }
 .intro-figure {
   figure, p { margin: 0; }
   img { display: block; width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
-  figcaption { font-size: 0.85rem; text-align: center; }
+  /* source credit under the wheel: small and grey */
+  figcaption { font-size: 0.7rem; line-height: 1.3; color: #9a9994; text-align: center; margin-top: 0.3rem; }
 }
 @media (min-width: 768px) {
   .intro-pair { grid-template-columns: 3fr 2fr; }
