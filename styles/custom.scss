@@ -27,11 +27,20 @@ body {
   .navbar-brand { font-weight: 600; }
 }
 
-/* Konzepte menu: finished pages dark grey; pages still under construction
-   ("(folgt)" in _quarto.yml) lighter grey */
-.navbar .dropdown-menu .dropdown-item { color: #2b2b29; }
-.navbar .dropdown-menu .dropdown-item[href*="migration.html"],
-.navbar .dropdown-menu .dropdown-item[href*="drift.html"] { color: #a3a29d; }
+/* Menu text always black (navbar links and the Konzepte dropdown, also on
+   hover and for the current page) */
+.navbar .navbar-nav .nav-link,
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link:focus,
+.navbar .navbar-nav .nav-link.active,
+.navbar .navbar-nav .show > .nav-link,
+.navbar .dropdown-menu .dropdown-item,
+.navbar .dropdown-menu .dropdown-item:hover,
+.navbar .dropdown-menu .dropdown-item:focus,
+.navbar .dropdown-menu .dropdown-item.active,
+.navbar .navbar-brand,
+.navbar .navbar-brand:hover { color: #000; }
+.navbar .dropdown-menu .dropdown-item.active { background-color: #f0f0ee; }
 
 main.content {
   max-width: 760px;
@@ -217,7 +226,7 @@ svg.mouse-cycle { display: block; max-width: 520px; margin: 0 auto; }
   stroke-width: 1.5px;
 }
 
-/* Migration and Drift pages: orange "Im Aufbau" note at the top */
+/* Orange "Im Aufbau" note (currently unused; add ::: {.construction-box} at a page top) */
 .construction-box {
   background: #fff4e5;
   border: 1px solid #f5d3a3;
