@@ -15,9 +15,11 @@ description: "Wie die Populationsgrösse bestimmt, wie stark der Zufall Allelfre
      The wheel greys out everything but Genetische Drift: images/lebenszyklus-drift.svg -->
 ::::: {.intro-pair}
 :::: {.intro-text}
-In jeder echten Population ist die Zahl der Individuen endlich. Welche Allele weitergegeben werden, ist deshalb
-teilweise Zufall. Diese Schwankungen heissen **genetische Drift**. Sie sind ungerichtet, und sie wirken in kleinen
-Populationen stärker. Ohne andere Kräfte gehen Allele irgendwann verloren oder werden fixiert.
+In jeder echten Population ist die Zahl der Individuen endlich. Die Zygoten der nächsten Generation sind eine
+Stichprobe aus dem Genpool ("Mendel-Lotterie"). Welche Allele weitergegeben werden, ist deshalb teilweise Zufall.
+Diese Schwankungen heissen **genetische Drift**. Anders als bei der Selektion gibt es keinen beständigen Zusammenhang
+zwischen Genotyp und Fitness. Je kleiner die Stichprobe, desto grösser der Zufallseffekt. Ohne Mutation, Selektion
+oder Migration gehen Allele irgendwann verloren oder werden fixiert.
 ::::
 :::: {.intro-figure}
 ![Adaptiert nach © 2014 Pearson Education, Inc.](../images/lebenszyklus-drift.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist die Drift, die übrigen Prozesse sind ausgegraut."}
@@ -51,7 +53,8 @@ ${replicates > 1 ? html` · Streuung <b>${summary.sd.toFixed(2)}</b>` : ""}
 
 ## Drift verringert die Variation
 
-Die mittlere Heterozygotie der Populationen (blau) fällt genau wie die Formel $H_t = H_0 (1 - \tfrac{1}{2N})^t$ (grau) vorhersagt.
+Die mittlere Heterozygotie $2pq$ der Populationen (blau) sinkt mit der Zeit, wie die theoretische Erwartung für diese
+Populationsgrösse (grau). In der Vorlesung zeigt das Experiment mit Fruchtfliegen dasselbe Muster.
 
 ```{ojs}
 heterozygosityPlot(Plot, res.heterozygosity, {width})
@@ -78,13 +81,38 @@ Inputs.table(cmp.summary.map(s => ({"Grösse": s.scenario, "Mittelwert": s.mean,
 
 ## Fragen
 
-1. Wie verändert sich die Streuung der Endfrequenzen, wenn Sie $N$ verzehnfachen?
-2. Mit $p_0 = 0.2$ und $N = 20$: In welchem Anteil der Populationen wird A₁ fixiert? Vergleichen Sie mit $p_0$.
-3. Die Heterozygotie sinkt im Mittel, obwohl einzelne Populationen auch wieder zur Mitte schwanken. Wie passt das zusammen?
+Alle Fragen lassen sich mit den Grafiken oben beantworten, ohne Formeln.
+
+1. **Mendel-Lotterie:** Im Genpool ist $p = 0.6$. Daraus entstehen 10 Zygoten, also werden 20 Allele gezogen. Wie
+   viele A₁ erwarten Sie? Warum kann trotzdem $p = 0.7$ herauskommen, obwohl kein Genotyp eine höhere Fitness hat?
+   Wäre eine so grosse Abweichung bei 1000 Zygoten genauso wahrscheinlich?
+2. **Populationsgrösse:** Notieren Sie vor dem Vergleich oben Ihre Vorhersage: Bei welcher Grösse liegen die
+   Endfrequenzen am weitesten auseinander, bei welcher ist ein Allel am häufigsten fixiert oder verloren? Begründen
+   Sie mit Frage 1.
+3. **Fixation:** Stellen Sie $N = 20$, 20 Populationen und 200 Generationen ein. Wo enden die Populationen? Warum
+   kann eine Population, die bei $p = 0$ oder $p = 1$ angekommen ist, ohne Mutation oder Migration nie mehr zurück?
+4. **Heterozygotie:** Einzelne Populationen schwanken auch wieder Richtung $p = 0.5$. Warum sinkt die mittlere
+   Heterozygotie trotzdem immer weiter?
+5. **Innerhalb und zwischen Populationen:** Alle Populationen starten gleich. Was passiert im Lauf der Zeit mit der
+   Variation *innerhalb* jeder Population, und was mit den Unterschieden *zwischen* den Populationen?
+6. **Florida-Puma (Vorlesung):** Um 1990 lebten nur noch etwa 20 bis 30 Florida-Pumas, ihre Heterozygotie sank.
+   Nach 1995 wurden Pumas aus Texas freigelassen, danach stieg die Heterozygotie wieder. Erklären Sie beides mit Drift
+   und Migration.
 
 ::: {.callout-tip collapse="true"}
 ## Lösungshinweise
-1. Die Streuung wird etwa √10-mal kleiner.
-2. Ungefähr 20 %: Die Fixierungswahrscheinlichkeit eines neutralen Allels entspricht seiner Startfrequenz.
-3. Populationen, die fixieren, haben für immer $H = 0$. Verlust ist endgültig, Gewinn nicht.
+1. Erwartet sind $0.6 \cdot 20 = 12$ A₁. Die 20 Allele sind eine Zufallsstichprobe; 14 statt 12 A₁ ($p = 0.7$) ist bei so
+   wenigen Ziehungen gut möglich. Bei 1000 Zygoten (2000 Allele) fällt ein Zufall pro Allel viel weniger ins Gewicht,
+   die Frequenz bleibt nahe bei 0.6.
+2. Bei $N = 10$: Die kleinste Stichprobe hat die grössten Zufallsschwankungen. Darum streuen die Endfrequenzen am
+   stärksten, und viele Populationen erreichen 0 oder 1. Bei $N = 10\,000$ bleiben fast alle nahe bei 0.5.
+3. Fast alle enden bei 0 oder 1. Ist ein Allel verloren, kann es nicht mehr gezogen werden; nur Mutation oder
+   Zuwanderung könnte es zurückbringen. 0 und 1 sind die einzigen Gleichgewichte der Drift.
+4. Populationen, die ein Allel verloren haben, haben für immer $2pq = 0$. Verlust ist endgültig, Rückkehr nicht.
+   Mit der Zeit erreichen immer mehr Populationen 0 oder 1.
+5. Innerhalb jeder Population geht Variation verloren (Heterozygotie sinkt, Allele werden fixiert). Zwischen den
+   Populationen entstehen Unterschiede, weil jede durch Zufall in eine andere Richtung driftet.
+6. In einer so kleinen Population ist die Drift stark: Allele gehen zufällig verloren, die Heterozygotie sinkt.
+   Die Texas-Pumas brachten Allele mit, die in Florida verloren gegangen oder selten waren. Dieser Genfluss erhöht
+   die Variation innerhalb der Population wieder.
 :::
