@@ -13,6 +13,7 @@ versions: [SemVer](https://semver.org).
 - Hardy-Weinberg page: the lecture's mouse life cycle (adults → sperm/eggs → zygotes → juveniles) next to the genotype-frequency chart. Counts of AA, Aa, aa mice (dark brown, mid brown, beige) and of A/a gametes follow the slider *p* (R: `hw_life_cycle()`, drawing: `js/lifecycle.js`).
 
 ### Changed
+- Selektion page: the three sliders are now "Überlebensanteil B₁B₁ / B₁B₂ / B₂B₂" (as "Fraction surviving" in lecture 8); a line below shows the relative fitness w (each divided by the largest), so e.g. 0.4/0.4/0.4 reads as w = 1/1/1 (no selection).
 - Selektion, Migration/Genfluss, Drift: "Fragen" rewritten to follow Keller Vorlesung 8–9 and to be answerable from the page's charts and the lecture equations alone (mechanistic reasoning, no outside knowledge).
 - Selektion page: presets are now the lecture examples (HIV and CCR5-Δ32, Reismehlkäfer with a recessive lethal allele, heterozygote advantage with 40 % of homozygotes dying); Laktase and Schäferhund presets commented out.
 - Migration page: new section "Beispiel: Rotwolf und Kojote" (hybridisation as gene flow, m = 0.075 / 0.0375 / 0.0075, lecture 9); intro now follows the lecture (one-island model, hybridisation is gene flow, migration causes deviations from Hardy-Weinberg); "Migration gegen Drift" (N·m ≈ 1 rule, not in the lectures) hidden (commented out).

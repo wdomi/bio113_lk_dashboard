@@ -28,7 +28,9 @@ und von der Dominanz ab.
 
 ## Ausprobieren
 
-Wählen Sie ein Fallbeispiel oder stellen Sie die Fitness selbst ein.
+Wählen Sie ein Fallbeispiel oder stellen Sie selbst ein, welcher Anteil jedes Genotyps überlebt. Die relative
+Fitness $w$ ergibt sich daraus, indem man durch den grössten Anteil teilt: Der beste Genotyp hat $w = 1$.
+Überleben alle Genotypen gleich gut (z. B. je 40 %), sind alle $w = 1$, und es gibt keine Selektion.
 
 ```{ojs}
 //| panel: input
@@ -56,12 +58,19 @@ start = preset ?? {p0: 0.1, generations: 100, w11: 1, w12: 0.95, w22: 0.9}
 //| panel: input
 viewof p0 = Inputs.range([0, 1], {value: start.p0, step: 0.01, label: "Start-Allelfrequenz p₀"})
 viewof generations = Inputs.range([1, 1000], {value: start.generations, step: 1, label: "Generationen"})
-viewof w11 = Inputs.range([0, 1], {value: start.w11, step: 0.01, label: "Fitness w₁₁ (B₁B₁)"})
-viewof w12 = Inputs.range([0, 1], {value: start.w12, step: 0.01, label: "Fitness w₁₂ (B₁B₂)"})
-viewof w22 = Inputs.range([0, 1], {value: start.w22, step: 0.01, label: "Fitness w₂₂ (B₂B₂)"})
+viewof w11 = Inputs.range([0, 1], {value: start.w11, step: 0.01, label: "Überlebensanteil B₁B₁"})
+viewof w12 = Inputs.range([0, 1], {value: start.w12, step: 0.01, label: "Überlebensanteil B₁B₂"})
+viewof w22 = Inputs.range([0, 1], {value: start.w22, step: 0.01, label: "Überlebensanteil B₂B₂"})
 viewof finite = Inputs.toggle({label: "Endliche Population (mit Drift)", value: false})
 viewof N = Inputs.range([10, 10000], {value: 500, step: 1, transform: Math.log, label: "Populationsgrösse N", disabled: !finite})
 viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
+```
+
+```{ojs}
+wmax = Math.max(w11, w12, w22)
+rel = (w) => wmax > 0 ? (w / wmax).toFixed(2) : "–"
+html`<p class="result">Relative Fitness (geteilt durch den grössten Überlebensanteil):
+<b>w₁₁ = ${rel(w11)}</b> · <b>w₁₂ = ${rel(w12)}</b> · <b>w₂₂ = ${rel(w22)}</b></p>`
 ```
 
 ```{ojs}
@@ -116,7 +125,7 @@ Alle Fragen lassen sich mit den Grafiken oben und mit $p^2 + 2pq + q^2 = 1$ bean
    Hardy-Weinberg? (c) Sagen Sie voraus, was mit $p_0 = 0.2$ passiert, und prüfen Sie es.
 4. **Dominanz:** Im Vergleich unten startet B₁ selten ($p_0 = 0.05$). Welche Kurve steigt am Anfang am schnellsten,
    und welche ist nach 300 Generationen am weitesten von $p = 1$ entfernt? Begründen Sie beides damit, in welchen Genotypen B₁ bzw. B₂ meistens steckt.
-5. **Selektion und Drift:** Stellen Sie $w_{11} = 1$, $w_{12} = 0.95$, $w_{22} = 0.9$ ein und schalten Sie
+5. **Selektion und Drift:** Stellen Sie die Überlebensanteile 1, 0.95 und 0.9 ein und schalten Sie
    "Endliche Population" ein. Vergleichen Sie $N = 10$ mit $N = 1000$. Warum geht B₁ in kleinen Populationen manchmal
    verloren, obwohl es die höhere Fitness hat?
 
