@@ -13,6 +13,10 @@ versions: [SemVer](https://semver.org).
 - Hardy-Weinberg page: the lecture's mouse life cycle (adults → sperm/eggs → zygotes → juveniles) next to the genotype-frequency chart. Counts of AA, Aa, aa mice (dark brown, mid brown, beige) and of A/a gametes follow the slider *p* (R: `hw_life_cycle()`, drawing: `js/lifecycle.js`).
 
 ### Changed
+- Selektion, Migration/Genfluss, Drift: "Fragen" rewritten to follow Keller Vorlesung 8–9 and to be answerable from the page's charts and the lecture equations alone (mechanistic reasoning, no outside knowledge).
+- Selektion page: presets are now the lecture examples (HIV and CCR5-Δ32, Reismehlkäfer with a recessive lethal allele, heterozygote advantage with 40 % of homozygotes dying); Laktase and Schäferhund presets commented out.
+- Migration page: new section "Beispiel: Rotwolf und Kojote" (hybridisation as gene flow, m = 0.075 / 0.0375 / 0.0075, lecture 9); intro now follows the lecture (one-island model, hybridisation is gene flow, migration causes deviations from Hardy-Weinberg); "Migration gegen Drift" (N·m ≈ 1 rule, not in the lectures) hidden (commented out).
+- Drift page: intro adds "Mendel-Lotterie" and "no consistent link between genotype and fitness" (lecture 9); heterozygosity text no longer shows the formula H_t = H_0(1 − 1/2N)^t, which is not in the lectures.
 - Selektion page: alleles B₁/B₂ and genotypes B₁B₁, B₁B₂, B₂B₂, as in the lecture (Mutation, Migration, Drift keep A₁/A₂).
 - Life-cycle wheels: the Pearson credit under the wheel is smaller and grey.
 - Mutation page: equilibria written with a star instead of a hat: p* = v/(u + v) and q* ≈ √(u/s) (equations and result lines).
