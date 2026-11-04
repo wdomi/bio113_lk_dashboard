@@ -48,5 +48,5 @@ test_that("mutation-selection balance is close to sqrt(u/s) for a recessive alle
 
 test_that("drift_by_size returns one summary row per size", {
   res <- drift_by_size(replicates = 10, generations = 20)
-  expect_equal(res$summary$scenario, paste("N =", c(10, 100, 1000, 10000)))
+  expect_equal(res$summary$scenario, paste("N =", c(20, 200, 2000)))
 })

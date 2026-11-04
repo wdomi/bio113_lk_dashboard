@@ -25,7 +25,8 @@ p_I' = (1 - m)\,p_I + m\,p_C \qquad\qquad \Delta p_I = m\,(p_C - p_I)
 $$
 
 Im Gleichgewicht ist $\Delta p_I = 0$, also $p_I = p_C$. Migration **gleicht Populationen an**, und sie führt zu
-Abweichungen vom Hardy-Weinberg-Gleichgewicht.
+Abweichungen vom Hardy-Weinberg-Gleichgewicht. Das Gleichgewicht wird relativ schnell erreicht, viel schneller als bei
+Mutation.
 ::::
 :::: {.intro-figure}
 ![Adaptiert nach © 2014 Pearson Education, Inc.](../images/lebenszyklus-migration.svg){fig-alt="Lebenszyklus der Mäuse mit Adulten, Gameten, Zygoten und Juvenilen. Hervorgehoben ist der Genflusspfeil, die übrigen Prozesse sind ausgegraut."}
@@ -34,19 +35,20 @@ Abweichungen vom Hardy-Weinberg-Gleichgewicht.
 
 ## Insel und Festland
 
-Insel bei $p_0 = 0.4$, Festland bei $p_C = 0.8$. Vergleichen Sie drei Migrationsraten und probieren Sie eine eigene.
+Voreingestellt ist das Beispiel aus der Vorlesung (Conner & Hartl): Festland $p_C = 0.4$, Insel bei $p_0 = 0.9$
+(oder $0.1$), $m = 0.1$, 30 Generationen. Vergleichen Sie mit $m = 0$ und probieren Sie einen eigenen Wert.
 
 ```{ojs}
 //| panel: input
-viewof p0 = Inputs.range([0, 1], {value: 0.4, step: 0.01, label: "Insel: Start-Allelfrequenz p₀"})
-viewof pC = Inputs.range([0, 1], {value: 0.8, step: 0.01, label: "Festland: Allelfrequenz p_C"})
+viewof p0 = Inputs.range([0, 1], {value: 0.9, step: 0.01, label: "Insel: Start-Allelfrequenz p₀"})
+viewof pC = Inputs.range([0, 1], {value: 0.4, step: 0.01, label: "Festland: Allelfrequenz p_C"})
 viewof m = Inputs.range([0, 0.5], {value: 0.05, step: 0.005, label: "Migrationsrate m (eigener Wert)"})
-viewof generations = Inputs.range([1, 200], {value: 50, step: 1, label: "Generationen"})
+viewof generations = Inputs.range([1, 200], {value: 30, step: 1, label: "Generationen"})
 ```
 
 ```{ojs}
 rows = R.call("simulate_scenarios", {
-  scenarios: {"m = 0": {m: 0}, "m = 0.05": {m: 0.05}, "m = 0.2": {m: 0.2}, [`eigener Wert m = ${m}`]: {m}},
+  scenarios: {"m = 0": {m: 0}, "m = 0.1 (Vorlesung)": {m: 0.1}, [`eigener Wert m = ${m}`]: {m}},
   p0, pC, generations
 }, {key: "mig-main"})
 alleleTrajectoryPlot(Plot, rows, {width, yLabel: "Allelfrequenz p (A₁)", highlight: pC})
@@ -57,7 +59,8 @@ alleleTrajectoryPlot(Plot, rows, {width, yLabel: "Allelfrequenz p (A₁)", highl
 In der Vorlesung: Rotwölfe (Allel A₁, $p_0 = 1$) hybridisieren mit Kojoten, die A₁ nicht tragen ($p_C = 0$).
 Die Hybridisierung wirkt wie Genfluss vom "Festland" der Kojoten. Werden Hybride sterilisiert, sinkt $m$:
 0 % sterilisiert ($m = 0.075$), 50 % ($m = 0.0375$), 90 % ($m = 0.0075$).
-Die Vorlesung zeigt diese Kurven über 100 Jahre; das entspricht hier etwa 20 Generationen.
+Die Vorlesung zeigt diese Kurven über 100 Jahre. Mit diesen Werten von $m$ pro Generation erreicht das Modell die
+Endwerte der Vorlesung (etwa 0.2, 0.45 und 0.85) nach rund 20 Generationen, also bei etwa 5 Jahren pro Generation.
 
 ```{ojs}
 //| panel: input
@@ -107,22 +110,23 @@ Streuung zwischen den Inseln am Ende: <b>${res_md.summary[0].sd.toFixed(2)}</b><
 
 Alle Fragen lassen sich mit den Grafiken oben und mit $\Delta p_I = m\,(p_C - p_I)$ beantworten.
 
-1. **Angleichung:** Insel $p_I = 0.4$, Festland $p_C = 0.8$, $m = 0.05$. Berechnen Sie $\Delta p_I$ in der ersten
-   Generation und noch einmal, wenn die Insel bei $p_I = 0.7$ angekommen ist. Warum wird die Angleichung langsamer,
-   obwohl $m$ gleich bleibt?
-2. **Gleichgewicht:** Setzen Sie $p_C = 0.4$ und starten Sie die Insel einmal bei $p_0 = 0.1$ und einmal bei
-   $p_0 = 0.9$. Wo enden beide Inseln? Was bestimmt den Endzustand, und was nicht?
+1. **Angleichung:** Insel $p_I = 0.9$, Festland $p_C = 0.4$, $m = 0.1$ (Beispiel der Vorlesung). Berechnen Sie
+   $\Delta p_I$ in der ersten Generation und noch einmal, wenn die Insel bei $p_I = 0.6$ angekommen ist. Warum wird die
+   Angleichung langsamer, obwohl $m$ gleich bleibt?
+2. **Gleichgewicht:** Lassen Sie $p_C = 0.4$ und starten Sie die Insel einmal bei $p_0 = 0.9$ und einmal bei
+   $p_0 = 0.1$. Wo enden beide Inseln? Was bestimmt den Endzustand, und was nicht?
 3. **Migration und Hardy-Weinberg:** Auf einer Insel leben 800 A₁A₁-Adulte, vom Festland wandern 200 A₂A₂ zu.
    Berechnen Sie $p$ und die Genotypfrequenzen der Adulten nach der Zuwanderung. Entsprechen sie Hardy-Weinberg?
    Was passiert in der nächsten Generation, wenn sich alle zufällig paaren?
-4. **Rotwolf:** Warum bedeuten weniger fruchtbare Hybride ein kleineres $m$? Warum sinkt das Rotwolfallel trotzdem
+4. **Rotwolf:** Warum bedeutet das Sterilisieren von Hybriden ein kleineres $m$? Warum sinkt das Rotwolfallel trotzdem
    in allen drei Szenarien, und was müsste gelten, damit es nicht sinkt?
 5. **Gnus:** Gnus wandern jedes Jahr Hunderte Kilometer durch die Serengeti. Warum verändert das die Allelfrequenzen
    ihrer Population nicht?
 
 ::: {.callout-tip collapse="true"}
 ## Lösungshinweise
-1. Am Anfang: $0.05 \cdot (0.8 - 0.4) = 0.02$. Bei $p_I = 0.7$: $0.05 \cdot 0.1 = 0.005$. Die Änderung ist proportional
+1. Am Anfang: $0.1 \cdot (0.4 - 0.9) = -0.05$. Bei $p_I = 0.6$: $0.1 \cdot (0.4 - 0.6) = -0.02$. $p_I$ sinkt also
+   Richtung $p_C$, und die Änderung ist proportional
    zum Unterschied zwischen Festland und Insel. Je ähnlicher die beiden schon sind, desto weniger Neues bringen die
    Zuwanderer mit.
 2. Beide enden bei $p_C = 0.4$. Der Endzustand hängt nur von $p_C$ ab, nicht vom Start der Insel; der Start bestimmt
@@ -132,7 +136,7 @@ Alle Fragen lassen sich mit den Grafiken oben und mit $\Delta p_I = m\,(p_C - p_
    $p = 0.8$ wieder ein (wenn keine weiteren Zuwanderer kommen).
 4. $m$ ist der Anteil des Rotwolf-Genpools, der aus Kojotenallelen stammt. Sterile Hybride geben keine Allele weiter,
    also kommen weniger Kojotenallele an. Solange $m > 0$ und $p_C = 0$ ist, zieht jede Generation $p$ Richtung 0.
-   Nur bei $m = 0$ (keine fruchtbaren Hybride) bleibt $p$ gleich.
+   Nur bei $m = 0$ (alle Hybriden sterilisiert) bleibt $p$ gleich.
 5. Die Tiere kehren in ihre Population zurück und pflanzen sich nicht in einer anderen Population fort. Es gelangen
    keine Allele in einen anderen Genpool, also ist es kein Genfluss.
 :::

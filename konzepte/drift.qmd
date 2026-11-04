@@ -28,14 +28,15 @@ oder Migration gehen Allele irgendwann verloren oder werden fixiert.
 
 ## Viele Populationen, gleicher Start
 
-Jede Linie ist eine unabhängige Population (ein Replikat). Alle starten bei derselben Allelfrequenz.
+Jede Linie ist eine unabhängige Population (ein Replikat). Alle starten bei derselben Allelfrequenz. Voreingestellt
+ist die kleinste Population aus der Vorlesung: $N = 20$, 10 Populationen, 50 Generationen.
 
 ```{ojs}
 //| panel: input
-viewof N = Inputs.range([2, 10000], {value: 50, step: 1, transform: Math.log, label: "Populationsgrösse N"})
+viewof N = Inputs.range([2, 10000], {value: 20, step: 1, transform: Math.log, label: "Populationsgrösse N"})
 viewof p0 = Inputs.range([0.01, 0.99], {value: 0.5, step: 0.01, label: "Start-Allelfrequenz p₀"})
-viewof generations = Inputs.range([1, 500], {value: 100, step: 1, label: "Generationen"})
-viewof replicates = Inputs.range([1, 100], {value: 20, step: 1, label: "Populationen"})
+viewof generations = Inputs.range([1, 500], {value: 50, step: 1, label: "Generationen"})
+viewof replicates = Inputs.range([1, 100], {value: 10, step: 1, label: "Populationen"})
 viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 ```
 
@@ -62,7 +63,8 @@ heterozygosityPlot(Plot, res.heterozygosity, {width})
 
 ## Populationsgrösse im Vergleich
 
-50 Populationen je Grösse, 50 Generationen, $p_0 = 0.5$. Notieren Sie zuerst Ihre Vorhersage.
+Die drei Grössen aus der Vorlesung ($N = 20$, $200$, $2000$), je 50 Populationen, 50 Generationen, $p_0 = 0.5$.
+Notieren Sie zuerst Ihre Vorhersage.
 
 ```{ojs}
 //| panel: input
@@ -70,7 +72,7 @@ viewof seed_cmp = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 
 ```
 
 ```{ojs}
-cmp = R.call("drift_by_size", {sizes: [10, 100, 1000, 10000], p0: 0.5, generations: 50, replicates: 50, seed: seed_cmp}, {key: "drift-cmp"})
+cmp = R.call("drift_by_size", {sizes: [20, 200, 2000], p0: 0.5, generations: 50, replicates: 50, seed: seed_cmp}, {key: "drift-cmp"})
 finalFrequencyHistogram(Plot, cmp.rows, {width})
 ```
 
@@ -104,8 +106,8 @@ Alle Fragen lassen sich mit den Grafiken oben beantworten, ohne Formeln.
 1. Erwartet sind $0.6 \cdot 20 = 12$ A₁. Die 20 Allele sind eine Zufallsstichprobe; 14 statt 12 A₁ ($p = 0.7$) ist bei so
    wenigen Ziehungen gut möglich. Bei 1000 Zygoten (2000 Allele) fällt ein Zufall pro Allel viel weniger ins Gewicht,
    die Frequenz bleibt nahe bei 0.6.
-2. Bei $N = 10$: Die kleinste Stichprobe hat die grössten Zufallsschwankungen. Darum streuen die Endfrequenzen am
-   stärksten, und viele Populationen erreichen 0 oder 1. Bei $N = 10\,000$ bleiben fast alle nahe bei 0.5.
+2. Bei $N = 20$: Die kleinste Stichprobe hat die grössten Zufallsschwankungen. Darum streuen die Endfrequenzen am
+   stärksten, und viele Populationen erreichen 0 oder 1. Bei $N = 2000$ bleiben fast alle nahe bei 0.5.
 3. Fast alle enden bei 0 oder 1. Ist ein Allel verloren, kann es nicht mehr gezogen werden; nur Mutation oder
    Zuwanderung könnte es zurückbringen. 0 und 1 sind die einzigen Gleichgewichte der Drift.
 4. Populationen, die ein Allel verloren haben, haben für immer $2pq = 0$. Verlust ist endgültig, Rückkehr nicht.

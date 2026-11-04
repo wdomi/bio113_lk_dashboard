@@ -67,8 +67,8 @@ drift_experiment <- function(N = 50, p0 = 0.5, ...) {
   list(rows = d, summary = summarize_final(d), heterozygosity = heterozygosity_decay(d, N, p0))
 }
 
-#' Compare several population sizes (worksheet: N = 10, 100, 1000, 10000).
-drift_by_size <- function(sizes = c(10, 100, 1000, 10000), ...) {
+#' Compare several population sizes (lecture: N = 20, 200, 2000).
+drift_by_size <- function(sizes = c(20, 200, 2000), ...) {
   scenarios <- stats::setNames(lapply(sizes, function(n) list(N = n)), paste("N =", sizes))
   d <- simulate_scenarios(scenarios, ...)
   list(rows = final_rows(d), summary = summarize_final(d))
