@@ -99,6 +99,14 @@ For a log-scale slider (population sizes) add `transform: Math.log`.
 Chart colours: `js/theme.js` (genotypes: AA dark brown, Aa mid brown, aa beige, as the mice in the lecture; keep them clearly different in lightness).
 Site colours/fonts: `styles/custom.scss`.
 
+### Show a page on a lecture slide (presentation view)
+Add `?present=1` to the page URL (no menu or footer, controls left and charts right,
+scaled to the slide). Add `&teil=<id>` to show only one section; the id is the `##`
+heading in lower case with `-` for spaces (umlauts may drop their dots: `grosse`).
+Example: `konzepte/selektion.html?present=1&teil=ausprobieren`. Paste the URL into
+PowerPoint's "Web Viewer" add-in. Code: `_partials/_present.html` and the
+"Presentation view" block at the end of `styles/custom.scss`.
+
 ### Upgrade webR
 Change `WEBR_URL` in `js/r-bridge.js` and the `webr` version in `package.json` (used by the test). Run `npm install && npm test`.
 

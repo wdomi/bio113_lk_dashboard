@@ -6,6 +6,7 @@ versions: [SemVer](https://semver.org).
 ## [Unreleased]
 
 ### Added
+- Presentation view for lecture slides (PowerPoint Web Viewer): add `?present=1` to a page URL to hide menu, footer and the "Fragen"/"Lösungshinweise", put controls left and charts right, and scale the page to the slide (designed for 1280 px, 16:9). `&teil=<section id>` shows only one section, e.g. `selektion.html?present=1&teil=ausprobieren` (`_partials/_present.html`, styles at the end of `styles/custom.scss`).
 - Mutation page: second intro paragraph on forward (u, A → a) and back mutation (v, a → A), with Δp = v·q − u·p and the equilibrium p̂ = v/(u + v).
 - Migration and Drift pages: orange "Im Aufbau" box at the top (`.construction-box`).
 - Selektion, Migration and Drift pages: the same life-cycle wheel, each with only its own process in colour (`images/lebenszyklus-selektion.svg`, `-migration.svg`, `-drift.svg`).

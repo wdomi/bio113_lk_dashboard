@@ -1,0 +1,87 @@
+<!--
+  _partials/_present.html: presentation view for lecture slides.
+  Included in the <head> of every page (see _quarto.yml, include-in-header).
+
+  Add ?present=1 to a page URL, e.g.
+    https://wdomi.github.io/bio113_lk_dashboard/konzepte/selektion.html?present=1
+  and the page shows without menu and footer, laid out for a 16:9 slide
+  (PowerPoint "Web Viewer" add-in): controls left, charts right, and
+  everything scaled so it looks the same at any size.
+  The "Fragen" and "Lösungshinweise" sections are hidden.
+
+  Show only one section with &teil=<section id>, e.g.
+    ...selektion.html?present=1&teil=ausprobieren
+  The section id is the heading in lower case with "-" for spaces
+  (umlauts may be written without the dots: grösse or grosse).
+  Styles: "Presentation view" at the end of styles/custom.scss.
+-->
+<script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var present = params.get("present");
+  if (present === null || present === "0" || present === "false") return;
+  var root = document.documentElement;
+  root.classList.add("present");
+
+  // Lay the page out for a 1280 px wide slide and scale it to the real width,
+  // so text and charts keep their proportions on any screen or slide size.
+  var DESIGN_WIDTH = 1280;
+  function scale() {
+    root.style.zoom = String(window.innerWidth / DESIGN_WIDTH);
+  }
+  scale();
+  window.addEventListener("resize", scale);
+
+  // "grösse" and "grosse" both match: drop accents and dots, compare lower case
+  function norm(s) {
+    try { s = decodeURIComponent(s); } catch (e) {}
+    return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  }
+  var HIDDEN = ["fragen", "losungshinweise"];
+
+  // Split a section into controls (left) and results (right).
+  // Left: text up to the last control panel, plus the panels.
+  // Right: everything that shows a result (charts, result lines) and what follows.
+  function twoColumns(section) {
+    var kids = Array.prototype.slice.call(section.children);
+    var panels = kids.filter(function (el) { return el.classList.contains("panel-input"); });
+    if (!panels.length) return;
+    var lastPanel = kids.indexOf(panels[panels.length - 1]);
+    var left = document.createElement("div");
+    left.className = "present-controls";
+    var right = document.createElement("div");
+    right.className = "present-results";
+    kids.forEach(function (el, i) {
+      if (/^H[1-6]$/.test(el.tagName)) return; // heading stays on top
+      var isResult = el.classList.contains("cell") && !el.classList.contains("panel-input");
+      (i <= lastPanel && !isResult ? left : right).appendChild(el);
+    });
+    var grid = document.createElement("div");
+    grid.className = "present-grid";
+    grid.appendChild(left);
+    grid.appendChild(right);
+    section.appendChild(grid);
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var main = document.querySelector("main.content");
+    if (!main) return;
+    var sections = Array.prototype.slice.call(main.querySelectorAll(":scope > section.level2"));
+
+    sections.forEach(function (s) {
+      if (HIDDEN.indexOf(norm(s.id)) !== -1) s.classList.add("present-hidden");
+    });
+
+    var teil = params.get("teil");
+    if (teil) {
+      var target = sections.filter(function (s) { return norm(s.id) === norm(teil); })[0];
+      if (target) {
+        root.classList.add("present-one");
+        target.classList.add("present-target");
+      }
+    }
+
+    sections.forEach(twoColumns);
+  });
+})();
+</script>
