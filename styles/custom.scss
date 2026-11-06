@@ -78,6 +78,13 @@ form[class*="oi-"] {
 @media (max-width: 576px) {
   form[class*="oi-"] { --label-width: 7.5rem; }
 }
+/* Checkbox labels (Inputs.toggle) take the width they need, so a long label
+   such as "Endliche Population (mit Drift)" stays on one line */
+form[class*="oi-"][class*="-toggle"] { --label-width: auto; }
+/* Two-column input panels (layout-ncol: 2): narrower labels so the sliders keep room */
+@media (min-width: 577px) {
+  .panel-input .quarto-layout-cell form[class*="oi-"]:not([class*="-toggle"]) { --label-width: 10.5rem; --input-width: 10rem; }
+}
 
 /* The one result line under a chart (replaces the old stat tiles) */
 .result {

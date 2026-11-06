@@ -6,13 +6,13 @@ description: "Fitness der Genotypen, Selektionskoeffizient s und Dominanz h."
 
 {{< include /_partials/_setup.qmd >}}
 
-<!-- Intro text left, life-cycle wheel right (stacked on a phone).
+<!-- &shy; = soft hyphen: lets the long words break at the right place in the narrow column.
+     Intro text left, life-cycle wheel right (stacked on a phone).
      The wheel greys out everything but Selektion: images/lebenszyklus-selektion.svg -->
 ::::: {.intro-pair}
 :::: {.intro-text}
 Selektion wirkt, wenn Genotypen unterschiedlich viele überlebende Nachkommen haben. Jedem Genotyp wird dafür eine
-**relative Fitness** zugeordnet. Das geschieht über den Selektionskoeffizienten $s$ und den
-Dominanzkoeffizienten $h$:
+**relative Fitness** zugeordnet. Das geschieht über den Selektions&shy;koeffizienten $s$ und den Dominanz&shy;koeffizienten $h$:
 
 $$
 w_{11} = 1 \qquad w_{12} = 1 - hs \qquad w_{22} = 1 - s
@@ -54,15 +54,18 @@ viewof preset = Inputs.select(
 start = preset ?? {p0: 0.1, generations: 100, w11: 1, w12: 0.95, w22: 0.9}
 ```
 
+<!-- Controls in two columns (left: start value + fitness, right: time + drift).
+     layout-ncol fills row by row, so the lines alternate left/right. -->
 ```{ojs}
 //| panel: input
+//| layout-ncol: 2
 viewof p0 = Inputs.range([0, 1], {value: start.p0, step: 0.01, label: "Start-Allelfrequenz p₀"})
 viewof generations = Inputs.range([1, 1000], {value: start.generations, step: 1, label: "Generationen"})
 viewof w11 = Inputs.range([0, 1], {value: start.w11, step: 0.01, label: "Überlebensanteil B₁B₁"})
-viewof w12 = Inputs.range([0, 1], {value: start.w12, step: 0.01, label: "Überlebensanteil B₁B₂"})
-viewof w22 = Inputs.range([0, 1], {value: start.w22, step: 0.01, label: "Überlebensanteil B₂B₂"})
 viewof finite = Inputs.toggle({label: "Endliche Population (mit Drift)", value: false})
+viewof w12 = Inputs.range([0, 1], {value: start.w12, step: 0.01, label: "Überlebensanteil B₁B₂"})
 viewof N = Inputs.range([10, 10000], {value: 500, step: 1, transform: Math.log, label: "Populationsgrösse N", disabled: !finite})
+viewof w22 = Inputs.range([0, 1], {value: start.w22, step: 0.01, label: "Überlebensanteil B₂B₂"})
 viewof seed = Inputs.button("Neu simulieren", {value: 1, reduce: (v) => v + 1})
 ```
 
