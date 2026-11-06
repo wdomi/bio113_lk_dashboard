@@ -67,6 +67,8 @@ format:
     code-summary: "Code anzeigen"
     # Students see controls and plots, not the code behind them.
     echo: false
+    # Presentation view for lecture slides (?present=1), see the file
+    include-in-header: _partials/_present.html
 
 execute:
   freeze: auto

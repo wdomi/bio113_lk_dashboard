@@ -237,3 +237,46 @@ svg.mouse-cycle { display: block; max-width: 520px; margin: 0 auto; }
   color: #7a4510;
   p { margin: 0; }
 }
+
+/* =============================================================================
+   Presentation view for lecture slides: page URL + ?present=1
+   (script in _partials/_present.html adds the classes used here).
+   No menu, no footer, controls left and charts right, sized for 16:9.
+   ========================================================================== */
+html.present {
+  #quarto-header, .nav-footer, #quarto-back-to-top, .quarto-title-meta,
+  .quarto-title-block .description,
+  .present-hidden { display: none !important; }
+  body { padding-top: 0 !important; }
+  #quarto-content { margin-top: 0 !important; padding-top: 0 !important; }
+  main.content { max-width: none; padding: 0.75rem 2rem 1rem; margin-top: 0 !important; }
+  /* the page uses the whole slide, not the 760 px reading column */
+  #quarto-content.page-columns { display: block; }
+
+  h1.title { font-size: 1.9rem; margin-bottom: 0.1rem; }
+  .quarto-title-block .subtitle { font-size: 1.05rem; }
+  h2 { margin-top: 1.2rem; margin-bottom: 0.6rem; }
+
+  .present-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 0 2rem;
+    align-items: start;
+  }
+  .present-controls > :first-child { margin-top: 0; }
+  .panel-input { margin: 0.5rem 0 0.75rem; }
+  .result { margin-bottom: 0.75rem; }
+
+  /* HW page: chart and mice side by side inside the right column */
+  .hw-pair { grid-template-columns: 1fr 1fr; width: auto; margin-left: 0; }
+
+  /* intro: text and wheel side by side, wheel a bit smaller */
+  .intro-pair { grid-template-columns: 3fr 2fr; }
+}
+
+/* Only one section (&teil=...): hide everything else, including the title */
+html.present-one {
+  main.content > *:not(.present-target):not(.cell),
+  main.content > .cell:not(:has(.r-status)) { display: none !important; }
+  .present-target h2 { margin-top: 0.25rem; }
+}
