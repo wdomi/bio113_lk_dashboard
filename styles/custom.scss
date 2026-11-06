@@ -75,6 +75,10 @@ form[class*="oi-"] {
   --label-width: 12rem;
   font-size: 0.95rem;
 }
+/* Wide screens: room for long labels like "Migrationsrate m (eigener Wert)" on one line */
+@media (min-width: 992px) {
+  form[class*="oi-"] { --label-width: 15rem; }
+}
 @media (max-width: 576px) {
   form[class*="oi-"] { --label-width: 7.5rem; }
 }
