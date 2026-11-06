@@ -11,7 +11,7 @@ description: "Fitness der Genotypen, Selektionskoeffizient s und Dominanz h."
 ::::: {.intro-pair}
 :::: {.intro-text}
 Selektion wirkt, wenn Genotypen unterschiedlich viele überlebende Nachkommen haben. Jedem Genotyp wird dafür eine
-**relative Fitness** zugeordnet. In der Vorlesung geschieht das über den Selektionskoeffizienten $s$ und den
+**relative Fitness** zugeordnet. Das geschieht über den Selektionskoeffizienten $s$ und den
 Dominanzkoeffizienten $h$:
 
 $$
